@@ -1,0 +1,35 @@
+{
+  "name": "wt18-hf-rm-tj",
+  "version": "1.0.0",
+  "description": "\u0016Web Technology Project 2018 - TH Rosenheim - by Florian Hartl, Maximilian Rechenauer, Jonas Tillges",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FlorianHartl/wt18-hf-rm-tj.git"
+  },
+  "keywords": [
+    "throsenheim",
+    "wt18",
+    "vue"
+  ],
+  "author": "Florian Hartl, Maximilian Rechenauer, Jonas Tillges",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/FlorianHartl/wt18-hf-rm-tj/issues"
+  },
+  "homepage": "https://github.com/FlorianHartl/wt18-hf-rm-tj#readme",
+  "engines": {
+    "node": ">=11.0.0",
+    "npm": ">=6.0.0"
+  },
+  "dependencies": {
+    "gulp": "~3.9.1",
+    "gulp-sass": "~4.0.2",
+    "node-sass": "~4.10.0",
+    "font-awesome": "~4.7.0",
+    "bootstrap": "~4.1.3"
+  }
+}
