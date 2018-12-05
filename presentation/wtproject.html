@@ -30,10 +30,12 @@
   <script src="modernizr.custom.js"></script>
   <style>
     img {
-      display: inline;
       float: left;
       max-width: 25%;
       padding: 1%;
+    }
+    ul {
+      margin: 25px 0;
     }
   </style>
 </head>
@@ -43,14 +45,54 @@
     <!-- Begin slides. Just make elements with a class of slide. -->
 
     <section class="slide">
-      <h1 style="font-size: 3em;">Webapplikation eines internen Forum einer benutzerdefinierten Domäne</h1>
-      <div style="position: absolute; bottom: 15px;">Florian Hartl, Maximilian Rechenauer, Jonas Tillges</div>
+      <h1 style="font-size: 3em;">Webapplikation eines internen Forum</h1>
+      <div style="position: absolute; bottom: 15px;">von Florian Hartl, Maximilian Rechenauer, Jonas Tillges</div>
+    </section>
+
+    <section class="slide">
+      <h2>Features</h2>
+      <div>
+        Geplante Features für das Projekt
+        <ul>
+          <li>User Registrierung (OAuth2)</li>
+          <li>User Login (OAuth2)</li>
+          <li>Beiträge</li>
+          <li>Kommentare</li>
+          <li>Tags</li>
+          <li>Moderation</li>
+          <li>Filter</li>
+          <li>Rating</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>Scrumbasiertes Projektmanagement mittels meistertask.com</h2>
+      <div>Wir verwenden von Scrum:
+        <ul>
+          <li>User Stories</li>
+          <li>Backlog</li>
+          <li>Sprints (Planning/Review)</li>
+        </ul>
+      </div>
+      <img style="min-width: 70%;" src="images/meistertask.png">
+    </section>
+
+    <section class="slide">
+      <h2>Frontend / Anforderungen</h2>
+      <div>Unser Anspruch an das Frontend:
+        <ul>
+          <li>Mobile First</li>
+          <li>Clean Design</li>
+          <li>Barrierefreiheit</li>
+        </ul>
+      </div>
     </section>
 
     <section class="slide">
       <h2>Backend / Buildsystem</h2>
       <div>
-        Gulp
+        Gulp hilft uns bei:
       </div>
       <div>
 
@@ -62,64 +104,60 @@
         </ul>
 
         <div>
-          <img src="images/gulp.png" />
+          <img src="images/nodejs.png">
+          <img src="images/npm-logo.png">
+          <img src="images/gulp.png">
         </div>
 
       </div>
     </section>
 
     <section class="slide">
-      <h2>Features</h2>
-      <ul>
-        <li>User Registrierung (OAuth2)</li>
-        <li>User Login (OAuth2)</li>
-        <li>Beiträge</li>
-        <li>Kommentare</li>
-        <li>Tags</li>
-        <li>Moderation</li>
-        <li>Filter</li>
-      </ul>
-    </section>
-
-    <section class="slide">
-      <h2>Scrumbasiertes Projektmanagement mit meistertask.com</h2>
-      <div>Wir verwenden von Scrum:
-        <ul>
-          <li>User Stories</li>
-          <li>Backlog</li>
-          <li>Sprints (Planning/Review)</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="slide">
-      <h2>Frontend / Anforderungen</h2>
-      <div>Unsere Motivation ans Frontend;
-        <ul>
-          <li>Mobile First</li>
-          <li>Clean Design</li>
-          <li>Barrierefreiheit</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="slide">
-      <h2>Verwendung Web Technologien</h2>
+      <h2>Backend / Datenbank und SSL</h2>
+      <div>Docker + MongoDB / Lets Encrypt</div>
       <div>
-        <img src="images/nodejs.png">
-        <img src="images/npm-logo.png">
-        <img src="images/gulp.png">
-        <img src="images/express.jpg">
-        <img src="images/vue.png">
-        <img src="images/css3hmtl5.png">
-        <img src="images/sass.png">
-        <img src="images/bootstrap.png">
+        <ul>
+          <li>Docker Container für MongoDB</li>
+          <li>LetsEncrypt zur SSL Zertifikaterzeugung</li>
+        </ul>
+      </div>
+      <div>
         <img src="images/Docker.png">
         <img src="images/mongodb.png">
         <img src="images/letsencrypt.png">
       </div>
     </section>
 
+    <section class="slide">
+      <h2>Application Framework und Server</h2>
+      <div>Vue.js und Express.js</div>
+      <div>
+        <ul>
+          <li>Vue.js als Schnittstelle zwischen Client & Server</li>
+          <li>Express.js als Request Handler</li>
+        </ul>
+      </div>
+      <div>
+        <img src="images/express.jpg">
+        <img src="images/vue.png">
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>Appeareance und Styling</h2>
+      <div>Bootstrap 4 und Sass</div>
+      <div>
+        <ul>
+          <li>Bootstrap 4 als Frontendframework</li>
+          <li>SASS als Extension Language für CSS</li>
+        </ul>
+      </div>
+      <div>
+        <img src="images/css3hmtl5.png">
+        <img src="images/sass.png">
+        <img src="images/bootstrap.png">
+      </div>
+    </section>
     <!-- End slides. -->
 
     <!-- Begin extension snippets. Add or remove as needed. -->
