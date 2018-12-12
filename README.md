@@ -1,20 +1,18 @@
-# wt18-hf-rm-jt
-Web Technology Project 2018 - TH Rosenheim - by Florian Hartl, Maximilian Rechenauer, Jonas Tillges
+# forum
 
-## Init
-Use following command to init your project on your local machine
+> forum
 
-$ npm install
+## Build Setup
 
-## Gulp
+``` bash
+# install dependencies
+npm install
 
-####SASS
+# serve with hot reload at localhost:8080
+npm run dev
 
-Use following command to compile your sass file /src/sass/app.scss
+# build for production with minification
+npm run build
+```
 
-$ gulp sass
-
-or to watch with
-
-$gulp sass:watch
-
+For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).

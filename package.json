@@ -1,35 +1,39 @@
 {
-  "name": "wt18-hf-rm-tj",
+  "name": "forum",
+  "description": "forum",
   "version": "1.0.0",
-  "description": "\u0016Web Technology Project 2018 - TH Rosenheim - by Florian Hartl, Maximilian Rechenauer, Jonas Tillges",
-  "main": "gulpfile.js",
+  "author": "jonas,maxi,flo",
+  "license": "",
+  "private": true,
   "scripts": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/FlorianHartl/wt18-hf-rm-tj.git"
-  },
-  "keywords": [
-    "throsenheim",
-    "wt18",
-    "vue"
-  ],
-  "author": "Florian Hartl, Maximilian Rechenauer, Jonas Tillges",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/FlorianHartl/wt18-hf-rm-tj/issues"
-  },
-  "homepage": "https://github.com/FlorianHartl/wt18-hf-rm-tj#readme",
-  "engines": {
-    "node": ">=11.0.0",
-    "npm": ">=6.0.0"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot && node src/app.js",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
-    "gulp": "~3.9.1",
-    "gulp-sass": "~4.0.2",
-    "node-sass": "~4.10.0",
-    "font-awesome": "~4.7.0",
-    "bootstrap": "~4.1.3"
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "vue": "^2.5.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "cross-env": "^5.0.5",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.4",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "vue-loader": "^13.0.5",
+    "vue-template-compiler": "^2.4.4",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1"
   }
 }
