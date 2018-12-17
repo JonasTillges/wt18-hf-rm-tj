@@ -1,9 +1,7 @@
-# Forum
+# forum
 
-> Forum
+> forum
 
-
-## Client
 ## Build Setup
 
 ``` bash
@@ -21,15 +19,3 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
-
-## Server
-``` bash
-# install dependencies
-npm install
-
-# localhost:8081 -> start the server
-npm start
-
-
-```
-

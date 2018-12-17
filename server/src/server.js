@@ -1,3 +1,4 @@
+console.log('Hello');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -9,7 +10,7 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/status', (req,res)=>{
+app.post('/register', (req,res)=>{
     console.log('Hallo');
     res.send({
         message: "Hallo"
@@ -17,4 +18,4 @@ app.get('/status', (req,res)=>{
 });
 
 
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8081);
