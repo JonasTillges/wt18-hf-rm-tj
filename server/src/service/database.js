@@ -99,4 +99,21 @@ module.exports = {
         console.log('update ---> ' + data.who + ' ---> ' + data.what);
         return this.db.collection(data.collection).updateOne(data.who,{ $set: data.what });
     },
+
+    query: {
+        /**
+         * generates the object to delete the mongodb doc
+         * @param collection
+         * @param id
+         * @returns {{collection: *, doc: {_id: *}}}
+         */
+        delete: function (collection, id) {
+            return {
+                collection: collection,
+                    doc: {
+                    "_id": mongo.ObjectId(id)
+                }
+            }
+        }
+    }
 };
