@@ -7,7 +7,6 @@ const morgan = require('morgan');
 
 const DatabaseService = require('./service/database.js');
 
-
 const app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json());
@@ -16,10 +15,9 @@ app.use(cors());
 console.log('try to connect to database');
 DatabaseService.connect();
 
-app.post('/register', (req,res)=>{
-    console.log('Hallo');
+app.post('/register', (req,res) => {
     res.send({
-        message: "Hallo"
+        message: `Hallo $(req.body.email)`
     })
 });
 
