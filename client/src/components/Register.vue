@@ -1,13 +1,27 @@
 <template>
   <div >
     <h>Register</h>
-    <div>
-        <input type="email" name="email" v-model="email" placeholder="Email"/>
-      <input  type="password" name="password" v-model="password" placeholder="Password"/>
-    </div>
-    <div>
-      <button @click="register">Register</button>
-    </div>
+    <br>
+
+      <input 
+      type="email" 
+      name="email" 
+      v-model="email" 
+      placeholder="Email"/>
+    <br>
+      <input  
+      type="password" 
+      name="password" 
+      v-model="password" 
+      placeholder="Password"/>
+
+      <br>
+      <button 
+      @click="register">Register</button>
+      <br>
+
+      <h1>{{ message }}</h1>
+    
   </div>
 </template>
 
@@ -19,7 +33,8 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      message: ''
     }
   },
   methods: {
@@ -28,8 +43,11 @@ export default {
         email: this.email,
         password: this.password
       })
-      console.log(response.log);
+      console.log("button clicked", this.email,this.password);
+      console.log(response.data);
+      this.message = JSON.stringify(response.data.message);
     }
+
   }
 }
 </script>

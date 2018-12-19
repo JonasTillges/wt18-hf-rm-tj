@@ -17,7 +17,7 @@ DatabaseService.connect();
 
 app.post('/register', (req,res) => {
     res.send({
-        message: `Hallo $(req.body.email)`
+        message: `Hallo ${req.body.email}`
     })
 });
 
