@@ -1,38 +1,47 @@
 <template>
-  <div >
-    <link href="app.scss" rel="stylesheet" type="text/scss"/> 
-    <router-link to="/Home">Navigate to RegisterPage</router-link>
-  </div>
+    <div id="app">
+        <lottie :options="defaultOptions" :height="500" :width="500" v-on:animCreated="handleAnimation"/>
+
+    </div>
 </template>
 
 <script>
+  import Lottie from './lottie.vue';
+  import * as animationData from '../animations/404_page.json';
 
-export default {
-  name: "Home",
-  methods: {
-    registerPage: function(){
-      console.log('hallo');
-      router.push({ path: '/register' })
+  export default {
+    name: 'app',
+    components: {
+      'lottie': Lottie
+    },
+    data() {
+      return {
+        defaultOptions: {animationData: animationData},
+        animationSpeed: 1
+      }
+    },
+    methods: {
+      handleAnimation: function (anim) {
+        this.anim = anim;
+        this.anim.play();
+        
+      },
+
+      stop: function () {
+        this.anim.stop();
+      },
+
+      play: function () {
+        this.anim.play();
+      },
+
+      pause: function () {
+        this.anim.pause();
+      },
+
+      onSpeedChange: function () {
+        this.anim.setSpeed(this.animationSpeed);
+      }
     }
   }
-}
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>

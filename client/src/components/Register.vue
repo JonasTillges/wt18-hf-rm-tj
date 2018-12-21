@@ -45,7 +45,7 @@ export default {
       })
       console.log("button clicked", this.email,this.password);
       console.log(response.data);
-      this.message = JSON.stringify(response.data.message);
+      this.message = response.data.message;
     }
 
   }
