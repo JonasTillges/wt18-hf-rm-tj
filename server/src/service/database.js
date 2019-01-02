@@ -2,10 +2,10 @@ const mongo = require('mongodb');
 const assert = require('assert');
 
 const dbCredentials = {
-    dest: process.env.MONGO_URL,
-    user: process.env.MONGO_ROOT_USERNAME,
-    password: process.env.MONGO_ROOT_PASSWORD,
-    db: process.env.MONGO_DATABASE
+    dest: process.env.MONGO_URL || "mongodb://mongo",
+    user: process.env.MONGO_ROOT_USERNAME || "",
+    password: process.env.MONGO_ROOT_PASSWORD || "",
+    db: process.env.MONGO_DATABASE || "dev"
 };
 
 const dbStatus = {
@@ -24,12 +24,18 @@ module.exports = {
      * @returns {Promise<MongoClient>} returns Promise if no callback passed
      */
     connect: function() {
-        return mongo.MongoClient.connect(
-            dbCredentials.dest,
-            {
-                useNewUrlParser: true,
-                auth: {user: dbCredentials.user, password: dbCredentials.password}
-            })
+        console.log(dbCredentials);
+        
+        var options = {
+            useNewUrlParser: true
+        };
+
+        //  check for prod mode
+        if (dbCredentials.user){
+            options.auth = {user: dbCredentials.user, password: dbCredentials.password}
+        }
+
+        return mongo.MongoClient.connect(dbCredentials.dest, options)
             .then(mongoClient => this.db = mongoClient.db(dbCredentials.db))
             .then(db => this.status = dbStatus.online)
             //.then(any => this.create({collection: 'dudes', doc: {name: 'Duplicate', user: 'User'}}))
@@ -42,6 +48,15 @@ module.exports = {
                 this.status = err;
                 console.log(err);
             });
+    },
+
+    /**
+     * Close the connection to the database
+     */
+    close: function() {
+        if(this.db.close()) {
+            this.status = dbStatus.offline;
+        };
     },
 
     /**
