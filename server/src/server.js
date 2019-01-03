@@ -16,12 +16,14 @@ app.use(cors());
 console.log('try to connect to database');
 DatabaseService.connect();
 
-
-
 app.post('/register', (request, response)=>{
-    console.log('Hallo');
+    
+    console.log('request');
+    console.log(request);
+    console.log('response');
+    console.log(response);
 
-   UserService.action.create();
+    UserService.action.create();
 
     res.send({
         message: "Hallo"
