@@ -1,6 +1,8 @@
 const SecurityConfiguration = require('../configuration/security');
 const PermissionService = require('./permission.js');
 const DatabaseService = require('./database.js');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 module.exports = {
 
@@ -15,16 +17,19 @@ module.exports = {
     },
 
     /**
-     * database structure plain
+     * database schema
      */
-    db: {
-        collection: 'users',
-        doc: {
-            "name": "",
-            "email": ""
-            //many more or less
+    schema: new Schema(
+        {
+            name:  String,
+            email: String,
+            activated: Boolean
+        },
+        { 
+            collection: 'user',
+            timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
         }
-    },
+    ),
 
     /**
      * get User Permission level
@@ -32,7 +37,7 @@ module.exports = {
      */
     getUserPermission: function () {
         //TODO get current user and return the permission level
-        return 5;
+        return 3;
     },
 
     /**
@@ -42,12 +47,39 @@ module.exports = {
 
         get: function () {
             if (PermissionService.test(this.permission.read)) {
+                var User = mongoose.model('User', this.schema);
+                var query = User.find();
+                // execute the query at a later time
+                query.exec(function (err, users) {
+                    if (err) return handleError(err);
+                    // Prints the users
+                    console.log(users);
+                });
 
             }
         },
         create: function (data) {
+            //REMOVE only for test purposes
+            if (data == undefined) {
+                data = {
+                    name: 'König Ludwig der II.',
+                    email: 'luder@kingdom.org'
+                }
+            }
+            // test for permission and creates the user
             if (PermissionService.test(this.permission.create)) {
                 console.log('create privilege given');
+                //TODO - this is a simple create - no duplicate user check etc.
+                const newUser = mongoose.model('User', this.schema);
+                newUser.name = data.name;
+                newUser.email = data.email;
+                newUser.save().then(
+                    function(result) {
+                        console.log(result);
+                        // test if something in db
+                        this.action.get();
+                    }
+                 );
             }
         },
         update: function () {
@@ -63,12 +95,7 @@ module.exports = {
          */
         delete: function (userId) {
             if (PermissionService.test(this.permission.delete)) {
-                return DatabaseService.delete(
-                    DatabaseService.query.delete(
-                        this.db.collection,
-                        userId
-                    )
-                );
+                
             }
         }
     }
