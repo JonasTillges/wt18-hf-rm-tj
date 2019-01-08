@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div >
     <h>Register</h>
     <br>
@@ -22,6 +23,13 @@
 
       <h1>{{ message }}</h1>
     
+=======
+  <div>
+    <h1>Register</h1>
+    
+    
+
+>>>>>>> master
   </div>
 </template>
 
@@ -30,6 +38,7 @@
 import AuthenticationService from '@/services/AuthenticationService'
 export default {
   name: 'register',
+<<<<<<< HEAD
   data () {
     return {
       email: '',
@@ -46,13 +55,22 @@ export default {
       console.log("button clicked", this.email,this.password);
       console.log(response.data);
       this.message = response.data.message;
+=======
+  data: {
+    form: {
+      email: '',
+      name: ''
+>>>>>>> master
     }
 
   }
 }
 </script>
+<<<<<<< HEAD
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 </style>
+=======
+>>>>>>> master
