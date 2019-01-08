@@ -29,30 +29,24 @@ module.exports = {
         }
     ),
 
-    /**
-     * actions to modify database
-     */
-    action: {
+    get: function () {
+        if (PermissionService.test(this.permission.read)) {
 
-        get: function () {
-            if (PermissionService.test(this.permission.read)) {
+        }
+    },
+    create: function (data) {
+        if (PermissionService.test(this.permission.create)) {
+            
+        }
+    },
+    update: function () {
+        if (PermissionService.test(this.permission.update)) {
 
-            }
-        },
-        create: function (data) {
-            if (PermissionService.test(this.permission.create)) {
-                
-            }
-        },
-        update: function () {
-            if (PermissionService.test(this.permission.update)) {
-
-            }
-        },
-        delete: function (userId) {
-            if (PermissionService.test(this.permission.delete)) {
-                
-            }
+        }
+    },
+    delete: function (userId) {
+        if (PermissionService.test(this.permission.delete)) {
+            
         }
     }
 

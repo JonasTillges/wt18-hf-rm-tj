@@ -35,6 +35,7 @@ module.exports = {
         //  check for prod mode
         if (dbCredentials.user){
             options.auth = {user: dbCredentials.user, password: dbCredentials.password}
+            options.dbName = dbCredentials.db
         }
 
         // connect to mongo
