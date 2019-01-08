@@ -2,13 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Register from '@/components/Register'
-<<<<<<< HEAD
 import _404 from '@/components/_404'
-=======
 import Login from '@/components/Login'
 import List from '@/components/List'
 import Post from '@/components/Post'
->>>>>>> master
 
 Vue.use(Router)
 
@@ -20,17 +17,16 @@ export default new Router({
       component: Home
     },
     {
+      path: '*',
+      name: '_404',
+      component: _404
+    },
+    {
       path: '/register',
       name: 'Registrierung',
       component: Register
     },
     {
-<<<<<<< HEAD
-      path: '/404',
-      name: '_404',
-      component: _404
-    }
-=======
       path: '/login',
       name: 'Login',
       component: Login
@@ -50,6 +46,5 @@ export default new Router({
       name: 'Beitrag xyz',
       component: Post
     }    
->>>>>>> master
   ]
 })
