@@ -6,7 +6,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 
 const DatabaseService = require('./service/database.js');
-const UserService = require('./service/user');
+const UserService = require('./service/user.js');
 
 const app = express();
 app.use(morgan('combined'));
@@ -15,7 +15,9 @@ app.use(cors());
 
 console.log('try to connect to database');
 DatabaseService.connect();
-UserService.create();
+
+// TODO - REMOVE TESTING PURPOSE ONLY
+UserService.get();
 
 app.post('/register', (request, response)=>{
     

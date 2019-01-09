@@ -16,22 +16,20 @@ module.exports = {
         delete: SecurityConfiguration.MODERATOR
     },
 
-    /**
-     * database schema
-     */
-    schema: new Schema(
-        {
-            title:  String,
-            body: String,
-            votes: Number,
-            _user : { type: Number, ref: 'user' },
-            _post : { type: Number, ref: 'post' }
-        },
-        { 
-            collection: 'comment',
-            timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
-        }
-    ),
+
+    Comment: mongoose.model('Comment', new Schema(
+      {
+          title: String,
+          body: String,
+          votes: Number,
+          _user: {type: Number, ref: 'user'},
+          _post: {type: Number, ref: 'post'}
+      },
+      {
+          collection: 'comment',
+          timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}
+      }
+    )),
 
     get: function () {
         if (PermissionService.test(this.permission.read)) {
@@ -50,7 +48,7 @@ module.exports = {
     },
     delete: function (userId) {
         if (PermissionService.test(this.permission.delete)) {
-            
+
         }
     }
 

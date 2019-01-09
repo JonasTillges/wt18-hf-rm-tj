@@ -19,14 +19,15 @@ module.exports = {
     /**
      * database schema
      */
-    schema: new Schema(
-        {
-            name:  String,
-        },
-        { 
-            collection: 'tag',
-            timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
-        }
+    Tag: mongoose.model('Tag', new Schema(
+      {
+          name: String,
+      },
+      {
+          collection: 'tag',
+          timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}
+      }
+      )
     ),
 
     get: function () {
@@ -36,7 +37,7 @@ module.exports = {
     },
     create: function (data) {
         if (PermissionService.test(this.permission.create)) {
-            
+
         }
     },
     update: function () {
@@ -46,7 +47,7 @@ module.exports = {
     },
     delete: function (userId) {
         if (PermissionService.test(this.permission.delete)) {
-            
+
         }
     }
 

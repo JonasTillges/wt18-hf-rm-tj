@@ -16,20 +16,17 @@ module.exports = {
         delete: SecurityConfiguration.ADMIN
     },
 
-    /**
-     * database schema
-     */
-    schema: new Schema(
-        {
-            name:  String,
-            email: String,
-            activated: Boolean
-        },
-        { 
-            collection: 'user',
-            timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
-        }
-    ),
+    User: mongoose.model('User', new Schema(
+      {
+          name: String,
+          email: String,
+          activated: Boolean
+      },
+      {
+          collection: 'user',
+          timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}
+      }
+    )),
 
     /**
      * get User Permission level
@@ -42,8 +39,7 @@ module.exports = {
 
     get: function () {
         if (PermissionService.test(this.permission.read)) {
-            var User = mongoose.model('User', this.schema);
-            var query = User.find();
+            var query = this.User.find();
             // execute the query at a later time
             query.exec(function (err, users) {
                 if (err) return handleError(err);
@@ -53,32 +49,54 @@ module.exports = {
 
         }
     },
+
     create: function (data) {
-        //REMOVE only for test purposes
+
+
+        //TODO - REMOVE only for test purposes
         if (data == undefined) {
             data = {
                 name: 'König Ludwig der II.',
-                email: 'luder@kingdom.org'
+                email: 'luder@kingdom.com'
             }
         }
-        console.log(this.permission.create);
+
+        //TODO - check for correct data object - idea: map against schema if possible
+
         // test for permission and creates the user
         if (PermissionService.test(this.permission.create)) {
             console.log('create privilege given');
-            //TODO - this is a simple create - no duplicate user check etc.
-            const newUser = mongoose.model('User', this.schema);
-            newUser.name = data.name;
-            newUser.email = data.email;
-            newUser.save().then(
-                function(result) {
-                    console.log(result);
-                    // test if something in db
-                    this.get();
+            // get user model
+
+            console.log('find user?');
+            this.User.find({email: data.email}).exec(function (err, result) {
+
+                if (err) {
+                    console.log('ERROR - TODO ERROR HANDLING!!!!');
+                    return;
                 }
+
+                if (result.length) {
+                    console.log('WARNING - TODO USERS already registered - MESSAGE TO USER!!');
+                    return;
+                }
+
+                newUser = new this.User({
+                    name: data.name,
+                    email: data.email
+                });
+
+                newUser.save().then(
+                  function (result) {
+                      console.log('USER CREATED:' + result);
+                  }
                 );
-            console.log('create end');
+
+            }.bind(this));
+
         }
     },
+
     update: function () {
         if (PermissionService.test(this.permission.update)) {
 
@@ -92,7 +110,7 @@ module.exports = {
      */
     delete: function (userId) {
         if (PermissionService.test(this.permission.delete)) {
-            
+
         }
     }
 

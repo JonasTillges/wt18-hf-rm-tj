@@ -19,17 +19,18 @@ module.exports = {
     /**
      * database schema
      */
-    schema: new Schema(
-        {
-            title:  String,
-            body: String,
-            votes: Number,
-            _user : { type: Number, ref: 'user' }
-        },
-        { 
-            collection: 'post',
-            timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
-        }
+    Post: mongoose.model('Post', new Schema(
+      {
+          title: String,
+          body: String,
+          votes: Number,
+          _user: {type: Number, ref: 'user'}
+      },
+      {
+          collection: 'post',
+          timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}
+      }
+      )
     ),
 
     get: function () {
@@ -49,7 +50,7 @@ module.exports = {
     },
     delete: function (userId) {
         if (PermissionService.test(this.permission.delete)) {
-            
+
         }
     }
 
