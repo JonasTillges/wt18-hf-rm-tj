@@ -1,0 +1,15 @@
+//import Variables
+@import "variables";
+@import "bootstrap-overrides";
+
+// import frameworks
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+@import "../../node_modules/font-awesome/scss/font-awesome.scss";
+
+
+// mixins
+@import "mixins";
+
+//import Elements and Components
+@import "elements/import";
+@import "components/import";
