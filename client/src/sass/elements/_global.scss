@@ -1,5 +1,6 @@
 // Typography
 body {
+
   @include body-font;
 }
 
@@ -13,49 +14,11 @@ h6 {
 }
 
 // Custom Horizontal Rule with Star Icon
-hr.star-light,
-hr.star-dark {
-  max-width: 15rem;
-  padding: 0;
-  text-align: center;
-  border: none;
-  border-top: solid 0.25rem;
-  margin-top: 2.5rem;
-  margin-bottom: 2.5rem;
-  margin-left: auto;
-  margin-right: auto;
-}
 
-hr.star-light:after,
-hr.star-dark:after {
-  position: relative;
-  top: -.8em;
-  display: inline-block;
-  padding: 0 0.25em;
-  content: '\f005';
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  font-size: 2em;
-}
-
-hr.star-light {
-  border-color: $white;
-}
-hr.star-light:after {
-  color: $white;
-  background-color: $primary;
-}
-
-hr.star-dark {
-  border-color: $secondary;
-}
-hr.star-dark:after {
-  color: $secondary;
-  background-color: white;
-}
 
 // Section Padding Settings
 section {
+ 
   padding: 6rem 0;
   h2 {
     font-size: 2.25rem;
@@ -66,6 +29,17 @@ section {
       font-size: 3rem;
       line-height: 2.5rem;
     }
+  }
+}
+
+figure{
+  text-align: center;  
+
+  img.star-img{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 40px;
+    width:40px;
   }
 }
 
