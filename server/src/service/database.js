@@ -1,9 +1,9 @@
 const mongo = require('mongodb');
 const assert = require('assert');
 const mongoose = require('mongoose');
- 
+
 const dbCredentials = {
-    dest: process.env.MONGO_URL || "mongodb://mongo",
+    dest: process.env.MONGO_URL || "mongodb://mongo/",
     user: process.env.MONGO_ROOT_USERNAME || "",
     password: process.env.MONGO_ROOT_PASSWORD || "",
     db: process.env.MONGO_DATABASE || "dev"
@@ -24,32 +24,33 @@ module.exports = {
      * Creates the connection to the database
      * @returns {Promise<MongoClient>} returns Promise if no callback passed
      */
-    connect: function() {
+    connect: function () {
 
         console.log(dbCredentials);
-        
+
         var options = {
             useNewUrlParser: true
         };
 
         //  check for prod mode
-        if (dbCredentials.user){
+        if (dbCredentials.user) {
             options.auth = {user: dbCredentials.user, password: dbCredentials.password}
+            options.dbName = dbCredentials.db
         }
 
         // connect to mongo
         this.io = mongoose.connect(dbCredentials.dest, options).then(
-            () => { 
-                /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
-                this.status = dbStatus.online;
-                console.log('established');
-            },
-            err => { 
-                /** handle initial connection error */ 
-                this.status = dbStatus.error;
-                console.log('error');
-                console.log(err);
-            }
+          () => {
+              /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
+              this.status = dbStatus.online;
+              console.log('database connection established');
+          },
+          err => {
+              /** handle initial connection error */
+              this.status = dbStatus.error;
+              console.log('error');
+              console.log(err);
+          }
         );
     }
 

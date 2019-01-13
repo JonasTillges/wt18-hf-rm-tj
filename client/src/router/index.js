@@ -6,6 +6,8 @@ import _404 from '@/components/_404'
 import Login from '@/components/Login'
 import List from '@/components/List'
 import Post from '@/components/Post'
+import Verification from '@/components/Verify'
+import Activation from '@/components/Activation'
 
 Vue.use(Router)
 
@@ -18,8 +20,7 @@ export default new Router({
     },
     {
       path: '*',
-      name: '_404',
-      component: _404
+      component: Home
     },
     {
       path: '/register',
@@ -45,6 +46,17 @@ export default new Router({
       path: '/post/:id',
       name: 'Beitrag xyz',
       component: Post
-    }    
+    },
+    {
+      path: '/verify',
+      name: 'verify',
+      component: Verification
+    },
+    {
+      path: '/activate',
+      name: 'Activation',
+      component: Activation
+    }   
+
   ]
 })

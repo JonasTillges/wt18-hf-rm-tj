@@ -6,7 +6,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 
 const DatabaseService = require('./service/database.js');
-const UserService = require('./service/user');
+const UserService = require('./service/user.js');
 
 const app = express();
 app.use(morgan('combined'));
@@ -16,6 +16,12 @@ app.use(cors());
 console.log('try to connect to database');
 DatabaseService.connect();
 
+// TODO - REMOVE TESTING PURPOSE ONLY
+app.get('/', (reqest, response) => {
+    console.log('User in database:');
+    UserService.get({uid: 82959892852});
+});
+
 app.post('/register', (request, response)=>{
     
     console.log('request');
@@ -23,11 +29,17 @@ app.post('/register', (request, response)=>{
     console.log('response');
     console.log(response);
 
-    UserService.action.create();
+    UserService.create(request.body);
 
-    res.send({
+    console.log(request.body);
+    //UserService.create($.body.email, )
+    response.send({
         message: "Hallo"
     });
+});
+
+app.get('/activate', (request, response) => {
+    console.log(request.body);
 });
 
 app.listen(process.env.PORT || 8081);

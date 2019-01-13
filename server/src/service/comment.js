@@ -16,47 +16,39 @@ module.exports = {
         delete: SecurityConfiguration.MODERATOR
     },
 
-    /**
-     * database schema
-     */
-    schema: new Schema(
-        {
-            title:  String,
-            body: String,
-            votes: Number,
-            _user : { type: Number, ref: 'user' },
-            _post : { type: Number, ref: 'post' }
-        },
-        { 
-            collection: 'comment',
-            timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+
+    Comment: mongoose.model('Comment', new Schema(
+      {
+          title: String,
+          body: String,
+          votes: Number,
+          _user: {type: Number, ref: 'user'},
+          _post: {type: Number, ref: 'post'}
+      },
+      {
+          collection: 'comment',
+          timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}
+      }
+    )),
+
+    get: function () {
+        if (PermissionService.test(this.permission.read)) {
+
         }
-    ),
+    },
+    create: function (data) {
+        if (PermissionService.test(this.permission.create)) {
 
-    /**
-     * actions to modify database
-     */
-    action: {
+        }
+    },
+    update: function () {
+        if (PermissionService.test(this.permission.update)) {
 
-        get: function () {
-            if (PermissionService.test(this.permission.read)) {
+        }
+    },
+    delete: function (userId) {
+        if (PermissionService.test(this.permission.delete)) {
 
-            }
-        },
-        create: function (data) {
-            if (PermissionService.test(this.permission.create)) {
-
-            }
-        },
-        update: function () {
-            if (PermissionService.test(this.permission.update)) {
-
-            }
-        },
-        delete: function (userId) {
-            if (PermissionService.test(this.permission.delete)) {
-                
-            }
         }
     }
 
