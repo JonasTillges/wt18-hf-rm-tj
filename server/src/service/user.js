@@ -18,9 +18,9 @@ module.exports = {
 
     User: mongoose.model('User', new Schema(
       {
-          name: String,
-          email: String,
-          activated: Boolean
+        email: String,
+        name: String,
+        uid: String
       },
       {
           collection: 'user',
@@ -37,9 +37,9 @@ module.exports = {
         return 3;
     },
 
-    get: function () {
+    get: function (data) {
         if (PermissionService.test(this.permission.read)) {
-            var query = this.User.find();
+            var query = this.User.find(data);
             // execute the query at a later time
             query.exec(function (err, users) {
                 if (err) return handleError(err);
@@ -51,17 +51,6 @@ module.exports = {
     },
 
     create: function (data) {
-
-
-        //TODO - REMOVE only for test purposes
-        if (data == undefined) {
-            data = {
-                name: 'König Ludwig der II.',
-                email: 'luder@kingdom.com'
-            }
-        }
-
-        //TODO - check for correct data object - idea: map against schema if possible
 
         // test for permission and creates the user
         if (PermissionService.test(this.permission.create)) {
@@ -82,8 +71,9 @@ module.exports = {
                 }
 
                 newUser = new this.User({
+                    email: data.email,
                     name: data.name,
-                    email: data.email
+                    uid: data.uid
                 });
 
                 newUser.save().then(

@@ -17,7 +17,10 @@ console.log('try to connect to database');
 DatabaseService.connect();
 
 // TODO - REMOVE TESTING PURPOSE ONLY
-UserService.get();
+app.get('/', (reqest, response) => {
+    console.log('User in database:');
+    UserService.get({uid: 82959892852});
+});
 
 app.post('/register', (request, response)=>{
     
@@ -26,11 +29,17 @@ app.post('/register', (request, response)=>{
     console.log('response');
     console.log(response);
 
-    UserService.create();
+    UserService.create(request.body);
 
-    res.send({
+    console.log(request.body);
+    //UserService.create($.body.email, )
+    response.send({
         message: "Hallo"
     });
+});
+
+app.get('/activate', (request, response) => {
+    console.log(request.body);
 });
 
 app.listen(process.env.PORT || 8081);
