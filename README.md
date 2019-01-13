@@ -30,6 +30,9 @@ npm install
 # localhost:8081 -> start the server
 npm start
 
-
+## Docker Setup
+cd ./server
+docker-compose build
+docker-compose up
 ```
 

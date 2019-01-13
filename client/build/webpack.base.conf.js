@@ -4,6 +4,12 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+var extractPlugin = new ExtractTextPlugin({
+  filename: 'app.css'
+});
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -64,6 +70,14 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
+      },
+      {
+        test: /\.scss$/,
+        use: [
+            "style-loader", // creates style nodes from JS strings
+            "css-loader", // translates CSS into CommonJS
+            "sass-loader" // compiles Sass to CSS, using Node Sass by default
+        ]
       }
     ]
   },
