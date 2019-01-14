@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <h>Register</h>
     <br>
       <input 
