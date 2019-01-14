@@ -35,6 +35,7 @@
       <div class="container">
         
           <div>
+          <hr>
             <h4 class="text-uppercase mb-4">Adresse</h4>
             <p class="lead mb-0">Technische Hochschule Rosenheim
               <br>Hochschulstraße 1, 83024 Rosenheim</p>
