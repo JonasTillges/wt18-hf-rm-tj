@@ -144,7 +144,7 @@ export default {
         uid = user.uid;
         email = user.email;
         this.name = email;
-        console.log(user.email)
+        console.log(name)
       }else{
         console.log('Kein aktueller User')
         //show register / login button
@@ -152,10 +152,3 @@ export default {
   }
 }
 </script>
-<div>
-                <div class="form-group floating-label-form-group mb-0 pb-2">
-                  <label>Passwort</label>
-                  <input v-model="password" name="password" type="password" placeholder="Passwort">
-              
-                </div>
-              </div>

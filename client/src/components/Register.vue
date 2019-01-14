@@ -14,13 +14,14 @@
               <div>
                 <div class="floating-label-form-group mb-0 pb-2" >
                   <label>Username</label>
-                  <input v-model="name" name="name" type="text" placeholder="Username">
+                  <input size="75" v-model="name" name="name" type="text" placeholder="Username">
                 </div>
               </div>
               <div>
                 <div class="form-group floating-label-form-group text-white mb-0 pb-2">
                   <label>Email Adresse</label>
                   <input 
+                  size ="75"
                   v-model="email"
                   name = "email"
                   type="email" placeholder="Email Addresse">
@@ -30,7 +31,7 @@
               <div>
                 <div class="form-group floating-label-form-group mb-0 pb-2">
                   <label>Passwort</label>
-                  <input v-model="password" name="password" type="password" placeholder="Passwort">
+                  <input size="75"v-model="password" name="password" type="password" placeholder="Passwort">
               
                 </div>
               </div>
@@ -38,7 +39,7 @@
                 <button  @click="signUp" class="btn btn-primary btn-xl">Registrieren</button>
               </div>
               <br/>
-              <router-link to="/Login">Ich habe schon ein Account.</router-link>
+              <router-link to="/Login">Ich habe schon einen Account.</router-link>
           </div>
         </div>
       </div>

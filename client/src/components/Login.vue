@@ -5,6 +5,7 @@
                 <div class="form-group floating-label-form-group text-white mb-0 pb-2">
                   <label>Email Adresse</label>
                   <input 
+                  size="75"
                   v-model="email"
                   name = "email"
                   type="email" placeholder="Email Addresse">
@@ -14,14 +15,14 @@
               <div>
                 <div class="form-group floating-label-form-group mb-0 pb-2">
                   <label>Passwort</label>
-                  <input v-model="password" name="password" type="password" placeholder="Passwort">
+                  <input  size="75"v-model="password" name="password" type="password" placeholder="Passwort">
               
                 </div>
               </div>
       <br>
-      <button @click="login">Login</button>
+      <button @click="login" class="btn btn-primary btn-xl">Login</button>
       <br>
-      <router-link to="/register">Ich habe noch kein Account.</router-link>
+      <router-link to="/register">Ich habe noch keinen Account.</router-link>
       <h1>{{ message }}</h1>
     
   </div>
