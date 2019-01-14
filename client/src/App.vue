@@ -2,7 +2,7 @@
   <div id="app">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
-    <div class="container">
+    <div>
     
       <a  class="navbar-brand" href="#page-top">  <router-link to="/">StudyUp</router-link></a>
       <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,23 +12,25 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item mx-0 mx-lg-1">
-            <router-link to="/register">Navigate to RegisterPage</router-link>
+            <router-link to="/register">Register</router-link>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <router-link to="/login">Navigate to Login</router-link>
+            <router-link to="/login">Login</router-link>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <router-link to="/list">Navigate to List</router-link>
+            <router-link to="/list">Fragen & Antworten</router-link>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <router-link to="/post">Navigate to Post</router-link>
+            <router-link to="/post">Beitrag verfassen</router-link>
           </li>
         </ul>
       </div>
     </div>
     </nav>
 
-    <router-view/>
+    <div class="component-wrapper">
+        <router-view/>
+    </div>
 
     <!-- Footer -->
     <footer class="footer text-center">
@@ -52,11 +54,14 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+    console.log(this.$applicationStorage);
+  }
 }
 </script>
 
 <style lang="scss">
-  @import './sass/app.scss'
+  @import './sass/app.scss';
 </style>
 

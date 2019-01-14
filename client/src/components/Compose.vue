@@ -13,14 +13,11 @@
         <input v-model="tags" type="text" class="form-control" id="tags" aria-describedby="tagsHelp" placeholder="Webtechnologien, Vue, Javascript">
         <small id="tagsHelp" class="form-text text-muted">Kommaseparierte Tags z.B. "Webtechnologien, Vue, Javascript"</small>
       </div>
-      <button type="submit" class="btn btn-primary">Thema online stellen</button>
+      <button type="submit" @click="compose"  class="btn btn-primary">Thema online stellen</button>
   </div>
-
-
 </template>
 
 <script>
-
   import ActionService from '@/services/ActionService'
 
 
@@ -30,23 +27,29 @@
     return {
       topic: '',
       content: '',
-      tags: '',
-      msg: 'Welcome to Your Vue.js App'
-    }
-  },
-  computed: {
-    postData: function () {
+      tags: ''
     }
   },
   mounted() {
     console.log(this.$applicationStorage);
-    console.log('Beitrag laden');
-    console.log(this.$route.params.id);
+  },
+  methods: {
+    compose: function() {
+      console.log('create post');
 
-    this.$data.topic = "Hey";
-    this.$data.content = "was los hier?";
-
-
+      ActionService.compose({
+        uid: this.$applicationStorage.user.uid,
+        topic: this.topic,
+        content: this.content,
+        tags: this.tags
+      }).then(
+        (post) => {
+          this.$router.replace('verify');
+        },
+        (err) => {
+          alert(err.message);
+      });
+    }
   }
 }
 </script>

@@ -4,9 +4,13 @@ import Vue from 'vue'
 import firebase from "firebase";
 import App from './App'
 import router from './router'
+import wysiwyg from "vue-wysiwyg";
+import "./global/storage";
 
-Vue.config.productionTip = false
-  // Initialize Firebase
+//TODO good for what?
+Vue.config.productionTip = false;
+
+// Initialize Firebase TODO security (do on server ?!)
 var config = {
   apiKey: "AIzaSyBVRMdtss2rCWB3UpyfX_2eXjLcoIhP-gQ",
   authDomain: "forum-7ed19.firebaseapp.com",
@@ -17,10 +21,19 @@ var config = {
 };
 firebase.initializeApp(config);
 
+Vue.use(wysiwyg, {
+  hideModules: { "code": true },
+  forcePlainTextOnPaste: true
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   components: { App },
   template: '<App/>'
-})
+});
+
+
+
+
