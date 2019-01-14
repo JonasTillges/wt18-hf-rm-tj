@@ -41,7 +41,6 @@ module.exports = {
         // connect to mongo
         this.io = mongoose.connect(dbCredentials.dest, options).then(
           () => {
-              /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
               this.status = dbStatus.online;
               console.log('database connection established');
           },

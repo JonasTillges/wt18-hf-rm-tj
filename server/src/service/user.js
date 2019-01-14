@@ -24,9 +24,9 @@ module.exports = {
 
     User: mongoose.model('User', new Schema(
       {
+        uid: { type: String, index: true },
         email: String,
         name: String,
-        uid: String,
         privilege: { type: String, default: SecurityConfiguration.LOGGED_IN }
       },
       {
@@ -69,7 +69,7 @@ module.exports = {
 
                 if (err) {
                     console.log('ERROR - TODO ERROR HANDLING!!!!');
-                    return;
+                    return ;
                 }
 
                 if (result.length) {
@@ -77,7 +77,7 @@ module.exports = {
                     return;
                 }
 
-                newUser = new this.User({
+                let newUser = new this.User({
                     email: data.email,
                     name: data.name,
                     uid: data.uid
