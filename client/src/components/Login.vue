@@ -1,23 +1,25 @@
 <template>
   <div >
-    <h>Login</h>
-    <br>
-
-      <input 
-      type="email" 
-      name="email" 
-      v-model="email" 
-      placeholder="Email"/>
-    <br>
-      <input  
-      type="password" 
-      name="password" 
-      v-model="password" 
-      placeholder="Password"/>
-
+    <h1>Login</h1>
+              <div>
+                <div class="form-group floating-label-form-group text-white mb-0 pb-2">
+                  <label>Email Adresse</label>
+                  <input 
+                  v-model="email"
+                  name = "email"
+                  type="email" placeholder="Email Addresse">
+              
+                </div>
+              </div>
+              <div>
+                <div class="form-group floating-label-form-group mb-0 pb-2">
+                  <label>Passwort</label>
+                  <input v-model="password" name="password" type="password" placeholder="Passwort">
+              
+                </div>
+              </div>
       <br>
-      <button 
-      @click="login">Login</button>
+      <button @click="login">Login</button>
       <br>
       <router-link to="/register">Ich habe noch kein Account.</router-link>
       <h1>{{ message }}</h1>
