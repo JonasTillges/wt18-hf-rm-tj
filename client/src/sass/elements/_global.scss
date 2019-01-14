@@ -51,25 +51,6 @@ figure{
   font-size: 1.25rem;
 }
 
-// Custom Rounded Social Button
-.btn-social {
-  width: 3.25rem;
-  height: 3.25rem;
-  font-size: 1.25rem;
-  line-height: 2rem;
+.component-wrapper {
+  padding: 25px 0;
 }
-
-// Scroll to Top Button
-.scroll-to-top {
-  z-index: 1042;
-  right: 1rem;
-  bottom: 1rem;
-  display: none;
-  a {
-    width: 3.5rem;
-    height: 3.5rem;
-    background-color: fade-out($gray-900, 0.5);
-    line-height: 3.1rem;
-  }
-}
-

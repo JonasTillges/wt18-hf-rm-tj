@@ -6,6 +6,7 @@ import _404 from '@/components/_404'
 import Login from '@/components/Login'
 import List from '@/components/List'
 import Post from '@/components/Post'
+import Compose from '@/components/Compose'
 import Verification from '@/components/Verify'
 import Activation from '@/components/Activation'
 
@@ -20,7 +21,8 @@ export default new Router({
     },
     {
       path: '*',
-      component: Home
+      name: '_404',
+      component: _404
     },
     {
       path: '/register',
@@ -39,12 +41,12 @@ export default new Router({
     },
     {
       path: '/post',
-      name: 'Beitrag',
-      component: Post
+      name: 'Beitrag verfassen',
+      component: Compose
     },
     {
       path: '/post/:id',
-      name: 'Beitrag xyz',
+      name: 'Beitrag',
       component: Post
     },
     {
