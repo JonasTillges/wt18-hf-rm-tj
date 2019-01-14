@@ -47,6 +47,9 @@ app.post('/compose', (request, response)=>{
 
     var data = request.body;
 
+    console.log('compose requested');
+    console.log(data);
+
     PostService.create(data);
 });
 

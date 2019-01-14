@@ -20,7 +20,11 @@
 </template>
 
 <script>
-export default {
+
+  import ActionService from '@/services/ActionService'
+
+
+  export default {
   name: 'list',
   data () {
     return {

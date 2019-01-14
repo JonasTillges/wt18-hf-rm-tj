@@ -16,11 +16,18 @@ module.exports = {
         delete: SecurityConfiguration.ADMIN
     },
 
+    role: {
+        user: SecurityConfiguration.LOGGED_IN,
+        moderator: SecurityConfiguration.OWNER,
+        admin: SecurityConfiguration.ADMIN
+    },
+
     User: mongoose.model('User', new Schema(
       {
         email: String,
         name: String,
-        uid: String
+        uid: String,
+        privilege: { type: String, default: SecurityConfiguration.LOGGED_IN }
       },
       {
           collection: 'user',
