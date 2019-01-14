@@ -16,20 +16,17 @@ module.exports = {
         delete: SecurityConfiguration.ADMIN
     },
 
-    /**
-     * database schema
-     */
-    schema: new Schema(
-        {
-            name:  String,
-            email: String,
-            activated: Boolean
-        },
-        { 
-            collection: 'user',
-            timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
-        }
-    ),
+    User: mongoose.model('User', new Schema(
+      {
+        email: String,
+        name: String,
+        uid: String
+      },
+      {
+          collection: 'user',
+          timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}
+      }
+    )),
 
     /**
      * get User Permission level
@@ -40,63 +37,70 @@ module.exports = {
         return 3;
     },
 
-    /**
-     * actions to modify database
-     */
-    action: {
+    get: function (data) {
+        if (PermissionService.test(this.permission.read)) {
+            var query = this.User.find(data);
+            // execute the query at a later time
+            query.exec(function (err, users) {
+                if (err) return handleError(err);
+                // Prints the users
+                console.log(users);
+            });
 
-        get: function () {
-            if (PermissionService.test(this.permission.read)) {
-                var User = mongoose.model('User', this.schema);
-                var query = User.find();
-                // execute the query at a later time
-                query.exec(function (err, users) {
-                    if (err) return handleError(err);
-                    // Prints the users
-                    console.log(users);
+        }
+    },
+
+    create: function (data) {
+
+        // test for permission and creates the user
+        if (PermissionService.test(this.permission.create)) {
+            console.log('create privilege given');
+            // get user model
+
+            console.log('find user?');
+            this.User.find({email: data.email}).exec(function (err, result) {
+
+                if (err) {
+                    console.log('ERROR - TODO ERROR HANDLING!!!!');
+                    return;
+                }
+
+                if (result.length) {
+                    console.log('WARNING - TODO USERS already registered - MESSAGE TO USER!!');
+                    return;
+                }
+
+                newUser = new this.User({
+                    email: data.email,
+                    name: data.name,
+                    uid: data.uid
                 });
 
-            }
-        },
-        create: function (data) {
-            //REMOVE only for test purposes
-            if (data == undefined) {
-                data = {
-                    name: 'König Ludwig der II.',
-                    email: 'luder@kingdom.org'
-                }
-            }
-            // test for permission and creates the user
-            if (PermissionService.test(this.permission.create)) {
-                console.log('create privilege given');
-                //TODO - this is a simple create - no duplicate user check etc.
-                const newUser = mongoose.model('User', this.schema);
-                newUser.name = data.name;
-                newUser.email = data.email;
                 newUser.save().then(
-                    function(result) {
-                        console.log(result);
-                        // test if something in db
-                        this.action.get();
-                    }
-                 );
-            }
-        },
-        update: function () {
-            if (PermissionService.test(this.permission.update)) {
+                  function (result) {
+                      console.log('USER CREATED:' + result);
+                  }
+                );
 
-            }
-        },
+            }.bind(this));
 
-        /**
-         * delete an user
-         * @param {string} userId
-         * @returns {*|Object}
-         */
-        delete: function (userId) {
-            if (PermissionService.test(this.permission.delete)) {
-                
-            }
+        }
+    },
+
+    update: function () {
+        if (PermissionService.test(this.permission.update)) {
+
+        }
+    },
+
+    /**
+     * delete an user
+     * @param {string} userId
+     * @returns {*|Object}
+     */
+    delete: function (userId) {
+        if (PermissionService.test(this.permission.delete)) {
+
         }
     }
 

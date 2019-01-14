@@ -19,43 +19,38 @@ module.exports = {
     /**
      * database schema
      */
-    schema: new Schema(
-        {
-            title:  String,
-            body: String,
-            votes: Number,
-            _user : { type: Number, ref: 'user' }
-        },
-        { 
-            collection: 'post',
-            timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
-        }
+    Post: mongoose.model('Post', new Schema(
+      {
+          title: String,
+          body: String,
+          votes: Number,
+          _user: {type: Number, ref: 'user'}
+      },
+      {
+          collection: 'post',
+          timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}
+      }
+      )
     ),
 
-    /**
-     * actions to modify database
-     */
-    action: {
+    get: function () {
+        if (PermissionService.test(this.permission.read)) {
 
-        get: function () {
-            if (PermissionService.test(this.permission.read)) {
+        }
+    },
+    create: function (data) {
+        if (PermissionService.test(this.permission.create)) {
 
-            }
-        },
-        create: function (data) {
-            if (PermissionService.test(this.permission.create)) {
+        }
+    },
+    update: function () {
+        if (PermissionService.test(this.permission.update)) {
 
-            }
-        },
-        update: function () {
-            if (PermissionService.test(this.permission.update)) {
+        }
+    },
+    delete: function (userId) {
+        if (PermissionService.test(this.permission.delete)) {
 
-            }
-        },
-        delete: function (userId) {
-            if (PermissionService.test(this.permission.delete)) {
-                
-            }
         }
     }
 
