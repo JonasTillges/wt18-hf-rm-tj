@@ -3,8 +3,16 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import wysiwyg from "vue-wysiwyg";
+import "./global/storage";
 
-Vue.config.productionTip = false
+//TODO good for what?
+Vue.config.productionTip = false;
+
+Vue.use(wysiwyg, {
+  hideModules: { "code": true },
+  forcePlainTextOnPaste: true
+});
 
 /* eslint-disable no-new */
 new Vue({
@@ -12,4 +20,8 @@ new Vue({
   router,
   components: { App },
   template: '<App/>'
-})
+});
+
+
+
+

@@ -15,8 +15,6 @@
       </div>
       <button type="submit" class="btn btn-primary">Thema online stellen</button>
   </div>
-
-
 </template>
 
 <script>
@@ -30,19 +28,8 @@ export default {
       msg: 'Welcome to Your Vue.js App'
     }
   },
-  computed: {
-    postData: function () {
-    }
-  },
   mounted() {
     console.log(this.$applicationStorage);
-    console.log('Beitrag laden');
-    console.log(this.$route.params.id);
-
-    this.$data.topic = "Hey";
-    this.$data.content = "was los hier?";
-
-
   }
 }
 </script>
