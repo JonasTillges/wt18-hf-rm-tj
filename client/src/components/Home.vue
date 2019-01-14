@@ -53,29 +53,34 @@
             <form name="sentMessage" id="contactForm" novalidate="novalidate">
               <div class="control-group">
                 <div class="form-group floating-label-form-group controls mb-0 pb-2" >
-                  <label>Nickname</label>
-                  <input class="form-control" id="name" type="text" placeholder="Nickname" required="required" data-validation-required-message="Please enter your name.">
+                  <label>Username</label>
+                  <input class="form-control" id="name" v-model="username" name="username" type="text" placeholder="Username" required="required" data-validation-required-message="Please enter your name.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div class="control-group">
                 <div class="form-group floating-label-form-group text-white controls mb-0 pb-2">
                   <label>Email Adresse</label>
-                  <input class="form-control" id="email" type="email" placeholder="Email Addresse" required="required" data-validation-required-message="Please enter your email address.">
+                  <input 
+                  class="form-control" 
+                  id="email" 
+                  v-model = "email"
+                  name = "email"
+                  type="email" placeholder="Email Addresse" required="required" data-validation-required-message="Please enter your email address.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div class="control-group">
                 <div class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label>Passwort</label>
-                  <input class="form-control" id="phone" type="password" placeholder="Passwort" required="required" data-validation-required-message="Please enter your phone number.">
+                  <input class="form-control" id="phone" v-model="password" name="password" type="password" placeholder="Passwort" required="required" data-validation-required-message="Please enter your phone number.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               
               <div id="success"></div>
               <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-xl" id="sendMessageButton">Abschicken</button>
+                <button type="submit" @click="signUp" class="btn btn-primary btn-xl" id="sendMessageButton">Registrieren</button>
               </div>
             </form>
           </div>
@@ -88,14 +93,18 @@
 
 <script>
 import firebase from 'firebase'
+import AuthenticationService from '@/services/AuthenticationService'
 export default {
   name: "home",
   data() {
     return {
-      username: ''
+      username: '', 
+      email: '', 
+      password: ''
     }
   },
   methods: {
+    
     registerPage: function(){
       console.log('hallo');
       router.push({ path: '/register' })
@@ -104,8 +113,33 @@ export default {
       firebase.auth().signOut().then(()=>{
         this.$router.replace('login');
       })
+    },
+    signUp: function (){
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
+        (user) => {
+          var user = firebase.auth().currentUser;
+          user.sendEmailVerification().then((verification) => {
+            console.log('success');
+            console.log(verification);
+          }).catch(function(error) {
+          // An error happened.
+          });
+          var uid = user.uid;
+          AuthenticationService.register({
+              email: this.email,
+              name: this.name,
+              uid: uid
+          });
+          console.log(uid);
+          this.$router.replace('verify');
+        },
+        (err) => {
+          alert(err.message);
+        }
+      );
     }
   },
+  
   mounted() {
       var user = firebase.auth().currentUser;
       var name, email, uid;
