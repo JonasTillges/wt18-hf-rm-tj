@@ -48,9 +48,6 @@
       </div>
         <div>
           <div class="col-lg-8 mx-auto">
-            <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
-            <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-            
               <div>
                 <div class="floating-label-form-group mb-0 pb-2" >
                   <label>Username</label>
@@ -110,16 +107,26 @@ export default {
       })
     },
     signUp: function (){
+      console.log(this.email, this.password);
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
         (user) => {
           var user = firebase.auth().currentUser;
+
+          console.log(user);
+
           user.sendEmailVerification().then((verification) => {
             console.log('success');
             console.log(verification);
           }).catch(function(error) {
           // An error happened.
           });
+
           var uid = user.uid;
+          console.log({
+            email: this.email,
+            name: this.name,
+            uid: uid
+          });
           AuthenticationService.register({
               email: this.email,
               name: this.name,

@@ -61,11 +61,11 @@ export default {
           if(user.emailVerified){
             console.log('User verified email.');
           }
+          console.log('USER')
+          console.log(user);
           console.log(user.uid);
           ActionService.getUserData({
-              params: {
-                uid: 'JBYg7hkh8Re1MNNQGvCvnGyRFdO2'
-              }
+                uid: user.uid
             }).then((response) => {
                 console.log(response.data.user);
             });

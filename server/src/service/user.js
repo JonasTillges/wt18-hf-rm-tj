@@ -102,27 +102,6 @@ module.exports = {
         }
     },
 
-    postRelation: function (data) {
-
-        console.log(data);
-
-        if (!data.postId || !data.tagId) {
-            return;
-        }
-
-        new this.PostToTag(
-          {
-              _post: data.postId,
-              _tag: data.tagId
-          }
-        ).save().then(
-          function (ptt) {
-              console.log('PostToTag CREATED: ' + ptt);
-          }
-        );
-
-    },
-    
     /**
      * delete an user
      * @param {string} userId

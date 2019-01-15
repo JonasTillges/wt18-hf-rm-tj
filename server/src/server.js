@@ -25,21 +25,18 @@ app.get('/', (reqest, response) => {
 
 app.post('/register', (request, response)=>{
     
-    console.log('request');
-    console.log(request);
-    console.log('response');
-    console.log(response);
+    console.log(request.body);
 
     UserService.create(request.body);
 
-    console.log(request.body);
     //UserService.create($.body.email, )
     response.send({
         message: `Hallo ${request.body.name}`
     });
 });
 
-app.get('/getUserData', (request, response) => {
+app.post('/getUserData', (request, response) => {
+    console.log('_______________ getUserData ________');
     var data = request.body;
     console.log(data);
     UserService.get(data).then(
