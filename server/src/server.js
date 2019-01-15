@@ -35,8 +35,30 @@ app.post('/register', (request, response)=>{
     console.log(request.body);
     //UserService.create($.body.email, )
     response.send({
-        message: "Hallo"
+        message: `Hallo ${request.body.name}`
     });
+});
+
+app.post('/getUserData', (request, response) => {
+    var data = request.body;
+    UserService.get(data).then(
+            (result) => {
+                //TODO better way for first or get only one user
+                response.send({
+                    user: `${result[0].name}`
+                });
+            },
+            (err) => {
+                console.log(err)
+                response.send({
+                    message: `Hallo ${error}`
+                });
+            }
+        )
+    ;
+    
+
+
 });
 
 app.get('/activate', (request, response) => {

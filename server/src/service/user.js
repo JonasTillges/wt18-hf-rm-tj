@@ -54,6 +54,8 @@ module.exports = {
                 console.log(users);
             });
 
+            return query;
+
         }
     },
 

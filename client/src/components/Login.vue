@@ -27,6 +27,7 @@
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import ActionService from '@/services/ActionService'
 import firebase from 'firebase'
 
 
@@ -48,6 +49,13 @@ export default {
       console.log("button clicked", this.email,this.password);
       console.log(response.data);
       this.message = response.data.message;
+    },
+    async getUser() {
+      var user = firebase.auth().currentUser;
+      const response = await ActionService.getUserData({
+            uid: user.uid
+          })
+          console.log(response.data.name);
     },
     login: function() {
       firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
