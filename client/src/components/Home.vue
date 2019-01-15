@@ -1,7 +1,7 @@
 <template>
     
   <div>
-      <h1>{{ username }}</h1>
+      <h1>{{ name }}</h1>
      <!-- Header -->
     <header class="masthead bg-primary text-white text-center">
       <div class="container">
@@ -54,7 +54,7 @@
               <div>
                 <div class="floating-label-form-group mb-0 pb-2" >
                   <label>Username</label>
-                  <input v-model="username" name="username" type="text" placeholder="Username">
+                  <input v-model="name" name="name" type="text" placeholder="Username">
                 </div>
               </div>
               <div>
@@ -93,7 +93,7 @@ export default {
   name: "home",
   data() {
     return {
-      username: '', 
+      name: '', 
       email: '', 
       password: ''
     }
@@ -140,9 +140,10 @@ export default {
       var name, email, uid;
 
       if (user != null) {
+        
         uid = user.uid;
         email = user.email;
-        this.username = email;
+        this.name = email;
         console.log(name)
       }else{
         console.log('Kein aktueller User')

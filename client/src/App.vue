@@ -1,4 +1,5 @@
 <template>
+
   <div id="app">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
@@ -11,17 +12,19 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
+          
+          <li class="nav-item mx-0 mx-lg-1 headerelements">
+            <router-link to="/list">Neue Beiträge</router-link>
+          </li>
+          <li class="nav-item mx-0 mx-lg-1 headerelements">
+            <router-link to="/post">Stelle deine Frage</router-link>
+          </li>
           <li class="nav-item mx-0 mx-lg-1">
             <router-link to="/register">Register</router-link>
           </li>
-          <li class="nav-item mx-0 mx-lg-1">
+          <p class="header">/</p>
+          <li class="nav-item mx-0 mx-lg-1 headerelements">
             <router-link to="/login">Login</router-link>
-          </li>
-          <li class="nav-item mx-0 mx-lg-1">
-            <router-link to="/list">Fragen & Antworten</router-link>
-          </li>
-          <li class="nav-item mx-0 mx-lg-1">
-            <router-link to="/post">Beitrag verfassen</router-link>
           </li>
         </ul>
       </div>
@@ -53,6 +56,7 @@
 </template>
 
 <script>
+import firebase from 'firebase'
 export default {
   name: 'App',
   mounted() {
