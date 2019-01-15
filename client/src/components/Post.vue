@@ -1,7 +1,13 @@
 <template>
   <div class="container">
-    <h1>{{topic}}</h1>
-    <div>{{content}}</div>
+    <h1>{{document.title}}</h1>
+    <div>{{document.content}}</div>
+    <div>{{document._user.email}}</div>
+    <div>Tags:
+      <span v-for="(doc, index) in document._tags" >
+        {{doc._tag.name}}
+      </span>
+    </div>
   </div>
 
 
@@ -15,10 +21,7 @@
   name: 'list',
   data () {
     return {
-      topic: '444',
-      content: '555',
-      tags: '',
-      msg: 'Welcome to Your Vue.js App'
+      document: Object
     }
   },
   computed: {
@@ -26,26 +29,19 @@
     }
   },
   mounted() {
-    let me = this.$applicationStorage.posts.filter(
-        (document) => document._id === this.$route.params.id
+
+    let _this = this;
+    let postDocument = this.$applicationStorage.posts.filter(
+        (document) => {
+          if(document._id == _this.$route.params.id) {
+            return true;
+          }
+        }
     );
 
-    console.log(me);
+    this.$data.document = postDocument.pop();
 
-    let you = this.$applicationStorage.posts.filter(function(document) {
-        console.log(document._id, this.$route.params.id)
-      }
-    );
-
-    console.log(you);
-
-    console.log('Beitrag laden');
-    console.log(this.$applicationStorage.posts);
-    console.log(this.$route.params.id);
-
-    this.$data.topic = me.topic;
-    this.$data.content = me.content;
-
+    console.log(this.$data.document);
 
   }
 }

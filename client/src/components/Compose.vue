@@ -2,8 +2,8 @@
   <div class="container">
     <h1>Thema verfassen</h1>
     <div class="form-group">
-        <input v-model="topic" type="text" class="form-control" id="topic" aria-describedby="topicHelp" placeholder="Was ist dein Thema?">
-        <small id="topicHelp" class="form-text text-muted">Benutze ein aussagekräftiges Thema, um andere User darauf aufmerksam zu machen.</small>
+        <input v-model="title" type="text" class="form-control" id="title" aria-describedby="titleHelp" placeholder="Was ist dein Thema?">
+        <small id="titleHelp" class="form-text text-muted">Benutze ein aussagekräftiges Thema, um andere User darauf aufmerksam zu machen.</small>
       </div>
       <div class="form-group">
         <wysiwyg v-model="content" />
@@ -19,13 +19,11 @@
 
 <script>
   import ActionService from '@/services/ActionService'
-
-
   export default {
   name: 'list',
   data () {
     return {
-      topic: 'test',
+      title: 'test',
       content: 'test1',
       tags: 'test2'
     }
@@ -39,14 +37,15 @@
 
       ActionService.compose({
         _id: this.$applicationStorage.user._id,
-        topic: this.topic,
+        title: this.title,
         content: this.content,
         tags: this.tags
       }).then(
         (answer) => {
-          console.log(answer);
-          this.$applicationStorage.posts.push(answer.data.document);
-          this.$router.replace('post/'+answer.data.document._id);
+          let newPost = answer.data.document.pop();
+          console.log(newPost);
+          this.$applicationStorage.posts.push(newPost);
+          this.$router.replace('post/'+newPost._id);
         },
         (err) => {
           alert(err.message);

@@ -63,10 +63,6 @@ module.exports = {
 
         // test for permission and creates the user
         if (PermissionService.test(this.permission.create)) {
-            console.log('create privilege given');
-            // get user model
-
-            console.log('find user?');
             this.User.find({email: data.email}).exec(function (err, result) {
 
                 if (err) {

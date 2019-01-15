@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div class="container">
     <h1>Login</h1>
               <div>
                 <div class="form-group floating-label-form-group text-white mb-0 pb-2">

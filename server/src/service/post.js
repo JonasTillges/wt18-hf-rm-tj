@@ -25,6 +25,7 @@ module.exports = {
           content: String,
           votes: {type: Number, default: 0},
           _user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+          _tags: Array
       },
       {
           collection: 'post',
@@ -50,22 +51,39 @@ module.exports = {
     ).on('error', function (err) {
         console.log('PostToTag error: ' + err);
     }),
-    
+
     get: function (data) {
+
+        return new Promise((resolve, reject) => {
+            if (PermissionService.test(this.permission.read)) {
+                // make this accessable
+                let _this = this;
+                this.Post.find(data)
+                .populate({path: '_user', model: 'User'})
+                .exec(function (err, posts) {
+                    if (err) reject(err);
+                    //Reason: Not able to populate over Post <- PostToTag -> Tag
+                    let cycle = 0;
+                    posts.forEach((element, index) => {
+                        _this.PostToTag.find({_post: element._id})
+                        .populate({path: '_tag', model: 'Tag'})
+                        .exec((err, tags) => {
+                            element._tags = tags;
+                            if(++cycle == posts.length) {
+                                resolve(posts);
+                            }
+                        })
+                    });
+
+                });
+            } else {
+                reject("ERROR: PostService.get() -> permission denied")
+            }
+        });
+
         if (PermissionService.test(this.permission.read)) {
-            var query = this.Post.find({_id: data._id})
-            .populate([
-              {
-                  path: '_user',
-                  model: 'User'
-              }
-            ]);
-            // execute the query at a later time
-            query.exec(function (err, posts) {
-                if (err) return err;
-                // Prints the users
-                console.log(posts);
-            });
+
+
         }
     },
     create: function (data) {
@@ -107,8 +125,9 @@ module.exports = {
                                     ).save().then(
                                       (ptt) => {
                                           console.log('PostToTag CREATED: ' + ptt);
+                                          // if last tag
                                           if (index == tags.length-1) {
-                                              console.log('last Tag');
+                                              result._tags = tags;
                                               resolve(result);
                                           }
                                       }
@@ -116,8 +135,8 @@ module.exports = {
                                 }
                               );
                           } else {
+                              // no tag found
                               if (index == tags.length-1) {
-                                  console.log("no tag");
                                   resolve(result);
                               }
                           }
@@ -146,7 +165,6 @@ module.exports = {
     postRelation: function (data) {
 
         return new Promise((resolve, reject) => {
-            console.log(data);
             if (!data.postId || !data.tagId) {
                 reject("PARAMETER ERROR: PostToTag NotEnoughGivenParams");
             } else {

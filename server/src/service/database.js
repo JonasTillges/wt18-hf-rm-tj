@@ -47,7 +47,6 @@ module.exports = {
           err => {
               /** handle initial connection error */
               this.status = dbStatus.error;
-              console.log('error');
               console.log(err);
           }
         );
