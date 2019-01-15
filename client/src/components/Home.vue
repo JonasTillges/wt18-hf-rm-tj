@@ -1,7 +1,7 @@
 <template>
     
   <div>
-      <h1>{{ username }}</h1>
+      <h1>{{ name }}</h1>
      <!-- Header -->
     <header class="masthead bg-primary text-white text-center">
       <div class="container">
@@ -37,8 +37,8 @@
     </section>
     
     <!-- Register Section -->
-    <section id="contact" class="bg-primary" >   
-      <div class="container">
+    <section class="bg-primary" >   
+      <div>
         <h2 class="text-center text-uppercase text-white">Registrierung
         </h2>
         <div>
@@ -46,38 +46,35 @@
                   <img class="star-img" src="static/img/white-star.png">
         </figure>
       </div>
-        <div class="row">
+        <div>
           <div class="col-lg-8 mx-auto">
-            <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
-            <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-            <form name="sentMessage" id="contactForm" novalidate="novalidate">
-              <div class="control-group">
-                <div class="form-group floating-label-form-group controls mb-0 pb-2" >
-                  <label>Nickname</label>
-                  <input class="form-control" id="name" type="text" placeholder="Nickname" required="required" data-validation-required-message="Please enter your name.">
-                  <p class="help-block text-danger"></p>
+              <div>
+                <div class="floating-label-form-group mb-0 pb-2" >
+                  <label>Username</label>
+                  <input v-model="name" name="name" type="text" placeholder="Username">
                 </div>
               </div>
-              <div class="control-group">
-                <div class="form-group floating-label-form-group text-white controls mb-0 pb-2">
+              <div>
+                <div class="form-group floating-label-form-group text-white mb-0 pb-2">
                   <label>Email Adresse</label>
-                  <input class="form-control" id="email" type="email" placeholder="Email Addresse" required="required" data-validation-required-message="Please enter your email address.">
-                  <p class="help-block text-danger"></p>
-                </div>
-              </div>
-              <div class="control-group">
-                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                  <label>Passwort</label>
-                  <input class="form-control" id="phone" type="password" placeholder="Passwort" required="required" data-validation-required-message="Please enter your phone number.">
-                  <p class="help-block text-danger"></p>
-                </div>
-              </div>
+                  <input 
+                  v-model="email"
+                  name = "email"
+                  type="email" placeholder="Email Addresse">
               
-              <div id="success"></div>
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-xl" id="sendMessageButton">Abschicken</button>
+                </div>
               </div>
-            </form>
+              <div>
+                <div class="form-group floating-label-form-group mb-0 pb-2">
+                  <label>Passwort</label>
+                  <input v-model="password" name="password" type="password" placeholder="Passwort">
+              
+                </div>
+              </div>
+              <div>
+                <button  @click="signUp" class="btn btn-primary btn-xl">Registrieren</button>
+              </div>
+            
           </div>
         </div>
       </div>
@@ -88,14 +85,18 @@
 
 <script>
 import firebase from 'firebase'
+import AuthenticationService from '@/services/AuthenticationService'
 export default {
   name: "home",
   data() {
     return {
-      username: ''
+      name: '', 
+      email: '', 
+      password: ''
     }
   },
   methods: {
+    
     registerPage: function(){
       console.log('hallo');
       router.push({ path: '/register' })
@@ -104,16 +105,52 @@ export default {
       firebase.auth().signOut().then(()=>{
         this.$router.replace('login');
       })
+    },
+    signUp: function (){
+      console.log(this.email, this.password);
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
+        (user) => {
+          var user = firebase.auth().currentUser;
+
+          console.log(user);
+
+          user.sendEmailVerification().then((verification) => {
+            console.log('success');
+            console.log(verification);
+          }).catch(function(error) {
+          // An error happened.
+          });
+
+          var uid = user.uid;
+          console.log({
+            email: this.email,
+            name: this.name,
+            uid: uid
+          });
+          AuthenticationService.register({
+              email: this.email,
+              name: this.name,
+              uid: uid
+          });
+          console.log(uid);
+          this.$router.replace('verify');
+        },
+        (err) => {
+          alert(err.message);
+        }
+      );
     }
   },
+  
   mounted() {
       var user = firebase.auth().currentUser;
       var name, email, uid;
 
       if (user != null) {
+        
         uid = user.uid;
         email = user.email;
-        this.username = email;
+        this.name = email;
         console.log(name)
       }else{
         console.log('Kein aktueller User')

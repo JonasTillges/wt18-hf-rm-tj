@@ -25,18 +25,36 @@ app.get('/', (reqest, response) => {
 
 app.post('/register', (request, response)=>{
     
-    console.log('request');
-    console.log(request);
-    console.log('response');
-    console.log(response);
+    console.log(request.body);
 
     UserService.create(request.body);
 
-    console.log(request.body);
     //UserService.create($.body.email, )
     response.send({
-        message: "Hallo"
+        message: `Hallo ${request.body.name}`
     });
+});
+
+app.post('/getUserData', (request, response) => {
+    console.log('_______________ getUserData ________');
+    var data = request.body;
+    console.log(data);
+    UserService.get(data).then(
+            (result) => {
+                let user = result[0]
+                console.log(user);
+                //TODO better way for first or get only one user
+                response.send({
+                    user: user
+                });
+            },
+            (err) => {
+                console.log(err)
+                response.send({
+                    message: `Hallo ${error}`
+                });
+            }
+        );
 });
 
 app.get('/activate', (request, response) => {
