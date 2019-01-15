@@ -1,19 +1,7 @@
 <template>
   <div class="container">
-    <h1>Thema verfassen</h1>
-    <div class="form-group">
-        <input v-model="topic" type="text" class="form-control" id="topic" aria-describedby="topicHelp" placeholder="Was ist dein Thema?">
-        <small id="topicHelp" class="form-text text-muted">Benutze ein aussagekräftiges Thema, um andere User darauf aufmerksam zu machen.</small>
-      </div>
-      <div class="form-group">
-        <wysiwyg v-model="content" />
-      </div>
-      <div class="form-group">
-        <label for="tags">Tags</label>
-        <input v-model="tags" type="text" class="form-control" id="tags" aria-describedby="tagsHelp" placeholder="Webtechnologien, Vue, Javascript">
-        <small id="tagsHelp" class="form-text text-muted">Kommaseparierte Tags z.B. "Webtechnologien, Vue, Javascript"</small>
-      </div>
-      <button type="submit" class="btn btn-primary">Thema online stellen</button>
+    <h1>{{topic}}</h1>
+    <div>{{content}}</div>
   </div>
 
 
@@ -23,13 +11,12 @@
 
   import ActionService from '@/services/ActionService'
 
-
   export default {
   name: 'list',
   data () {
     return {
-      topic: '',
-      content: '',
+      topic: '444',
+      content: '555',
       tags: '',
       msg: 'Welcome to Your Vue.js App'
     }
@@ -39,12 +26,25 @@
     }
   },
   mounted() {
-    console.log(this.$applicationStorage);
+    let me = this.$applicationStorage.posts.filter(
+        (document) => document._id === this.$route.params.id
+    );
+
+    console.log(me);
+
+    let you = this.$applicationStorage.posts.filter(function(document) {
+        console.log(document._id, this.$route.params.id)
+      }
+    );
+
+    console.log(you);
+
     console.log('Beitrag laden');
+    console.log(this.$applicationStorage.posts);
     console.log(this.$route.params.id);
 
-    this.$data.topic = "Hey";
-    this.$data.content = "was los hier?";
+    this.$data.topic = me.topic;
+    this.$data.content = me.content;
 
 
   }

@@ -35,6 +35,22 @@ module.exports = {
         console.log('Post error: ' + err);
     }),
 
+    PostToTag: mongoose.model('PostToTag',
+      new Schema(
+        {
+            _post: {type: Schema.Types.ObjectId, ref: 'User', required: true, index: true},
+            _tag: {type: Schema.Types.ObjectId, ref: 'Tag', required: true, index: true}
+        },
+        {
+            collection: 'post_to_tag',
+            timestamps: {createdAt: 'created_at'}
+        }
+      )
+      .index({_post: 1, _tag: 1}, { "unique": true })
+    ).on('error', function (err) {
+        console.log('PostToTag error: ' + err);
+    }),
+    
     get: function (data) {
         if (PermissionService.test(this.permission.read)) {
             var query = this.Post.find({_id: data._id})
@@ -53,37 +69,69 @@ module.exports = {
         }
     },
     create: function (data) {
-        if (PermissionService.test(this.permission.create)) {
 
-           let newPost = new this.Post({
-               title: data.title,
-               content: data.content,
-               _user: data._id
-           });
+        return new Promise((resolve, reject) => {
+            // check for permission
+            if (!PermissionService.test(this.permission.create)) {
+                reject("Error: Keine Rechte zum Erzeugen von Post");
+            } else {
 
+                // make this accessable
+                let _this = this;
 
-            var postPromise = newPost.save()
+                // create and save post data
+                new _this.Post({
+                    title: data.title,
+                    content: data.content,
+                    _user: data._id
+                }).save().then(
 
-            postPromise.then(
-                function (result) {
+                  (result) => {
 
-                    // create Tags after Post creation
-                    data.tags.split(',').forEach(function(element) {
+                      // string to array
+                      let tags = data.tags.split(',');
 
-                        TagService.create(
-                          {name: element.trim(), postId: result._id}
-                        );
+                      // create each Tag
+                      tags.forEach(function(element, index) {
+                          if (element != "") {
+                              TagService.create(
+                                {name: element.trim(), postId: result._id}
+                              ).then(
+                                function (tagResult) {
+                                    // create Post to Tag relation
+                                    new _this.PostToTag(
+                                      {
+                                          _post: result._id,
+                                          _tag: tagResult._id
+                                      }
+                                    ).save().then(
+                                      (ptt) => {
+                                          console.log('PostToTag CREATED: ' + ptt);
+                                          if (index == tags.length-1) {
+                                              console.log('last Tag');
+                                              resolve(result);
+                                          }
+                                      }
+                                    )
+                                }
+                              );
+                          } else {
+                              if (index == tags.length-1) {
+                                  console.log("no tag");
+                                  resolve(result);
+                              }
+                          }
 
-                    });
+                      });
 
-                    console.log('POST CREATED: ' + result);
+                      console.log('POST CREATED: ' + result);
 
+                  }
+                );
+            }
 
-                }.bind(this)
-            );
+        });
 
-            return postPromise;
-        }
     },
     update: function () {
         if (PermissionService.test(this.permission.update)) {
@@ -94,6 +142,28 @@ module.exports = {
         if (PermissionService.test(this.permission.delete)) {
 
         }
+    },
+    postRelation: function (data) {
+
+        return new Promise((resolve, reject) => {
+            console.log(data);
+            if (!data.postId || !data.tagId) {
+                reject("PARAMETER ERROR: PostToTag NotEnoughGivenParams");
+            } else {
+                new this.PostToTag(
+                  {
+                      _post: data.postId,
+                      _tag: data.tagId
+                  }
+                ).save().then(
+                  function (ptt) {
+                      console.log('PostToTag CREATED: ' + ptt);
+                      resolve(ptt);
+                  }
+                );
+            }
+        });
+
     }
 
 };

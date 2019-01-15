@@ -33,22 +33,6 @@ module.exports = {
         console.log('Tag error: ' + err);
     }),
 
-    PostToTag: mongoose.model('PostToTag',
-      new Schema(
-        {
-            _post: {type: Schema.Types.ObjectId, ref: 'User', required: true, index: true},
-            _tag: {type: Schema.Types.ObjectId, ref: 'Tag', required: true, index: true}
-        },
-        {
-            collection: 'post_to_tag',
-            timestamps: {createdAt: 'created_at'}
-        }
-      )
-      .index({_post: 1, _tag: 1}, { "unique": true })
-    ).on('error', function (err) {
-        console.log('PostToTag error: ' + err);
-    }),
-
     get: function (data) {
         if (PermissionService.test(this.permission.read)) {
             var query = this.Tag.find(data);
@@ -59,66 +43,50 @@ module.exports = {
             });
         }
     },
+    
     create: function (data) {
-        if (PermissionService.test(this.permission.create)) {
 
-            console.log('find tag?');
+        return new Promise((resolve, reject) => {
 
-            // TODO maybe unique index?
-            this.Tag.findOne({name: data.name}).exec(function (err, result) {
+            if (PermissionService.test(this.permission.create)) {
 
-                if (err) {
-                    console.log('ERROR - TODO ERROR HANDLING!!!!');
-                    return err;
-                }
+                console.log('find tag?');
 
-                if (result) {
-                    console.log('Tag ALREADY EXISTS:' + result);
-                    this.postRelation({
-                        postId: data.postId,
-                        tagId: result._id
-                    });
-                    return result;
-                }
+                // TODO maybe unique index?
+                this.Tag.findOne({name: data.name}).exec(function (err, result) {
 
-                let newTag = new this.Tag({
-                    name: data.name
-                });
+                    if (err) {
 
-                return newTag.save().then(
-                  function (result) {
-                      console.log('Tag CREATED:' + result);
-                      this.postRelation({
-                          postId: data.postId,
-                          tagId: result._id
-                      });
-                      return result;
-                  }.bind(this)
-                );
+                        console.log('ERROR - TODO ERROR HANDLING!!!!');
+                        reject(err);
 
-            }.bind(this));
+                    } else {
 
-        }
-    },
+                        if (result) {
 
-    postRelation: function (data) {
+                            console.log('Tag ALREADY EXISTS:' + result);
+                            resolve(result);
 
-        console.log(data);
+                        } else {
 
-        if (!data.postId || !data.tagId) {
-            return;
-        }
+                            new this.Tag({
+                                name: data.name
+                            }).save().then(
+                              function (result) {
+                                  console.log('Tag CREATED:' + result);
+                                  resolve(result);
+                              }
+                            );
 
-        new this.PostToTag(
-          {
-              _post: data.postId,
-              _tag: data.tagId
-          }
-        ).save().then(
-          function (ptt) {
-              console.log('PostToTag CREATED: ' + ptt);
-          }
-        );
+                        }
+                    }
+
+                }.bind(this));
+
+            } else {
+                reject("PERMISSION DENIED: CREATE TAG");
+            }
+        });
 
     },
 

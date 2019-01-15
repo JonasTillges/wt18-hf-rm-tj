@@ -45,7 +45,6 @@ app.get('/activate', (request, response) => {
 
 app.post('/compose', (request, response)=>{
     
-
     var data = request.body;
 
     console.log('compose requested');
@@ -54,6 +53,9 @@ app.post('/compose', (request, response)=>{
     PostService.create(data).then(
       (result) => {
           console.log('post create done: ' + result);
+          response.send({
+              document: result
+          });
       }
     );
 });

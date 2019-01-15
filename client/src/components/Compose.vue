@@ -43,8 +43,10 @@
         content: this.content,
         tags: this.tags
       }).then(
-        (post) => {
-          this.$router.replace('verify');
+        (answer) => {
+          console.log(answer);
+          this.$applicationStorage.posts.push(answer.data.document);
+          this.$router.replace('post/'+answer.data.document._id);
         },
         (err) => {
           alert(err.message);
