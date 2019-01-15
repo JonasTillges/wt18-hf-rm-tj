@@ -1,6 +1,8 @@
 <template>
   <div >
-    <h1>Login</h1>
+    
+    <div class="col-lg-8 mx-auto">
+      <h1>Login</h1>
               <div>
                 <div class="form-group floating-label-form-group text-white mb-0 pb-2">
                   <label>Email Adresse</label>
@@ -19,10 +21,15 @@
               
                 </div>
               </div>
-      <br>
-      <button @click="login" class="btn btn-primary btn-xl">Login</button>
-      <br>
-      <router-link to="/register">Ich habe noch keinen Account.</router-link>
+              <div>
+                <br>
+                      <button @click="login" class="btn btn-primary btn-xl">Login</button>
+                 <br>
+                      <router-link to="/register">Ich habe noch keinen Account.</router-link>
+              </div>
+
+      </div>
+
       <h1>{{ message }}</h1>
     
   </div>

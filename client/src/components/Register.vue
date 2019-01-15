@@ -35,11 +35,12 @@
               
                 </div>
               </div>
+              <br>
               <div>
                 <button  @click="signUp" class="btn btn-primary btn-xl">Registrieren</button>
-              </div>
-              <br/>
+                <br>
               <router-link to="/Login">Ich habe schon einen Account.</router-link>
+              </div>
           </div>
         </div>
       </div>
