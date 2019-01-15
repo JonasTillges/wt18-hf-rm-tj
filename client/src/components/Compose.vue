@@ -25,9 +25,9 @@
   name: 'list',
   data () {
     return {
-      topic: '',
-      content: '',
-      tags: ''
+      topic: 'test',
+      content: 'test1',
+      tags: 'test2'
     }
   },
   mounted() {
@@ -38,13 +38,15 @@
       console.log('create post');
 
       ActionService.compose({
-        uid: this.$applicationStorage.user.uid,
+        _id: this.$applicationStorage.user._id,
         topic: this.topic,
         content: this.content,
         tags: this.tags
       }).then(
-        (post) => {
-          this.$router.replace('verify');
+        (answer) => {
+          console.log(answer);
+          this.$applicationStorage.posts.push(answer.data.document);
+          this.$router.replace('post/'+answer.data.document._id);
         },
         (err) => {
           alert(err.message);
