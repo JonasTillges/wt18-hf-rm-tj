@@ -44,13 +44,20 @@ app.get('/activate', (request, response) => {
 });
 
 app.post('/compose', (request, response)=>{
-
+    
     var data = request.body;
 
     console.log('compose requested');
     console.log(data);
 
-    PostService.create(data);
+    PostService.create(data).then(
+      (result) => {
+          console.log('post create done: ' + result);
+          response.send({
+              document: result
+          });
+      }
+    );
 });
 
 app.post('/dummy', (request, response)=>{});

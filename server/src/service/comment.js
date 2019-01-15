@@ -22,7 +22,7 @@ module.exports = {
           title: String,
           body: String,
           votes: Number,
-          _user: {type: Number, ref: 'user'},
+          _user: {type: String, ref: 'user'},
           _post: {type: Number, ref: 'post'}
       },
       {
