@@ -5,6 +5,6 @@ export default {
         return Api().post('compose', credentials);
     },
     getUserData(credentials) {
-        return Api().post('getUserData', credentials);
+        return Api().get('/getUserData', credentials);
     }
 }

@@ -39,13 +39,16 @@ app.post('/register', (request, response)=>{
     });
 });
 
-app.post('/getUserData', (request, response) => {
+app.get('/getUserData', (request, response) => {
     var data = request.body;
+    console.log(data);
     UserService.get(data).then(
             (result) => {
+                let user = result[0]
+                console.log(user);
                 //TODO better way for first or get only one user
                 response.send({
-                    user: `${result[0].name}`
+                    user: user
                 });
             },
             (err) => {
@@ -54,11 +57,7 @@ app.post('/getUserData', (request, response) => {
                     message: `Hallo ${error}`
                 });
             }
-        )
-    ;
-    
-
-
+        );
 });
 
 app.get('/activate', (request, response) => {

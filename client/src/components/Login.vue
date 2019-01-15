@@ -53,13 +53,6 @@ export default {
       console.log(response.data);
       this.message = response.data.message;
     },
-    async getUser() {
-      var user = firebase.auth().currentUser;
-      const response = await ActionService.getUserData({
-            uid: user.uid
-          })
-          console.log(response.data.name);
-    },
     login: function() {
       firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
         (data) => {
@@ -68,7 +61,16 @@ export default {
           if(user.emailVerified){
             console.log('User verified email.');
           }
-          this.$router.replace('home');
+          console.log(user.uid);
+          ActionService.getUserData({
+              params: {
+                uid: 'JBYg7hkh8Re1MNNQGvCvnGyRFdO2'
+              }
+            }).then((response) => {
+                console.log(response.data.user);
+            });
+            this.$router.replace('/');
+          
         },
         (err) => {
           alert(err.message);

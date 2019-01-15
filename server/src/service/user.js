@@ -51,7 +51,7 @@ module.exports = {
             query.exec(function (err, users) {
                 if (err) return handleError(err);
                 // Prints the users
-                console.log(users);
+                //console.log(users);
             });
 
             return query;
