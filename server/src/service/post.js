@@ -52,6 +52,11 @@ module.exports = {
         console.log('PostToTag error: ' + err);
     }),
 
+    /**
+     *
+     * @param data
+     * @returns {Promise}
+     */
     get: function (data) {
 
         return new Promise((resolve, reject) => {
@@ -81,11 +86,13 @@ module.exports = {
             }
         });
 
-        if (PermissionService.test(this.permission.read)) {
-
-
-        }
     },
+
+    /**
+     * Create Post with Tags
+     * @param {Object} data
+     * @returns {Promise}
+     */
     create: function (data) {
 
         return new Promise((resolve, reject) => {
