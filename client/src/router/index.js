@@ -46,7 +46,7 @@ export default new Router({
     },
     {
       path: '/post/:id',
-      name: 'Beitrag',
+      name: 'Post',
       component: Post
     },
     {

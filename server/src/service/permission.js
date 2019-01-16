@@ -8,11 +8,10 @@ module.exports = {
      */
     test: function (requiredPermission, givenPermission) {
 
+        //TODO REMOVE WHEN USER LOGIN IS DONE
         if (typeof givenPermission === 'undefined') {
             return 3;
         }
-
-        console.log(requiredPermission, givenPermission);
 
         if (requiredPermission <= givenPermission) {
             return true;

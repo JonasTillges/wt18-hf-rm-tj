@@ -17,16 +17,8 @@ app.use(cors());
 console.log('try to connect to database');
 DatabaseService.connect();
 
-// TODO - REMOVE TESTING PURPOSE ONLY
-app.get('/', (reqest, response) => {
-    console.log('User in database:');
-    UserService.get({uid: 82959892852});
-});
-
 app.post('/register', (request, response)=>{
     
-    console.log(request.body);
-
     UserService.create(request.body);
 
     //UserService.create($.body.email, )
@@ -38,11 +30,9 @@ app.post('/register', (request, response)=>{
 app.post('/getUserData', (request, response) => {
     console.log('_______________ getUserData ________');
     var data = request.body;
-    console.log(data);
     UserService.get(data).then(
             (result) => {
                 let user = result[0]
-                console.log(user);
                 //TODO better way for first or get only one user
                 response.send({
                     user: user
@@ -64,18 +54,48 @@ app.get('/activate', (request, response) => {
 app.post('/compose', (request, response)=>{
     
     var data = request.body;
-
-    console.log('compose requested');
-    console.log(data);
-
     PostService.create(data).then(
       (result) => {
-          console.log('post create done: ' + result);
+          console.log(result._id);
+          //TODO refactor create and return full post object with tags
+          PostService.get({_id: result._id}).then(
+            (postData) => {
+                console.log(postData);
+                response.send({
+                    document: postData
+                });
+            }
+          );
+      }
+    );
+});
+
+app.post('/post', (request, response) => {
+
+    var data = request.body;
+    PostService.get(data).then(
+      (result) => {
           response.send({
-              document: result
+              document: result.pop()
           });
       }
     );
+
+});
+
+app.post('/list', (request, response) => {
+
+    //TODO optimize result and remove privacy Data!!!
+
+    var data = request.body;
+    PostService.get(data).then(
+      (result) => {
+          response.send({
+              documents: result
+          });
+      }
+    );
+
 });
 
 app.post('/dummy', (request, response)=>{});

@@ -38,8 +38,7 @@ module.exports = {
             var query = this.Tag.find(data);
             // execute the query at a later time
             query.exec(function (err, tags) {
-                // Prints the users
-                console.log(tags);
+                
             });
         }
     },
@@ -49,8 +48,6 @@ module.exports = {
         return new Promise((resolve, reject) => {
 
             if (PermissionService.test(this.permission.create)) {
-
-                console.log('find tag?');
 
                 // TODO maybe unique index?
                 this.Tag.findOne({name: data.name}).exec(function (err, result) {

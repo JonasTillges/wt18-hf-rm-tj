@@ -1,12 +1,20 @@
 // Styling for the navbar
 #mainNav {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
   @include heading-font;
 
-  .navbar-brand {
+  .navigation_brand {
+    display: flex;
+    float: left;
+  }
+
+  .navigation_logo {
+    max-width: 65px;
+    margin-right: 1rem;
+  }
+  .navbar-brand, & * {
     color: $white;
   }
+
   .navbar-nav {
     margin-top: 1rem;
     letter-spacing: 0.0625rem;
@@ -33,19 +41,19 @@
 }
 @media(min-width:992px) {
   #mainNav {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    -webkit-transition: padding-top 0.3s, padding-bottom 0.3s;
-    -moz-transition: padding-top 0.3s, padding-bottom 0.3s;
-    transition: padding-top 0.3s, padding-bottom 0.3s;
     .navbar-brand {
       font-size: 2em;
       -webkit-transition: font-size 0.3s;
       -moz-transition: font-size 0.3s;
       transition: font-size 0.3s;
     }
+
     .navbar-nav {
       margin-top: 0;
+      margin-left: 3rem;
+    }
+    .nav-item {
+      margin-right: 1.5rem
     }
     .navbar-nav > li.nav-item > a.nav-link.active {
       color: $white;
@@ -65,4 +73,5 @@
       font-size: 1.5em;
     }
   }
+
 }

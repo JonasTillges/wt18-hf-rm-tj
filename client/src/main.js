@@ -21,6 +21,7 @@ var config = {
 };
 firebase.initializeApp(config);
 
+// TODO options for safe text for plain text copy paste OR search for other
 Vue.use(wysiwyg, {
   hideModules: { "code": true },
   forcePlainTextOnPaste: true
@@ -37,3 +38,4 @@ new Vue({
 
 
 
+//TODO SPINNER use fa-spin !!!

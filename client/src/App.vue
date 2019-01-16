@@ -1,68 +1,69 @@
 <template>
 
   <div id="app">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
-    <div>
-    
-      <a  class="navbar-brand" href="#page-top">  <router-link to="/">StudyUp</router-link></a>
-      <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        Menu
-        <i class="fas fa-bars"></i>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-secondary text-uppercase" id="mainNav">
+      <router-link class="navbar-brand" to="/">
+        <img class="navigation_logo" src="static/img/IMG_0122.PNG" alt="">
+       <span class="navigation_project"></span>StudyUp
+      </router-link>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          
-          <li class="nav-item mx-0 mx-lg-1 headerelements">
-            <router-link to="/list">Neue Beiträge</router-link>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <i class="fa fa-th-list" aria-hidden="true"></i>
+            <router-link to="/list">Antworten</router-link>
           </li>
-          <li class="nav-item mx-0 mx-lg-1 headerelements">
-            <router-link to="/post">Stelle deine Frage</router-link>
+          <li class="nav-item">
+            <i class="fa fa-question-circle" aria-hidden="true"></i>
+            <router-link to="/post">Fragen</router-link>
           </li>
-          <li class="nav-item mx-0 mx-lg-1">
+          <li class="nav-item">
+            <i class="fa fa-sign-in" aria-hidden="true"></i>
             <router-link to="/register">Register</router-link>
           </li>
-          <p class="header">/</p>
-          <li class="nav-item mx-0 mx-lg-1 headerelements">
+          <li class="nav-item">
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
             <router-link to="/login">Login</router-link>
           </li>
         </ul>
+        <span class="navbar-text">
+          USERNAME
+        </span>
       </div>
-    </div>
     </nav>
 
     <div class="component-wrapper">
-        <router-view/>
+      <router-view/>
     </div>
 
     <!-- Footer -->
     <footer class="footer text-center">
-      <div class="container">
-        
+      <div class="copyright py-4 text-center text-white">
+        <div class="container">
           <div>
-            <h4 class="text-uppercase mb-4">Adresse</h4>
             <p class="lead mb-0">Technische Hochschule Rosenheim
               <br>Hochschulstraße 1, 83024 Rosenheim</p>
           </div>
-          </div>
-          <div class="copyright py-4 text-center text-white">
-      <div class="container">
-        <small>Copyright &copy; StudyUp 2018</small>
+        </div>
+        <div class="container">
+          <small>Copyright &copy; StudyUp 2018</small>
+        </div>
       </div>
-    </div>
     </footer>
 
   </div>
 </template>
 
 <script>
-import firebase from 'firebase'
-export default {
-  name: 'App',
-  mounted() {
-    console.log(this.$applicationStorage);
+  import firebase from 'firebase'
+  export default {
+    name: 'App',
+    mounted() {
+      console.log(this.$applicationStorage);
+    }
   }
-}
 </script>
 
 <style lang="scss">

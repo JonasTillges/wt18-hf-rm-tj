@@ -6,5 +6,11 @@ export default {
     },
     getUserData(credentials) {
         return Api().post('/getUserData', credentials);
+    },
+    getPost(credentials) {
+        return Api().post('/post', credentials);
+    },
+    getList(credentials) {
+        return Api().post('/list', credentials);
     }
 }
