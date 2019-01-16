@@ -134,7 +134,7 @@ export default {
   mounted() {
       var user = firebase.auth().currentUser;
       var name, email, uid;
-
+     
       if (user != null) {
         
         uid = user.uid;
@@ -142,6 +142,19 @@ export default {
         this.$data.name = email;
         console.log(name)
       }else{
+        //         firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        // .then(function() {
+        //     var provider = new firebase.auth.GoogleAuthProvider();
+        //     // In memory persistence will be applied to the signed in Google user
+        //     // even though the persistence was set to 'none' and a page redirect
+        //     // occurred.
+        //     return firebase.auth().signInWithRedirect(provider);
+        // })
+        // .catch(function(error) {
+        //     // Handle Errors here.
+        //     var errorCode = error.code;
+        //     var errorMessage = error.message;
+        // });
         console.log('Kein aktueller User')
         //show register / login button
       }
