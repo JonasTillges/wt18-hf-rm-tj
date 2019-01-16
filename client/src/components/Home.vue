@@ -88,7 +88,6 @@ export default {
   methods: {
     
     registerPage: function(){
-      console.log('hallo');
       router.push({ path: '/register' })
     },
     logout: function(){

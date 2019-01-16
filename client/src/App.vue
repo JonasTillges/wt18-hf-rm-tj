@@ -57,11 +57,35 @@
 </template>
 
 <script>
-  import firebase from 'firebase'
+  import firebase from 'firebase';
+  import ActionService from '@/services/ActionService';
+  import { EventBus } from './global/event-bus.js';
+
   export default {
     name: 'App',
+    methods: {
+      emitListUpdate() {
+        EventBus.$emit('list-updated', true);
+      }
+    },
     mounted() {
       console.log(this.$applicationStorage);
+      let _this = this;
+
+      if(this.$applicationStorage.posts.length) {
+        console.log('documents from chache');
+      } else {
+        ActionService.getList({}).then(
+          function (answer) {
+            _this.$applicationStorage.addPosts(answer.data.documents, _this.$applicationStorage);
+            console.log('documents from server');
+            _this.emitListUpdate();
+          },
+          function (error) {
+            console.log(error.message);
+          }
+        );
+      }
     }
   }
 </script>

@@ -21,8 +21,8 @@
 </template>
 
 <script>
-  import ActionService from '@/services/ActionService'
 
+  import { EventBus } from '../global/event-bus.js';
 
   export default {
   name: 'list',
@@ -34,26 +34,16 @@
   },
   mounted() {
 
-    //TODO implement in applicationStorage ... if empty then getList else use storage
+    let _this = this;
 
-    if(this.$applicationStorage.posts.length) {
-      this.$data.documents = this.$applicationStorage.posts;
-      console.log('documents from chache');
-    } else {
-      ActionService.getList({}).then(
-        (answer) => {
-        //TODO implement in applicationStorage!!!let concatAndDeDuplicateObjects = (p, ...arrs) => [].concat(...arrs).reduce((a, b) => !a.filter(c => b[p] === c[p]).length ? [...a, b] : a, []);
-        let concatAndDeDuplicateObjects = (p, ...arrs) => [].concat(...arrs).reduce((a, b) => !a.filter(c => b[p] === c[p]).length ? [...a, b] : a, []);
-        this.$applicationStorage.posts = concatAndDeDuplicateObjects('_id', this.$applicationStorage.posts, answer.data.documents);
-        this.$data.documents = this.$applicationStorage.posts;
-        console.log('documents from server');
-    },
-      (err) => {
-        console.log(err.message);
-      }
-    );
-    }
+    // Listen for list-updated event and its payload.
+    EventBus.$on('list-updated', function(value) {
+      _this.$data.documents = _this.$applicationStorage.posts;
+    });
 
+    this.$data.documents = this.$applicationStorage.posts;
   }
+
+
 }
 </script>

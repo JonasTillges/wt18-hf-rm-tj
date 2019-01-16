@@ -19,27 +19,62 @@ module.exports = {
 
     Comment: mongoose.model('Comment', new Schema(
       {
-          title: String,
-          body: String,
+          content: String,
           votes: Number,
-          _user: {type: String, ref: 'user'},
-          _post: {type: Number, ref: 'post'}
+          _user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+          _post: {type: Schema.Types.ObjectId, ref: 'Post', required: true}
       },
       {
           collection: 'comment',
           timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}
-      }
-    )),
+      })
+    ).on('error', function (err) {
+        console.log('Comment error: ' + err);
+    }),
 
-    get: function () {
-        if (PermissionService.test(this.permission.read)) {
-
-        }
+    get: function (data) {
+        return new Promise((resolve, reject) => {
+            // make this accessable
+            let _this = this;
+            if (PermissionService.test(this.permission.read)) {
+                _this.Comment.find(data)
+                .populate('_user')
+                .exec((error, comments) => {
+                    if (error) {
+                        reject(error);
+                    }
+                    resolve(comments);
+                })
+            } else {
+                reject("PERMISSION DENIED: Comment GET");
+            }
+        })
     },
     create: function (data) {
-        if (PermissionService.test(this.permission.create)) {
+        return new Promise((resolve, reject) => {
+            if (PermissionService.test(this.permission.create)) {
 
-        }
+                // make this accessable
+                let _this = this;
+
+                // create and save post data
+                new _this.Comment({
+                    content: data.content,
+                    _user: data._user,
+                    _post: data._post
+                }).save().then(
+                  (result) => {
+                      console.log('Comment CREATED:' + result);
+                      resolve(result);
+                  }
+                );
+
+
+            } else {
+                reject("PERMISSION DENIED: ")
+            }
+        });
+
     },
     update: function () {
         if (PermissionService.test(this.permission.update)) {

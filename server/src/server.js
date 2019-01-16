@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const DatabaseService = require('./service/database.js');
 const UserService = require('./service/user');
 const PostService = require('./service/post');
+const CommentService = require('./service/comment');
 
 const app = express();
 app.use(morgan('combined'));
@@ -70,6 +71,23 @@ app.post('/compose', (request, response)=>{
     );
 });
 
+app.post('/comment', (request, response)=>{
+    var data = request.body;
+    console.log(data);
+    CommentService.create(data).then(
+      (result) => {
+          //TODO refactor create and return full post object with tags
+          PostService.get({_id: result._post}).then(
+            (result) => {
+                response.send({
+                    document: result
+                });
+            }
+          );
+      }
+    );
+});
+
 app.post('/post', (request, response) => {
 
     var data = request.body;
@@ -90,6 +108,7 @@ app.post('/list', (request, response) => {
     var data = request.body;
     PostService.get(data).then(
       (result) => {
+          console.log(result[0]);
           response.send({
               documents: result
           });

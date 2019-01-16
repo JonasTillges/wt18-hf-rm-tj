@@ -1,3 +1,7 @@
+
+.post_tags {
+    margin: 1rem 0;
+}
 .post_tag {
     background-color: $secondary;
     color: white;
@@ -9,4 +13,12 @@
 }
 .post_content {
     padding: 2rem 0;
+}
+
+.post_comments {
+    padding: 1rem
+}
+
+.post_new-comment {
+    margin-top: 5rem;
 }

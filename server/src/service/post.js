@@ -1,6 +1,7 @@
 const SecurityConfiguration = require('../configuration/security');
-const PermissionService = require('./permission.js');
-const TagService = require('./tag.js');
+const PermissionService = require('./permission');
+const TagService = require('./tag');
+const CommentService = require('./comment');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -25,7 +26,8 @@ module.exports = {
           content: String,
           votes: {type: Number, default: 0},
           _user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
-          _tags: Array
+          _tags: Array,
+          _comments: Array
       },
       {
           collection: 'post',
@@ -65,18 +67,33 @@ module.exports = {
                 let _this = this;
                 this.Post.find(data)
                 .populate({path: '_user', model: 'User'})
-                .exec(function (err, posts) {
+                .exec((err, posts) => {
                     if (err) reject(err);
                     //Reason: Not able to populate over Post <- PostToTag -> Tag
                     let cycle = 0;
                     posts.forEach((element, index) => {
+                       // get Tags of Post
                         _this.PostToTag.find({_post: element._id})
                         .populate({path: '_tag', model: 'Tag'})
                         .exec((err, tags) => {
+                            // save tags
                             element._tags = tags;
-                            if(++cycle == posts.length) {
-                                resolve(posts);
-                            }
+
+                            // get Comments of Post
+                            CommentService.get({_post: element._id})
+                            .then(
+                              (comments) => {
+                                  // save comments
+                                  element._comments = comments;
+                                  // until all posts are mapped
+                                  if(++cycle == posts.length) {
+                                      resolve(posts);
+                                  }
+                              },
+                              (error) => {
+                                  reject(error);
+                              }
+                            );
                         })
                     });
 
@@ -134,7 +151,6 @@ module.exports = {
                                           console.log('PostToTag CREATED: ' + ptt);
                                           // if last tag
                                           if (index == tags.length-1) {
-                                              result._tags = tags;
                                               resolve(result);
                                           }
                                       }

@@ -12,5 +12,8 @@ export default {
     },
     getList(credentials) {
         return Api().post('/list', credentials);
+    },
+    comment(credentials) {
+        return Api().post('/comment', credentials);
     }
 }
