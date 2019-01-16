@@ -1,6 +1,16 @@
-# Forum
+# STUDY UP - Question & Answer
 
-> Forum
+> Web Application with Express.js, Vue.js, MongoDB, Bootstrap4
+
+This Application is part of our WebTechnologies Project in 2018/19.
+
+Features:
+- User Login/Register Authentication via Firebase
+- Question & Answer
+
+Specials:
+- Event Bus for Cross-Component Event-emit
+- Data Persitence with MongoDB (Mongoose as Middleware)
 
 
 ## Client
@@ -30,8 +40,7 @@ npm install
 # localhost:8081 -> start the server
 npm start
 
-## Docker Setup
-cd ./server
+## Docker Setup WIP
 docker-compose build
 docker-compose up
 ```
