@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>Thema verfassen</h1>
-    <div class="form-group">
+      <div class="form-group">
         <input v-model="title" type="text" class="form-control" id="title" aria-describedby="titleHelp" placeholder="Was ist dein Thema?">
         <small id="titleHelp" class="form-text text-muted">Benutze ein aussagekräftiges Thema, um andere User darauf aufmerksam zu machen.</small>
       </div>

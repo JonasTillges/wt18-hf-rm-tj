@@ -1,48 +1,28 @@
 <template>
-  <div>
-    <h1 class="col-lg-8 mx-auto">Register</h1>
-    <br>
-   
-        
-    
-
-  <div>
-          <div class="col-lg-8 mx-auto">
-            <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
-            <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-            
-              <div>
-                <div class="floating-label-form-group mb-0 pb-2" >
-                  <label>Username</label>
-                  <input size="75" v-model="name" name="name" type="text" placeholder="Username">
-                </div>
-              </div>
-              <div>
-                <div class="form-group floating-label-form-group text-white mb-0 pb-2">
-                  <label>Email Adresse</label>
-                  <input 
-                  size ="75"
-                  v-model="email"
-                  name = "email"
-                  type="email" placeholder="Email Addresse">
-              
-                </div>
-              </div>
-              <div>
-                <div class="form-group floating-label-form-group mb-0 pb-2">
-                  <label>Passwort</label>
-                  <input size="75" v-model="password" name="password" type="password" placeholder="Passwort">
-              
-                </div>
-              </div>
-              <div>
-                <button  @click="signUp" class="btn btn-primary btn-xl">Registrieren</button>
-              </div>
-              <br/>
-              <router-link to="/Login">Ich habe schon einen Account.</router-link>
-          </div>
+  <div class="container">
+    <h1>Registriere dich jetzt</h1>
+    <hr>
+    <div>
+        <div class="form-group">
+          <input v-model="name" type="text" class="form-control" id="name" aria-describedby="nameHelp" required="required" placeholder="Dein Username">
+          <small id="nameHelp" class="form-text text-muted">Dein Username wird dich hier repräsentieren.</small>
         </div>
-      </div>
+        <div class="form-group">
+          <input v-model="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" required="required" placeholder="deine@email.bitte">
+          <small id="emailHelp" class="form-text text-muted">Wir benötigen deine Email um dir einen Aktivierungslink zu schicken.</small>
+        </div>
+        <div class="form-group">
+          <input v-model="password" type="password" class="form-control" id="password" aria-describedby="passwordHelp" required="required" placeholder="Dein Passwort">
+          <small id="passwordHelp" class="form-text text-muted">Benutze bitte ein Passwort aus mind. 6 Zeichen, sowie mit Groß- und Kleinschreibung.</small>
+        </div>
+        <div class="form-group">
+          <button  @click="signUp" class="btn btn-primary btn-xl">Registrieren</button>
+        </div>
+        <br/>
+        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+        <router-link to="/Login">Ich habe schon einen Account.</router-link>
+    </div>
+  </div>
 </template>
 
 <script>

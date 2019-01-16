@@ -1,0 +1,12 @@
+.post_tag {
+    background-color: $secondary;
+    color: white;
+    padding: 0.25rem;
+    margin-right: 0.25rem;
+    &:before {
+        content: '#';
+    }
+}
+.post_content {
+    padding: 2rem 0;
+}

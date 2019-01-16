@@ -1,30 +1,23 @@
 <template>
   <div class="container">
-    <h1>Login</h1>
-              <div>
-                <div class="form-group floating-label-form-group text-white mb-0 pb-2">
-                  <label>Email Adresse</label>
-                  <input 
-                  size="75"
-                  v-model="email"
-                  name = "email"
-                  type="email" placeholder="Email Addresse">
-              
-                </div>
-              </div>
-              <div>
-                <div class="form-group floating-label-form-group mb-0 pb-2">
-                  <label>Passwort</label>
-                  <input  size="75" v-model="password" name="password" type="password" placeholder="Passwort">
-              
-                </div>
-              </div>
-      <br>
-      <button @click="login" class="btn btn-primary btn-xl">Login</button>
-      <br>
+    <h1>Logge dich eich</h1>
+    <hr>
+    <div>
+      <div class="form-group">
+        <input v-model="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" required="required" placeholder="deine@email.bitte">
+        <small id="emailHelp" class="form-text text-muted">Deine Email die du bei der Registrierung genutzt hast</small>
+      </div>
+      <div class="form-group">
+        <input v-model="password" type="password" class="form-control" id="password" required="required" placeholder="Dein Passwort">
+      </div>
+      <div class="form-group">
+        <button @click="login" class="btn btn-primary btn-xl">Login</button>
+      </div>
+      <br/>
+      <i class="fa fa-sign-in" aria-hidden="true"></i>
       <router-link to="/register">Ich habe noch keinen Account.</router-link>
-      <h1>{{ message }}</h1>
-    
+    </div>
+
   </div>
 </template>
 

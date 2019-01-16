@@ -1,13 +1,10 @@
 <template>
     
   <div>
-      <h1>{{ name }}</h1>
      <!-- Header -->
     <header class="masthead bg-primary text-white text-center">
       <div class="container">
-        <img class="img-fluid mb-5 d-block mx-auto" src="static/img/IMG_0122.PNG" alt="">
-        <h1 class="text-uppercase mb-0">Finden Sie die Antwort auf Ihre Frage</h1>
-        
+        <h1 class="text-uppercase">Finde deine Antwort auf deine Frage</h1>
         <h2 class="font-weight-light mb-0">Fragen stellen - Antworten geben - Entspannter studieren</h2>
       </div>
       <figure >
@@ -39,42 +36,35 @@
     <!-- Register Section -->
     <section class="bg-primary" >   
       <div>
-        <h2 class="text-center text-uppercase text-white">Registrierung
-        </h2>
+        <h2 class="text-center text-uppercase text-white">Registriere dich jetzt</h2>
         <div>
         <figure>
-                  <img class="star-img" src="static/img/white-star.png">
+          <img class="star-img" src="static/img/white-star.png">
         </figure>
       </div>
         <div>
           <div class="col-lg-8 mx-auto">
-              <div>
-                <div class="floating-label-form-group mb-0 pb-2" >
-                  <label>Username</label>
-                  <input v-model="name" name="name" type="text" placeholder="Username">
-                </div>
+            <div>
+              <div class="form-group">
+                <input v-model="name" type="text" class="form-control" id="name" aria-describedby="nameHelp" required="required" placeholder="Dein Username">
+                <small id="nameHelp" class="form-text">Dein Username wird dich hier repräsentieren.</small>
               </div>
-              <div>
-                <div class="form-group floating-label-form-group text-white mb-0 pb-2">
-                  <label>Email Adresse</label>
-                  <input 
-                  v-model="email"
-                  name = "email"
-                  type="email" placeholder="Email Addresse">
-              
-                </div>
+              <div class="form-group">
+                <input v-model="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" required="required" placeholder="deine@email.bitte">
+                <small id="emailHelp" class="form-text">Wir benötigen deine Email um dir einen Aktivierungslink zu schicken.</small>
               </div>
-              <div>
-                <div class="form-group floating-label-form-group mb-0 pb-2">
-                  <label>Passwort</label>
-                  <input v-model="password" name="password" type="password" placeholder="Passwort">
-              
-                </div>
+              <div class="form-group">
+                <input v-model="password" type="password" class="form-control" id="password" aria-describedby="passwordHelp" required="required" placeholder="Dein Passwort">
+                <small id="passwordHelp" class="form-text">Benutze bitte ein Passwort aus mind. 6 Zeichen, sowie mit Groß- und Kleinschreibung.</small>
               </div>
-              <div>
-                <button  @click="signUp" class="btn btn-primary btn-xl">Registrieren</button>
+              <div class="form-group">
+                <button  @click="signUp" class="btn btn-secondary btn-xl">Registrieren</button>
               </div>
-            
+              <br/>
+              <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+              <router-link to="/Login">Ich habe schon einen Account.</router-link>
+            </div>
+
           </div>
         </div>
       </div>
@@ -150,7 +140,7 @@ export default {
         
         uid = user.uid;
         email = user.email;
-        this.name = email;
+        this.$data.name = email;
         console.log(name)
       }else{
         console.log('Kein aktueller User')

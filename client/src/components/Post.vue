@@ -1,16 +1,14 @@
 <template>
   <div class="container">
     <h1>{{document.title}}</h1>
-    <div>{{document.content}}</div>
-    <div>{{document._user.email}}</div>
-    <div>Tags:
-      <span v-for="(doc, index) in document._tags" >
+    <div v-html="document.content"></div>
+    <div >von: {{document._user.email}}</div>
+    <div>
+      <span v-for="(doc, index) in document._tags" class="post_tag" >
         {{doc._tag.name}}
       </span>
     </div>
   </div>
-
-
 </template>
 
 <script>

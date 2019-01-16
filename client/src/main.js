@@ -38,3 +38,4 @@ new Vue({
 
 
 
+//TODO SPINNER use fa-spin !!!

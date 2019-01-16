@@ -1,17 +1,17 @@
 <template>
   <div class="container">
-    <h1>Übersicht Beiträge</h1>
-
-    <div id="example-2">
-      <div v-for="(item, index) in documents" v-if="!item.isComplete">
-        <div>{{ item.title }}</div>
-        <div>{{ item.content }}</div>
-        <div>Tags:
-          <span v-for="(doc, index) in item._tags" v-if="!item.isComplete">
+    <div class="list">
+      <div v-for="(item, index) in documents" v-if="!item.isComplete" class="list_post">
+        <h4 class="post_title">{{ item.title }}</h4>
+        <div class="post_content">
+          <div v-html="item.content">{{ item.content }}</div>
+          <router-link :to="{ name: 'Post', params: { id: item._id }}" class="post_more">Mehr</router-link>
+        </div>
+        <div>
+          <span v-for="(doc, index) in item._tags" v-if="!item.isComplete" class="post_tag">
             {{doc._tag.name}}
           </span>
         </div>
-        <router-link :to="{ name: 'Post', params: { id: item._id }}">Mehr</router-link>
         <hr>
       </div>
     </div>
