@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Logge dich eich</h1>
+    <h1>Logge dich ein</h1>
     <hr>
     <div>
       <div class="form-group">
