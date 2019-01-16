@@ -6,6 +6,7 @@ import App from './App'
 import router from './router'
 import wysiwyg from "vue-wysiwyg";
 import "./global/storage";
+import moment from 'moment'
 
 //TODO good for what?
 Vue.config.productionTip = false;
@@ -21,10 +22,17 @@ var config = {
 };
 firebase.initializeApp(config);
 
-// TODO options for safe text for plain text copy paste OR search for other
+// TODO options for safe text for plain text copy paste OR search for other, auslagern?
 Vue.use(wysiwyg, {
   hideModules: { "code": true },
   forcePlainTextOnPaste: true
+});
+
+// TODO auslagern?
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('DD.MM.YYYY HH:mm')
+  }
 });
 
 /* eslint-disable no-new */

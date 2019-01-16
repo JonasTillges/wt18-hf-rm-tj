@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Register from '@/components/Register'
-import _404 from '@/components/_404'
+import NotFound from '@/components/NotFound'
 import Login from '@/components/Login'
 import List from '@/components/List'
 import Post from '@/components/Post'
@@ -21,8 +21,8 @@ export default new Router({
     },
     {
       path: '*',
-      name: '_404',
-      component: _404
+      name: 'NotFound',
+      component: NotFound
     },
     {
       path: '/register',

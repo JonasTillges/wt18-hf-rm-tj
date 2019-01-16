@@ -9,7 +9,7 @@
     import * as animationData from '../animations/404_page.json';
 
     export default {
-        name: '_404',
+        name: 'NotFound',
         components: {
             'lottie': Lottie
         },
