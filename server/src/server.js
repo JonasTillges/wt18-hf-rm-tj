@@ -18,16 +18,6 @@ app.use(cors());
 console.log('try to connect to database');
 DatabaseService.connect();
 
-/*   //getToken
-firebaseAdmin.auth()
-    .verifyIdToken(accessToken)
-    .then(decodedIdToken => {
-        return firebaseAdmin.auth().getUser(decodedIdToken.uid);
-    })
-    .then(user => {
-        // Do whatever you want with the user.
-    });
-    */
 app.post('/register', (request, response)=>{
     
     UserService.create(request.body);
