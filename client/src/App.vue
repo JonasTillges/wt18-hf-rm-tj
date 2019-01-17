@@ -19,17 +19,21 @@
             <i class="fa fa-question-circle" aria-hidden="true"></i>
             <router-link to="/post">Fragen</router-link>
           </li>
-          <li class="nav-item">
+          <li v-if="show" class="nav-item">
             <i class="fa fa-sign-in" aria-hidden="true"></i>
             <router-link to="/register">Register</router-link>
           </li>
-          <li class="nav-item">
+          <li v-if="show" class="nav-item">
             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
             <router-link to="/login">Login</router-link>
           </li>
+            <li v-if="!show" @click="logout" class="nav-item">
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+            <router-link to="/">Logout</router-link>
+          </li>
         </ul>
         <span class="navbar-text">
-          USERNAME
+           <router-link to="/user">{{name}}</router-link>
         </span>
       </div>
     </nav>
@@ -57,18 +61,56 @@
 </template>
 
 <script>
-  import firebase from 'firebase';
+  import firebase,{ auth } from 'firebase';
   import ActionService from '@/services/ActionService';
   import { EventBus } from './global/event-bus.js';
 
   export default {
     name: 'App',
+    data() {
+      return {
+        name: '',
+        show: true,
+        showlogout: false
+      }
+    },
     methods: {
+      logout: function() {
+        firebase.auth().signOut().then(() => {
+          console.log('Signed Out');
+          this.name = ''
+        }, function(error) {
+          console.error('Sign Out Error', error);
+        });
+      },
       emitListUpdate() {
         EventBus.$emit('list-updated', true);
       }
     },
     mounted() {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          ActionService.getUserData({
+                uid: user.uid
+            }).then((response) => {
+                console.log(response.data.user);
+                this.name = response.data.user.name;
+            });
+            this.show = false;
+            // User is signed in.
+            } else {
+              this.show = true;
+            // No user is signed in.
+          }
+      });
+      var accessToken = null;
+      firebase.auth().onIdTokenChanged((user) => {
+        if (user) {
+          accessToken = user.getIdToken();
+         // User is signed in or token was refreshed.
+         console.log(accessToken);
+        }
+      });
       console.log(this.$applicationStorage);
       let _this = this;
 
@@ -86,7 +128,10 @@
           }
         );
       }
-    }
+    },
+    created() {
+
+    },
   }
 </script>
 
