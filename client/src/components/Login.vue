@@ -25,6 +25,7 @@
 import AuthenticationService from '@/services/AuthenticationService'
 import ActionService from '@/services/ActionService'
 import firebase from 'firebase'
+import Auth from '@/services/Auth'
 
 
 export default {
@@ -47,28 +48,7 @@ export default {
       this.message = response.data.message;
     },
     login: function() {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
-        (data) => {
-          let user = data.user;
-          console.log('try verified');
-          if(user.emailVerified){
-            console.log('User verified email.');
-          }
-          console.log('USER')
-          console.log(user);
-          console.log(user.uid);
-          ActionService.getUserData({
-                uid: user.uid
-            }).then((response) => {
-                console.log(response.data.user);
-            });
-            this.$router.replace('/');
-          
-        },
-        (err) => {
-          alert(err.message);
-        }
-      );
+      Auth.loginUser(this.email, this.password);
     }
 
   }
