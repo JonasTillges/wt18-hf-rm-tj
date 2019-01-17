@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import AuthenticationService from '@/services/AuthenticationService'
 import firebase from 'firebase'
+import Auth from '@/services/Auth'
 
 
 export default {
@@ -42,29 +42,7 @@ export default {
   },
   methods: {
     signUp: function() {
-      
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-        (user) => {
-          var user = firebase.auth().currentUser;
-          user.sendEmailVerification().then((verification) => {
-            console.log('success');
-            console.log(verification);
-          }).catch(function(error) {
-          // An error happened.
-          });
-          var uid = user.uid;
-          AuthenticationService.register({
-              email: this.email,
-              name: this.name,
-              uid: uid
-          });
-          console.log(uid);
-          this.$router.replace('verify');
-        },
-        (err) => {
-          alert(err.message);
-        }
-      );
+      Auth.register(this.email, this.name, this.password);
     }
 
   }

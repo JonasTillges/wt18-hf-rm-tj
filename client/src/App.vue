@@ -79,6 +79,7 @@
 
 <script>
   import firebase,{ auth } from 'firebase';
+  import Auth from '@/services/Auth'
   import ActionService from '@/services/ActionService';
   import { EventBus } from './global/event-bus.js';
 
@@ -87,8 +88,7 @@
     data() {
       return {
         name: '',
-        show: true,
-        showlogout: false
+        show: true
       }
     },
     methods: {
@@ -106,10 +106,16 @@
     },
     mounted() {
 
+
       let _this = this;
+
+      //handels token changes
+      Auth.onTokenChanged();
+
 
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
+          // User is signed in State.
           ActionService.getUserData({
                 uid: user.uid
             }).then((response) => {
@@ -118,21 +124,14 @@
                 this.name = response.data.user.name;
             });
             this.show = false;
-            // User is signed in.
             } else {
-              this.show = true;
             // No user is signed in.
+            this.show = true;
           }
       });
-      var accessToken = null;
-      firebase.auth().onIdTokenChanged((user) => {
-        if (user) {
-          accessToken = user.getIdToken();
-         // User is signed in or token was refreshed.
-         console.log(accessToken);
-        }
-      });
+
       console.log(this.$applicationStorage);
+
       if(this.$applicationStorage.posts.length) {
         console.log('documents from chache');
       } else {
@@ -148,8 +147,22 @@
         );
       }
     },
-    created() {
-
+    updated() {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          ActionService.getUserData({
+                uid: user.uid
+            }).then((response) => {
+                console.log(response.data.user);
+                this.name = response.data.user.name;
+            });
+            this.show = false;
+            // User is signed in.
+            } else {
+            this.show = true;
+            // No user is signed in.
+          }
+      });
     },
   }
 </script>
