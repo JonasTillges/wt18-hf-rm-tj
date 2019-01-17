@@ -38,7 +38,8 @@ export default {
               }).catch(function(error) {
               // An error happened.
               });
-              var uid = user.uid;
+              var uid = user.getIdToken();
+              console.log(uid);
               AuthenticationService.register({
                   email: email,
                   name: name,

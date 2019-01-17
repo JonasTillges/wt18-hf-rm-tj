@@ -37,12 +37,33 @@ DatabaseService.connect();
     
 app.post('/register', (request, response)=>{
     
-    UserService.create(request.body);
-
-    //UserService.create($.body.email, )
-    response.send({
-        message: `Hallo ${request.body.name}`
+    console.log(request.body);
+    let accessToken = request.body.uid;
+    admin.auth()
+    .verifyIdToken(accessToken)
+    .then(decodedIdToken => {
+        return firebaseAdmin.auth().getUser(decodedIdToken.uid);
+    })
+    .then(user => {
+        console.log(user.email);
+            
+        response.send({
+            message: `Hallo ${user.email}`
+        });
+        // Do whatever you want with the user.
+    }).catch(err => {
+        response.send({
+            message: `you are not the real user`
+        });
     });
+    
+    
+    
+    
+    
+    //UserService.create(request.body);
+
+
 });
 
 app.post('/getUserData', (request, response) => {
