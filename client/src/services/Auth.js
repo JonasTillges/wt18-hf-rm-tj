@@ -38,12 +38,17 @@ export default {
               }).catch(function(error) {
               // An error happened.
               });
-              var uid = user.getIdToken();
-              console.log(uid);
-              AuthenticationService.register({
+              firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {
+                // Send token to your backend via HTTPS
+                console.log(idToken);
+                AuthenticationService.register({
                   email: email,
                   name: name,
-                  uid: uid
+                  uid: idToken
+              });
+                // ...
+              }).catch((error) => {
+                // Handle error
               });
               console.log(uid);
               Router.push('verify');
@@ -61,7 +66,12 @@ export default {
     onTokenChanged(){
         firebase.auth().onIdTokenChanged((user) => {
           if (user) {
-            let accessToken = user.getIdToken();
+            firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {
+              console.log(idToken);
+              //Updated Token an backend senden
+            }).catch((error) => {
+              // Handle error
+            });
             // User is signed in or token was refreshed.
           }
         });

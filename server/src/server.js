@@ -22,6 +22,7 @@ admin.initializeApp({
     databaseURL: "https://forum-7ed19.firebaseio.com"
   });
 
+
 console.log('try to connect to database');
 DatabaseService.connect();
 
@@ -37,7 +38,7 @@ DatabaseService.connect();
     
 app.post('/register', (request, response)=>{
     
-    console.log(request.body);
+    console.log(request.body.uid);
     let accessToken = request.body.uid;
     admin.auth()
     .verifyIdToken(accessToken)
@@ -52,6 +53,7 @@ app.post('/register', (request, response)=>{
         });
         // Do whatever you want with the user.
     }).catch(err => {
+        console.log('not user');
         response.send({
             message: `you are not the real user`
         });

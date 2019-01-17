@@ -125,21 +125,21 @@
       }
     },
     updated() {
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          ActionService.getUserData({
-                uid: user.uid
-            }).then((response) => {
-                console.log(response.data.user);
-                this.name = response.data.user.name;
-            });
-            this.show = false;
-            // User is signed in.
-            } else {
-            this.show = true;
-            // No user is signed in.
-          }
-      });
+      // firebase.auth().onAuthStateChanged((user) => {
+      //   if (user) {
+      //     ActionService.getUserData({
+      //           uid: user.uid
+      //       }).then((response) => {
+      //           console.log(response.data.user);
+      //           this.name = response.data.user.name;
+      //       });
+      //       this.show = false;
+      //       // User is signed in.
+      //       } else {
+      //       this.show = true;
+      //       // No user is signed in.
+      //     }
+      // });
     },
   }
 </script>
