@@ -4,30 +4,37 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
+const admin = require("firebase-admin");
 
+const serviceAccount = require("./serviceAccountKey.json");
 const DatabaseService = require('./service/database.js');
 const UserService = require('./service/user');
 const PostService = require('./service/post');
 const CommentService = require('./service/comment');
 
+
 const app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://forum-7ed19.firebaseio.com"
+  });
 
 console.log('try to connect to database');
 DatabaseService.connect();
 
-/*   //getToken
-firebaseAdmin.auth()
-    .verifyIdToken(accessToken)
-    .then(decodedIdToken => {
-        return firebaseAdmin.auth().getUser(decodedIdToken.uid);
-    })
-    .then(user => {
-        // Do whatever you want with the user.
-    });
-    */
+   //getToken
+// admin.auth()
+//     .verifyIdToken(accessToken)
+//     .then(decodedIdToken => {
+//         return firebaseAdmin.auth().getUser(decodedIdToken.uid);
+//     })
+//     .then(user => {
+//         // Do whatever you want with the user.
+//     });
+    
 app.post('/register', (request, response)=>{
     
     UserService.create(request.body);
