@@ -76,6 +76,8 @@
 <script>
 import firebase from 'firebase'
 import AuthenticationService from '@/services/AuthenticationService'
+import Auth from '@/services/Auth'
+
 export default {
   name: "home",
   data() {
@@ -91,73 +93,26 @@ export default {
       router.push({ path: '/register' })
     },
     logout: function(){
-      firebase.auth().signOut().then(()=>{
-        this.$router.replace('login');
-      })
+      Auth.logout();
     },
     signUp: function (){
-      console.log(this.email, this.password);
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-        (user) => {
-          var user = firebase.auth().currentUser;
-
-          console.log(user);
-
-          user.sendEmailVerification().then((verification) => {
-            console.log('success');
-            console.log(verification);
-          }).catch(function(error) {
-          // An error happened.
-          });
-
-          var uid = user.uid;
-          console.log({
-            email: this.email,
-            name: this.name,
-            uid: uid
-          });
-          AuthenticationService.register({
-              email: this.email,
-              name: this.name,
-              uid: uid
-          });
-          console.log(uid);
-          this.$router.replace('verify');
-        },
-        (err) => {
-          alert(err.message);
-        }
-      );
+      Auth.register(this.email, this.name, this.password);
     }
   },
   
   mounted() {
-      var user = firebase.auth().currentUser;
-      var name, email, uid;
+      // var user = firebase.auth().currentUser;
+      // var name, email, uid;
      
-      if (user != null) {
+      // if (user != null) {
         
-        uid = user.uid;
-        email = user.email;
-        this.$data.name = email;
-        console.log(name)
-      }else{
-        //         firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-        // .then(function() {
-        //     var provider = new firebase.auth.GoogleAuthProvider();
-        //     // In memory persistence will be applied to the signed in Google user
-        //     // even though the persistence was set to 'none' and a page redirect
-        //     // occurred.
-        //     return firebase.auth().signInWithRedirect(provider);
-        // })
-        // .catch(function(error) {
-        //     // Handle Errors here.
-        //     var errorCode = error.code;
-        //     var errorMessage = error.message;
-        // });
-        console.log('Kein aktueller User')
-        //show register / login button
-      }
+      //   uid = user.uid;
+      //   email = user.email;
+      //   this.$data.name = email;
+      //   console.log(name)
+      // }else{
+        
+      // }
   }
 }
 </script>

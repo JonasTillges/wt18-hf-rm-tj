@@ -7,33 +7,50 @@
        <span class="navigation_project"></span>StudyUp
       </router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <i class="fa fa-bars" aria-hidden="true"></i>
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <i class="fa fa-th-list" aria-hidden="true"></i>
-            <router-link to="/list">Antworten</router-link>
+            <router-link class="nav-link" to="/list">
+              <i class="fa fa-th-list" aria-hidden="true"></i>
+              Gestelle Fragen
+            </router-link>
           </li>
-          <li class="nav-item">
-            <i class="fa fa-question-circle" aria-hidden="true"></i>
-            <router-link to="/post">Fragen</router-link>
+          <li class="nav-item" v-if="!show">
+            <router-link class="nav-link" to="/post">
+              <i class="fa fa-question-circle" aria-hidden="true"></i>
+              Frage stellen
+            </router-link>
           </li>
           <li v-if="show" class="nav-item">
-            <i class="fa fa-sign-in" aria-hidden="true"></i>
-            <router-link to="/register">Register</router-link>
+            <router-link class="nav-link" to="/register">
+              <i class="fa fa-sign-in" aria-hidden="true"></i>
+              Register
+            </router-link>
           </li>
           <li v-if="show" class="nav-item">
-            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            <router-link to="/login">Login</router-link>
-          </li>
-            <li v-if="!show" @click="logout" class="nav-item">
-            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            <router-link to="/">Logout</router-link>
+
           </li>
         </ul>
-        <span class="navbar-text">
-           <router-link to="/user">{{name}}</router-link>
+        <span class="navbar-text user_nav">
+           <div v-if="!show">
+             <router-link to="/user" class="nav-item nav-user">{{name}}</router-link>
+             <button type="button" class="logout_button btn btn-sm btn-danger" @click="logout">
+              <router-link to="/">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                Logout
+              </router-link>
+              </button>
+           </div>
+            <div v-if="show">
+              <button type="button" class="btn btn-sm btn-success" @click="logout">
+                <router-link to="/login">
+                  <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                  Login
+                </router-link>
+              </button>
+            </div>
         </span>
       </div>
     </nav>
@@ -62,6 +79,7 @@
 
 <script>
   import firebase,{ auth } from 'firebase';
+  import Auth from '@/services/Auth'
   import ActionService from '@/services/ActionService';
   import { EventBus } from './global/event-bus.js';
 
@@ -70,15 +88,14 @@
     data() {
       return {
         name: '',
-        show: true,
-        showlogout: false
+        show: true
       }
     },
     methods: {
       logout: function() {
         firebase.auth().signOut().then(() => {
           console.log('Signed Out');
-          this.name = ''
+          this.name = '';
         }, function(error) {
           console.error('Sign Out Error', error);
         });
@@ -88,31 +105,36 @@
       }
     },
     mounted() {
+
+
+      let _this = this;
+
+      //handels token changes
+      Auth.onTokenChanged();
+
+
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
+          _this.$applicationStorage.firebase = user;
+          console.log('__________firebase-user____________');
+          console.log(_this.$applicationStorage.firebase);
+          console.log('___________________________________');
+          // User is signed in State.
           ActionService.getUserData({
-                uid: user.uid
-            }).then((response) => {
-                console.log(response.data.user);
-                this.name = response.data.user.name;
-            });
-            this.show = false;
-            // User is signed in.
-            } else {
-              this.show = true;
+              uid: user.uid
+          }).then((response) => {
+              _this.$applicationStorage.user = response.data.user;
+              console.log(response.data.user);
+              _this.name = response.data.user.name;
+              _this.show = false;
+          });
+        } else {
             // No user is signed in.
+          _this.show = true;
           }
       });
-      var accessToken = null;
-      firebase.auth().onIdTokenChanged((user) => {
-        if (user) {
-          accessToken = user.getIdToken();
-         // User is signed in or token was refreshed.
-         console.log(accessToken);
-        }
-      });
+
       console.log(this.$applicationStorage);
-      let _this = this;
 
       if(this.$applicationStorage.posts.length) {
         console.log('documents from chache');
@@ -129,8 +151,27 @@
         );
       }
     },
-    created() {
-
+    updated() {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          this.$applicationStorage.firebase = user;
+          console.log('__________firebase-user____________');
+          console.log(this.$applicationStorage.firebase);
+          console.log('___________________________________');
+          ActionService.getUserData({
+                uid: user.uid
+            }).then((response) => {
+                console.log(response.data.user);
+                this.name = response.data.user.name;
+                this.$applicationStorage.user = response.data.user;
+            });
+            this.show = false;
+            // User is signed in.
+            } else {
+            this.show = true;
+            // No user is signed in.
+          }
+      });
     },
   }
 </script>
