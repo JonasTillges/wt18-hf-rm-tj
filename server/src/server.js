@@ -43,10 +43,11 @@ app.post('/register', (request, response)=>{
     admin.auth()
     .verifyIdToken(accessToken)
     .then(decodedIdToken => {
+        console.log(decodedIdToken);
         return firebaseAdmin.auth().getUser(decodedIdToken.uid);
     })
     .then(user => {
-        console.log(user.email);
+        console.log(user);
             
         response.send({
             message: `Hallo ${user.email}`

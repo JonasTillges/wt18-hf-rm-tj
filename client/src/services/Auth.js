@@ -45,6 +45,8 @@ export default {
                   email: email,
                   name: name,
                   uid: idToken
+              }).then((response) => {
+                console.log(response);
               });
                 // ...
               }).catch((error) => {
