@@ -25,7 +25,7 @@ module.exports = {
     User: mongoose.model('User', new Schema(
       {
         uid: { type: String, index: true },
-        email: String,
+        email:  {type: String, unique: true },
         name: String,
         privilege: { type: String, default: SecurityConfiguration.LOGGED_IN }
       },

@@ -7,33 +7,50 @@
        <span class="navigation_project"></span>StudyUp
       </router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <i class="fa fa-bars" aria-hidden="true"></i>
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <i class="fa fa-th-list" aria-hidden="true"></i>
-            <router-link to="/list">Antworten</router-link>
+            <router-link class="nav-link" to="/list">
+              <i class="fa fa-th-list" aria-hidden="true"></i>
+              Gestelle Fragen
+            </router-link>
           </li>
-          <li class="nav-item">
-            <i class="fa fa-question-circle" aria-hidden="true"></i>
-            <router-link to="/post">Fragen</router-link>
+          <li class="nav-item" v-if="!show">
+            <router-link class="nav-link" to="/post">
+              <i class="fa fa-question-circle" aria-hidden="true"></i>
+              Frage stellen
+            </router-link>
           </li>
           <li v-if="show" class="nav-item">
-            <i class="fa fa-sign-in" aria-hidden="true"></i>
-            <router-link to="/register">Register</router-link>
+            <router-link class="nav-link" to="/register">
+              <i class="fa fa-sign-in" aria-hidden="true"></i>
+              Register
+            </router-link>
           </li>
           <li v-if="show" class="nav-item">
-            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            <router-link to="/login">Login</router-link>
-          </li>
-            <li v-if="!show" @click="logout" class="nav-item">
-            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            <router-link to="/">Logout</router-link>
+
           </li>
         </ul>
-        <span class="navbar-text">
-           <router-link to="/user">{{name}}</router-link>
+        <span class="navbar-text user_nav">
+           <div v-if="!show">
+             <router-link to="/user" class="nav-item nav-user">{{name}}</router-link>
+             <button type="button" class="logout_button btn btn-sm btn-danger" @click="logout">
+              <router-link to="/">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                Logout
+              </router-link>
+              </button>
+           </div>
+            <div v-if="show">
+              <button type="button" class="btn btn-sm btn-success" @click="logout">
+                <router-link to="/login">
+                  <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                  Login
+                </router-link>
+              </button>
+            </div>
         </span>
       </div>
     </nav>
@@ -78,7 +95,7 @@
       logout: function() {
         firebase.auth().signOut().then(() => {
           console.log('Signed Out');
-          this.name = ''
+          this.name = '';
         }, function(error) {
           console.error('Sign Out Error', error);
         });
@@ -88,8 +105,13 @@
       }
     },
     mounted() {
+
+
+      let _this = this;
+
       //handels token changes
       Auth.onTokenChanged();
+
 
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
@@ -97,6 +119,7 @@
           ActionService.getUserData({
                 uid: user.uid
             }).then((response) => {
+                _this.$applicationStorage.user = response.data.user;
                 console.log(response.data.user);
                 this.name = response.data.user.name;
             });
@@ -107,7 +130,7 @@
           }
       });
 
-      let _this = this;
+      console.log(this.$applicationStorage);
 
       if(this.$applicationStorage.posts.length) {
         console.log('documents from chache');

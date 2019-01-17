@@ -21,7 +21,7 @@ module.exports = {
      */
     Tag: mongoose.model('Tag', new Schema(
       {
-          name: {type: String},
+          name: {type: String, unique: true},
       },
       {
           collection: 'tag',
