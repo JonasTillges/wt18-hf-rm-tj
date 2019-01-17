@@ -7,6 +7,8 @@ import router from './router'
 import wysiwyg from "vue-wysiwyg";
 import "./global/storage";
 import moment from 'moment'
+import "../node_modules/jquery/dist/jquery.js";
+import "../node_modules/bootstrap/dist/js/bootstrap.bundle.js";
 
 //TODO good for what?
 Vue.config.productionTip = false;

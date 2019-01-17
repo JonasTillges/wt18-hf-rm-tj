@@ -18,28 +18,47 @@
   .navbar-nav {
     margin-top: 1rem;
     letter-spacing: 0.0625rem;
-    li.nav-item {
-      a.nav-link {
+  }
+
+  .nav-item {
+    a {
+      display: block;
+      padding: 0.5rem;
+      color: $white;
+      &:hover {
         color: $white;
-        &:hover {
-          color: $primary;
-        }
-        &:active,
-        &:focus {
-          color: $white;
-        }
-        &.active {
-          color: $primary;
-        }
+        background-color: rgba(255,255,255,0.2);
+        text-decoration: none;
+      }
+      &:active,
+      &:focus {
+        color: $white;
+      }
+      &.active {
+        color: $primary;
       }
     }
   }
+
   .navbar-toggler {
-    font-size: 80%;
     padding: 0.8rem;
+    cursor: pointer;
+    .fa:before {
+      font-size: 2rem;
+    }
   }
+
+  .navbar-collapse {
+    text-align: center;
+    border-top: 1px solid white;
+  }
+
+  .logout_button {
+    margin-left: 1rem;
+  }
+
 }
-@media(min-width:992px) {
+@media(min-width:991px) {
   #mainNav {
     .navbar-brand {
       font-size: 2em;
@@ -50,10 +69,10 @@
 
     .navbar-nav {
       margin-top: 0;
-      margin-left: 3rem;
+      margin-left: 1rem;
     }
     .nav-item {
-      margin-right: 1.5rem
+      margin-right: 0;
     }
     .navbar-nav > li.nav-item > a.nav-link.active {
       color: $white;
@@ -65,13 +84,27 @@
         background: $primary;
       }
     }
-  }
-  #mainNav.navbar-shrink {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    .navbar-brand {
-      font-size: 1.5em;
+    .navbar-shrink {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      .navbar-brand {
+        font-size: 1.5em;
+      }
     }
+    .navbar-collapse {
+      text-align: left;
+      border-top: none;
+    }
+    .user_nav {
+      text-align: right;
+    }
+    .nav-user {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 150px;
+    }
+
   }
 
 }

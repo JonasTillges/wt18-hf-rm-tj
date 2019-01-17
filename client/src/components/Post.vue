@@ -14,7 +14,7 @@
       <div v-for="(doc, index) in document._comments" class="post_comment">
         <hr>
         <h5>Antwort von: {{doc._user.name}}, am {{doc.created_at | formatDate}}</h5>
-        <div>{{doc.content}}</div>
+        <div v-html="doc.content" class="post_comment-content"></div>
       </div>
       <div class="post_new-comment">
         <h6>Jetzt antworten</h6>
