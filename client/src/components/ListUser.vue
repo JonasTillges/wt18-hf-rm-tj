@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <h1>Fragen die du gestellt hast:</h1>
+      <h1>Hi {{name}}, diese Fragen hast du gestellt:</h1>
       <br>
     <div class="list">
       <div v-for="(item, index) in documents" v-if="!item.isComplete" class="list_post">
@@ -30,24 +30,19 @@
   name: 'list',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
+      name: '',
       documents: Array
     }
   },
   mounted() {
-
     let _this = this;
-
-    // Listen for list-updated event and its payload.
-    // EventBus.$on('list-updated', function(value) {
-    //   _this.$data.documents = _this.$applicationStorage.posts;
-    // });
+    
     let userid = _this.$applicationStorage.user._id;
-    console.log(userid);
+    this.name = _this.$applicationStorage.user.name;
+
     let posts = this.$applicationStorage.posts;
     let postArray = []
     posts.forEach(post => {
-        console.log(post);
         if(post._user._id === userid){
             let len = postArray.push(post);
         }
