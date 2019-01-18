@@ -121,14 +121,14 @@
           console.log('___________________________________');
           // User is signed in State.
           ActionService.getUserData({
-              uid: user.uid
-          }).then((response) => {
-              _this.$applicationStorage.user = response.data.user;
-              console.log(response.data.user);
-              _this.name = response.data.user.name;
-              _this.show = false;
-          });
-        } else {
+                uid: user.uid
+            }).then((response) => {
+                console.log('HALLOOO!!!!!'+ response.data.user);
+                this.name = response.data.user.name;
+                _this.$applicationStorage.user = response.data.user;
+            });
+            this.show = false;
+            } else {
             // No user is signed in.
           _this.show = true;
           }
@@ -152,26 +152,21 @@
       }
     },
     updated() {
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          this.$applicationStorage.firebase = user;
-          console.log('__________firebase-user____________');
-          console.log(this.$applicationStorage.firebase);
-          console.log('___________________________________');
-          ActionService.getUserData({
-                uid: user.uid
-            }).then((response) => {
-                console.log(response.data.user);
-                this.name = response.data.user.name;
-                this.$applicationStorage.user = response.data.user;
-            });
-            this.show = false;
-            // User is signed in.
-            } else {
-            this.show = true;
-            // No user is signed in.
-          }
-      });
+      // firebase.auth().onAuthStateChanged((user) => {
+      //   if (user) {
+      //     ActionService.getUserData({
+      //           uid: user.uid
+      //       }).then((response) => {
+      //           console.log(response.data.user);
+      //           this.name = response.data.user.name;
+      //       });
+      //       this.show = false;
+      //       // User is signed in.
+      //       } else {
+      //       this.show = true;
+      //       // No user is signed in.
+      //     }
+      // });
     },
   }
 </script>

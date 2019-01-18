@@ -6,6 +6,7 @@ import NotFound from '@/components/NotFound'
 import Login from '@/components/Login'
 import List from '@/components/List'
 import Post from '@/components/Post'
+import User from '@/components/User'
 import Compose from '@/components/Compose'
 import Verification from '@/components/Verify'
 import Activation from '@/components/Activation'
@@ -58,7 +59,13 @@ export default new Router({
       path: '/activate',
       name: 'Activation',
       component: Activation
-    }   
+    },
+    {
+      path: '/user',
+      name: 'listPosts',
+      component: User
+    },
+
 
   ]
 })
