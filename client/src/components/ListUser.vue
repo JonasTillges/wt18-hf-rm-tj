@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+      <h1>Fragen die du gestellt hast:</h1>
+      <br>
     <div class="list">
       <div v-for="(item, index) in documents" v-if="!item.isComplete" class="list_post">
         <h4 class="post_title">{{ item.title }}</h4>
@@ -40,8 +42,18 @@
     // EventBus.$on('list-updated', function(value) {
     //   _this.$data.documents = _this.$applicationStorage.posts;
     // });
-
-    this.$data.documents = this.$applicationStorage.posts.filter(_id === _this.$applicationStorage.user._id);;
+    let userid = _this.$applicationStorage.user._id;
+    console.log(userid);
+    let posts = this.$applicationStorage.posts;
+    let postArray = []
+    posts.forEach(post => {
+        console.log(post);
+        if(post._user._id === userid){
+            let len = postArray.push(post);
+        }
+    });
+    console.log(postArray);
+    this.$data.documents = postArray;
   }
 
 
