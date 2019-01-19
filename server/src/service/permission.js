@@ -1,3 +1,5 @@
+const SecurityConfiguration = require('../configuration/security');
+
 module.exports = {
 
     /**
@@ -8,14 +10,10 @@ module.exports = {
      */
     test: function (requiredPermission, givenPermission) {
 
-        //TODO REMOVE WHEN USER LOGIN IS DONE
-        if (typeof givenPermission === 'undefined') {
-            return 3;
-        }
-
-        if (requiredPermission <= givenPermission) {
+        if (requiredPermission === SecurityConfiguration.ALL || requiredPermission <= givenPermission) {
             return true;
         }
+
         return false;
     }
 

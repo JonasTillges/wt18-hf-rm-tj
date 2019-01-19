@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import firebase from 'firebase'
 import Auth from '@/services/Auth'
 
 export default {
@@ -43,7 +42,6 @@ export default {
     signUp: function() {
       Auth.register(this.email, this.name, this.password);
     }
-
   }
 }
 </script>

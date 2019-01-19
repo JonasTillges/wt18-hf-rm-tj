@@ -22,11 +22,7 @@
 </template>
 
 <script>
-import AuthenticationService from '@/services/AuthenticationService'
-import ActionService from '@/services/ActionService'
-import firebase from 'firebase'
-import Auth from '@/services/Auth'
-
+import AuthService from '@/services/Auth'
 
 export default {
   name: 'login',
@@ -38,19 +34,9 @@ export default {
     }
   },
   methods: {
-    async register(){
-      const response = await AuthenticationService.register({
-        email: this.email,
-        password: this.password
-      });
-      console.log("button clicked", this.email,this.password);
-      console.log(response.data);
-      this.message = response.data.message;
-    },
     login: function() {
-      Auth.loginUser(this.email, this.password);
+      AuthService.loginUser(this.email, this.password);
     }
-
   }
 }
 </script>

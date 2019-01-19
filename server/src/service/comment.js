@@ -10,7 +10,7 @@ module.exports = {
      * Object for set the CRUD Security Levels
      */
     permission: {
-        create: SecurityConfiguration.LOGGED_IN,
+        create: SecurityConfiguration.BASIC_USER,
         read: SecurityConfiguration.ALL,
         update: SecurityConfiguration.OWNER,
         delete: SecurityConfiguration.MODERATOR
@@ -32,7 +32,7 @@ module.exports = {
         console.log('Comment error: ' + err);
     }),
 
-    get: function (data) {
+    get: function (data, user) {
         return new Promise((resolve, reject) => {
             // make this accessable
             let _this = this;
@@ -50,9 +50,9 @@ module.exports = {
             }
         })
     },
-    create: function (data) {
+    create: function (data, user) {
         return new Promise((resolve, reject) => {
-            if (PermissionService.test(this.permission.create)) {
+            if (PermissionService.test(this.permission.create, user.privilege)) {
 
                 // make this accessable
                 let _this = this;
@@ -60,7 +60,7 @@ module.exports = {
                 // create and save post data
                 new _this.Comment({
                     content: data.content,
-                    _user: data._user,
+                    _user: user._id,
                     _post: data._post
                 }).save().then(
                   (result) => {
@@ -76,10 +76,25 @@ module.exports = {
         });
 
     },
-    update: function () {
-        if (PermissionService.test(this.permission.update)) {
+    update: function (data, user) {
+        return new Promise((resolve, reject) => {
+            if (PermissionService.test(this.permission.update, user.privilege)) {
+                this.Comment.updateOne({_id: data._id}, {content: data.content}).exec((err, result) => {
+                    if(err) {
+                        console.log('error');
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        console.log('content updated');
+                        console.log(result);
+                        resolve(result);
+                    }
+                });
 
-        }
+            } else {
+                reject("ERROR: no Permission");
+            }
+        });
     },
     delete: function (userId) {
         if (PermissionService.test(this.permission.delete)) {

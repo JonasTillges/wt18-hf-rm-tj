@@ -2,7 +2,10 @@ import Vue from 'vue';
 
 //application Storage
 Vue.prototype.$applicationStorage = {
-    user: {_id: "5c3b3941d2f0f512fce7f255"},
+    isLoggedIn: false,
+    token: "",
+    firebase: Object,
+    user: Object,
     posts: new Array,
     tags: new Array,
     concatAndDeDuplicateObjects: (p, ...arrs) => [].concat(...arrs).reduce((a, b) => !a.filter(c => b[p] === c[p]).length ? [...a, b] : a, []),

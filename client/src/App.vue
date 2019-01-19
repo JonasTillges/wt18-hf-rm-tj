@@ -17,25 +17,22 @@
               Gestelle Fragen
             </router-link>
           </li>
-          <li class="nav-item" v-if="!show">
+          <li class="nav-item" v-if="loggedIn">
             <router-link class="nav-link" to="/post">
               <i class="fa fa-question-circle" aria-hidden="true"></i>
               Frage stellen
             </router-link>
           </li>
-          <li v-if="show" class="nav-item">
+          <li v-if="!loggedIn" class="nav-item">
             <router-link class="nav-link" to="/register">
               <i class="fa fa-sign-in" aria-hidden="true"></i>
               Register
             </router-link>
           </li>
-          <li v-if="show" class="nav-item">
-
-          </li>
         </ul>
         <span class="navbar-text user_nav">
-           <div v-if="!show">
-             <router-link to="/user" class="nav-item nav-user">{{name}}</router-link>
+           <div v-if="loggedIn">
+             <router-link to="/user" class="nav-item nav-user">{{userName}}</router-link>
              <button type="button" class="logout_button btn btn-sm btn-danger" @click="logout">
               <router-link to="/">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -43,8 +40,8 @@
               </router-link>
               </button>
            </div>
-            <div v-if="show">
-              <button type="button" class="btn btn-sm btn-success" @click="logout">
+            <div v-if="!loggedIn">
+              <button type="button" class="btn btn-sm btn-success">
                 <router-link to="/login">
                   <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                   Login
@@ -78,67 +75,57 @@
 </template>
 
 <script>
-  import firebase,{ auth } from 'firebase';
-  import Auth from '@/services/Auth'
-  import ActionService from '@/services/ActionService';
+  import AuthService from '@/services/Auth'
+  import ActionService from '@/services/Action';
   import { EventBus } from './global/event-bus.js';
 
   export default {
     name: 'App',
-    data() {
-      return {
-        name: '',
-        show: true
-      }
+    data () {
+        return {
+          loggedIn: false,
+          userName: ""
+        }
     },
     methods: {
       logout: function() {
-        firebase.auth().signOut().then(() => {
-          console.log('Signed Out');
-          this.name = '';
-        }, function(error) {
-          console.error('Sign Out Error', error);
-        });
+        AuthService.signOut();
       },
       emitListUpdate() {
+        console.log('list-updated');
         EventBus.$emit('list-updated', true);
       }
     },
     mounted() {
 
-
       let _this = this;
 
-      //handels token changes
-      Auth.onTokenChanged();
+      // Firebase Auth init
+      AuthService.init(_this.$applicationStorage);
 
-
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          _this.$applicationStorage.firebase = user;
-          console.log('__________firebase-user____________');
-          console.log(_this.$applicationStorage.firebase);
-          console.log('___________________________________');
-          // User is signed in State.
-          ActionService.getUserData({
-                uid: user.uid
-            }).then((response) => {
-                console.log('HALLOOO!!!!!'+ response.data.user);
-                this.name = response.data.user.name;
-                _this.$applicationStorage.user = response.data.user;
-            });
-            this.show = false;
-            } else {
-            // No user is signed in.
-          _this.show = true;
-          }
+      // Listen for login-status event
+      EventBus.$on('login-status', function(a, b) {
+        console.log("on login status");
+        console.log(a);
+        console.log(b);
+        if (_this.$applicationStorage.isLoggedIn) {
+          _this.$data.loggedIn = true;
+          _this.$data.userName = _this.$applicationStorage.user.name;
+          console.log('logged in');
+        } else {
+          _this.$data.loggedIn = false;
+          _this.$data.userName = "";
+          console.log('logged out');
+        }
       });
 
       console.log(this.$applicationStorage);
 
+      // get initial list of post
       if(this.$applicationStorage.posts.length) {
         console.log('documents from chache');
       } else {
+        //TODO prüfen mit server auth
         ActionService.getList({}).then(
           function (answer) {
             _this.$applicationStorage.addPosts(answer.data.documents, _this.$applicationStorage);
@@ -152,22 +139,8 @@
       }
     },
     updated() {
-      // firebase.auth().onAuthStateChanged((user) => {
-      //   if (user) {
-      //     ActionService.getUserData({
-      //           uid: user.uid
-      //       }).then((response) => {
-      //           console.log(response.data.user);
-      //           this.name = response.data.user.name;
-      //       });
-      //       this.show = false;
-      //       // User is signed in.
-      //       } else {
-      //       this.show = true;
-      //       // No user is signed in.
-      //     }
-      // });
-    },
+      console.log('App.vue updated();')
+    }
   }
 </script>
 

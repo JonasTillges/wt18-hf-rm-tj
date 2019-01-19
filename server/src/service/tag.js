@@ -10,7 +10,7 @@ module.exports = {
      * Object for set the CRUD Security Levels
      */
     permission: {
-        create: SecurityConfiguration.LOGGED_IN,
+        create: SecurityConfiguration.BASIC_USER,
         read: SecurityConfiguration.ALL,
         update: SecurityConfiguration.ADMIN,
         delete: SecurityConfiguration.ADMIN
@@ -33,8 +33,8 @@ module.exports = {
         console.log('Tag error: ' + err);
     }),
 
-    get: function (data) {
-        if (PermissionService.test(this.permission.read)) {
+    get: function (data, user) {
+        if (PermissionService.test(this.permission.read, user.privilege)) {
             var query = this.Tag.find(data);
             // execute the query at a later time
             query.exec(function (err, tags) {
@@ -43,35 +43,34 @@ module.exports = {
         }
     },
     
-    create: function (data) {
+    create: function (data, user) {
 
         return new Promise((resolve, reject) => {
 
-            if (PermissionService.test(this.permission.create)) {
+            if (PermissionService.test(this.permission.create, user.privilege)) {
 
                 // TODO maybe unique index?
                 this.Tag.findOne({name: data.name}).exec(function (err, result) {
 
                     if (err) {
-
-                        console.log('ERROR - TODO ERROR HANDLING!!!!');
                         reject(err);
 
                     } else {
 
                         if (result) {
-
                             console.log('Tag ALREADY EXISTS:' + result);
                             resolve(result);
-
                         } else {
 
                             new this.Tag({
                                 name: data.name
                             }).save().then(
-                              function (result) {
+                              result => {
                                   console.log('Tag CREATED:' + result);
                                   resolve(result);
+                              },
+                              error => {
+                                  reject(error);
                               }
                             );
 
