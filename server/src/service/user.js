@@ -11,23 +11,23 @@ module.exports = {
      */
     permission: {
         create: SecurityConfiguration.ALL,
-        read: SecurityConfiguration.LOGGED_IN,
+        read: SecurityConfiguration.ALL,
         update: SecurityConfiguration.OWNER,
         delete: SecurityConfiguration.ADMIN
     },
 
     role: {
-        user: SecurityConfiguration.LOGGED_IN,
+        user: SecurityConfiguration.BASIC_USER,
         moderator: SecurityConfiguration.OWNER,
         admin: SecurityConfiguration.ADMIN
     },
 
     User: mongoose.model('User', new Schema(
       {
-        uid: { type: String, index: true },
-        email:  {type: String, unique: true },
-        name: String,
-        privilege: { type: String, default: SecurityConfiguration.LOGGED_IN }
+          uid: {type: String, index: true},
+          email: {type: String, unique: true},
+          name: String,
+          privilege: {type: Number, default: SecurityConfiguration.BASIC_USER}
       },
       {
           collection: 'user',
@@ -35,61 +35,57 @@ module.exports = {
       }
     )),
 
-    /**
-     * get User Permission level
-     * @returns {number}
-     */
-    getUserPermission: function () {
-        //TODO get current user and return the permission level
-        return 3;
-    },
-
     get: function (data) {
-        if (PermissionService.test(this.permission.read)) {
-            var query = this.User.find(data);
-            // execute the query at a later time
-            query.exec(function (err, users) {
-                if (err) return handleError(err);
-                // Prints the users
-                //console.log(users);
-            });
 
-            return query;
+        return new Promise((resolve, reject) => {
+            if (PermissionService.test(this.permission.read)) {
+                this.User.find(data).exec(function (err, users) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(users);
+                    }
+                });
+            } else {
+                reject("PERMISSION DENIED: UserService->get");
+            }
+        });
 
-        }
     },
 
     create: function (data) {
 
-        // test for permission and creates the user
-        if (PermissionService.test(this.permission.create)) {
-            this.User.find({email: data.email}).exec(function (err, result) {
-
-                if (err) {
-                    console.log('ERROR - TODO ERROR HANDLING!!!!');
-                    return ;
-                }
-
-                if (result.length) {
-                    console.log('WARNING - TODO USERS already registered - MESSAGE TO USER!!');
-                    return;
-                }
-
-                let newUser = new this.User({
-                    email: data.email,
-                    name: data.name,
-                    uid: data.uid
-                });
-
-                newUser.save().then(
-                  function (result) {
-                      console.log('USER CREATED:' + result);
+        return new Promise((resolve, reject) => {
+            // test for permission and creates the user
+            if (PermissionService.test(this.permission.create)) {
+                let _this = this;
+                this.get({email: data.email}).then(
+                  users => {
+                      if (result.length) {
+                          reject('DUPLICATE USER: User->create()');
+                      } else {
+                          new _this.User({
+                              email: data.email,
+                              name: data.name,
+                              uid: data.uid
+                          }).save().then(
+                            user => {
+                                console.log('USER CREATED:' + user);
+                                resolve(user)
+                            },
+                            error => {
+                                reject(error);
+                            }
+                          );
+                      }
+                  },
+                  error => {
+                      reject(error);
                   }
                 );
+            }
+        });
 
-            }.bind(this));
-
-        }
     },
 
     update: function () {

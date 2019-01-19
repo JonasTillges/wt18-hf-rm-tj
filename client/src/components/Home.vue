@@ -74,9 +74,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
-import AuthenticationService from '@/services/AuthenticationService'
-import Auth from '@/services/Auth'
+import ActionService from '@/services/Action'
 
 export default {
   name: "home",
@@ -88,31 +86,10 @@ export default {
     }
   },
   methods: {
-    
-    registerPage: function(){
-      router.push({ path: '/register' })
-    },
-    logout: function(){
-      Auth.logout();
-    },
     signUp: function (){
-      Auth.register(this.email, this.name, this.password);
+      ActionService.register(this.email, this.name, this.password);
     }
-  },
-  
-  mounted() {
-      // var user = firebase.auth().currentUser;
-      // var name, email, uid;
-     
-      // if (user != null) {
-        
-      //   uid = user.uid;
-      //   email = user.email;
-      //   this.$data.name = email;
-      //   console.log(name)
-      // }else{
-        
-      // }
   }
+
 }
 </script>

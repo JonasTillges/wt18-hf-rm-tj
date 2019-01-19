@@ -5,7 +5,8 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+
+import Auth from '@/services/Auth'
 
 export default {
   name: 'Activation',
@@ -20,16 +21,7 @@ export default {
         console.log(this.$route.query.oobCode);
         console.log('test');
         // Try to apply the email verification code.
-        firebase.auth().applyActionCode(this.$route.query.oobCode).then(function() {
-        // Email address has been verified.
-        console.log('Email has been verified!');
-
-
-      }).catch(function(error) {
-          console.log(error);
-          var user = firebase.auth().currentUser;
-          console.log(user.email);
-      });
-  },
+        Auth.applyActionCode(this.$route.query.oobCode);
+  }
 }
 </script>

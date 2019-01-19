@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="loggedIn">
       <h1>Hi {{name}}, diese Fragen hast du gestellt:</h1>
       <br>
     <div class="list">
@@ -25,26 +25,41 @@
 <script>
 
   import { EventBus } from '../global/event-bus.js';
+  import AuthService from '@/services/Auth'
 
   export default {
   name: 'list',
   data () {
     return {
       name: '',
-      documents: Array
+      documents: Array,
+      loggedIn: AuthService.isReal()
     }
   },
   mounted() {
+
+    //TODO initiales laden der route gibt keine info
+
     let _this = this;
-    
+
+    EventBus.$on('login-status', function() {
+      console.log('login!!!', AuthService.isReal());
+      if (AuthService.isReal()) {
+        _this.$data.loggedIn = true;
+        _this.name = _this.$applicationStorage.user.name;
+      } else {
+        _this.$router.replace('login');
+      }
+    });
+
     let userid = _this.$applicationStorage.user._id;
     this.name = _this.$applicationStorage.user.name;
 
     let posts = this.$applicationStorage.posts;
-    let postArray = []
-    posts.forEach(post => {
+    let postArray = new Array;
+    posts.forEach(function (post) {
         if(post._user._id === userid){
-            let len = postArray.push(post);
+            postArray.push(post);
         }
     });
     console.log(postArray);

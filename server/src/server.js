@@ -4,139 +4,300 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
-const admin = require("firebase-admin");
 
-const serviceAccount = require("./serviceAccountKey.json");
 const DatabaseService = require('./service/database.js');
+const AuthService = require('./service/auth');
 const UserService = require('./service/user');
 const PostService = require('./service/post');
 const CommentService = require('./service/comment');
-
 
 const app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://forum-7ed19.firebaseio.com"
-  });
 
 
 console.log('try to connect to database');
 DatabaseService.connect();
 
-   //getToken
-// admin.auth()
-//     .verifyIdToken(accessToken)
-//     .then(decodedIdToken => {
-//         return firebaseAdmin.auth().getUser(decodedIdToken.uid);
-//     })
-//     .then(user => {
-//         // Do whatever you want with the user.
-//     });
-    
-app.post('/register', (request, response)=>{
-    
-    console.log(request.body.uid);
-    let accessToken = request.body.uid;
-    admin.auth()
-    .verifyIdToken(accessToken)
-    .then(decodedIdToken => {
-        console.log(decodedIdToken);
-        return firebaseAdmin.auth().getUser(decodedIdToken.uid);
-    })
-    .then(user => {
-        console.log(user);
-            
-        response.send({
-            message: `Hallo ${user.email}`
-        });
-        // Do whatever you want with the user.
-    }).catch(err => {
-        console.log('not user');
-        response.send({
-            message: `you are not the real user`
-        });
-    });
-    
-    
-    
-    
-    
-    //UserService.create(request.body);
+console.log('try to connect to firebase');
+AuthService.init();
 
-
-});
-
-app.post('/getUserData', (request, response) => {
-    console.log('_______________ getUserData ________');
-    var data = request.body;
-    UserService.get(data).then(
-            (result) => {
-                let user = result[0]
-                //TODO better way for first or get only one user
+app.post('/register', (request, response)=> {
+    let data = request.body;
+    AuthService.userAuth(data.token)
+    .then(
+      error => {
+          response.send({
+              error: error
+          });
+      },
+      proofed => {
+          UserService.create(data).then(
+            user => {
                 response.send({
                     user: user
                 });
             },
-            (err) => {
-                console.log(err)
+            error => {
                 response.send({
-                    message: `Hallo ${error}`
-                });
+                    error: error
+                })
             }
-        );
+          );
+
+      });
+
 });
 
-app.get('/activate', (request, response) => {
-    console.log(request.body);
-});
-
-app.post('/compose', (request, response)=>{
+app.post('/getUserData', (request, response) => {
     
-    var data = request.body;
-    PostService.create(data).then(
-      (result) => {
-          console.log(result._id);
-          //TODO refactor create and return full post object with tags
-          PostService.get({_id: result._id}).then(
-            (postData) => {
-                console.log(postData);
-                response.send({
-                    document: postData
-                });
-            }
-          );
+    console.log('_______________ getUserData ________');
+    let data = request.body;
+
+    AuthService.userAuth(data.token)
+    .then(
+      user => {
+
+          console.log('_______ userauth return ___________');
+          console.log(user);
+          console.log('___________________');
+
+          response.send({
+              user: user
+          });
+      },
+      err => {
+          response.send({
+              error: err
+          });
+      });
+
+
+});
+
+//TODO - implement activated flag for user
+app.get('/activate', (request, response) => {
+    let data = request.body;
+    AuthService.userAuth(data.token).then(
+      user => {
+          response.send({
+              documents: user
+          });
+      },
+      error => {
+          response.send({
+              error: error
+          })
       }
     );
 });
 
-app.post('/comment', (request, response)=>{
-    var data = request.body;
-    console.log(data);
-    CommentService.create(data).then(
-      (result) => {
-          //TODO refactor create and return full post object with tags
-          PostService.get({_id: result._post}).then(
-            (result) => {
+app.post('/compose', (request, response)=> {
+    let data = request.body;
+    AuthService.userAuth(data.token)
+    .then(
+      user => {
+          console.log('_______ userauth return ___________');
+          console.log(user);
+          console.log('___________________');
+          PostService.create(data, user).then(
+            result => {
+                console.log(result._id);
+                PostService.get({_id: result._id}).then(
+                  (postData) => {
+                      console.log(postData);
+                      response.send({
+                          document: postData
+                      });
+                  }
+                );
+            },
+            error => {
                 response.send({
-                    document: result
+                    error: error
                 });
             }
           );
+      },
+      error => {
+          response.send({
+              error: error
+          });
       }
     );
+
 });
+
+app.post('/editPost', (request, response) => {
+    let data = request.body;
+
+    // get Post first for author uid -> check for owner
+    PostService.get({_id: data._id}, true).then(
+      posts => {
+          let post = posts.pop();
+          console.log(post);
+          // authenticate the user and check ownership
+          AuthService.userAuth(data.token, post._user.uid)
+          .then(
+            user => {
+
+                console.log('_______ userauth return ___________');
+                console.log(user);
+                console.log('___________________');
+
+                PostService.update(data, user).then(
+                  (result) => {
+                      PostService.get({_id: data._id}).then(
+                        (postData) => {
+                            response.send({
+                             document: postData.pop()
+                        });
+                        },
+                        error => {
+                            response.send({
+                                error: error
+                            })
+                        }
+                      );
+                  },
+                  error => {
+                      response.send({
+                          error: error
+                      })
+                  }
+                );
+            },
+            error => {
+                response.send({
+                    error: error
+                });
+            }
+          );
+      },
+      error => {
+          response.send({
+              error: error
+          });
+      }
+    )
+});
+
+app.post('/comment', (request, response)=> {
+    let data = request.body;
+    console.log(data);
+
+    AuthService.userAuth(data.token).then(
+      user => {
+          CommentService.create(data, user).then(
+            comment => {
+                PostService.get({_id: comment._post}).then(
+                  (post) => {
+                      response.send({
+                          document: post
+                      });
+                  },
+                  error => {
+                      response.send({
+                          error: error
+                      });
+                  }
+                );
+            },
+            error => {
+                response.send({
+                    error: error
+                })
+            }
+          );
+      },
+      error => {
+
+      }
+    );
+
+
+});
+
+app.post('/editComment', (request, response) => {
+    let data = request.body;
+
+    // get Post first for author uid -> check for owner
+    CommentService.get({_id: data._id}).then(
+      comments => {
+          let comment = comments.pop();
+          console.log(comment);
+          // authenticate the user and check ownership
+          AuthService.userAuth(data.token, comment._user.uid)
+          .then(
+            user => {
+
+                console.log('_______ userauth return ___________');
+                console.log(user);
+                console.log('___________________');
+
+                CommentService.update(data, user).then(
+                  (result) => {
+                      console.log("comment updated"); 
+                      PostService.get({_id: comment._post}).then(
+                        (postData) => {
+                            response.send({
+                                document: postData.pop()
+                            });
+                        },
+                        error => {
+                            response.send({
+                                error: error
+                            })
+                        }
+                      );
+                  },
+                  error => {
+                      response.send({
+                          error: error
+                      })
+                  }
+                );
+            },
+            error => {
+                response.send({
+                    error: error
+                });
+            }
+          );
+      },
+      error => {
+          response.send({
+              error: error
+          });
+      }
+    )
+});
+
 
 app.post('/post', (request, response) => {
 
-    var data = request.body;
-    PostService.get(data).then(
-      (result) => {
+    let data = request.body;
+
+    AuthService.userAuth(data.token).then(
+      user => {
+          PostService.get(data).then(
+            (result) => {
+                response.send({
+                    document: result.pop()
+                });
+            },
+            (error) => {
+                response.send({
+                    error: error
+                });
+            }
+          );
+      },
+      error => {
           response.send({
-              document: result.pop()
-          });
+              error: "Diese Seite ist nur für eingeloggt User verfügbar."
+          })
       }
     );
 
@@ -144,20 +305,37 @@ app.post('/post', (request, response) => {
 
 app.post('/list', (request, response) => {
 
-    //TODO optimize result and remove privacy Data!!!
+    let data = request.body;
 
-    var data = request.body;
     PostService.get(data).then(
-      (result) => {
-          console.log(result[0]);
+      posts => {
           response.send({
-              documents: result
+              documents: posts
           });
+      },
+      error => {
+          response.send({
+              error: error
+          })
       }
     );
 
 });
 
-app.post('/dummy', (request, response)=>{});
+app.post('/dummy', (request, response)=> {
+    let data = request.body;
+    AuthService.userAuth(data.token).then(
+      user => {
+          response.send({
+              documents: user
+          });
+      },
+      error => {
+          response.send({
+              error: error
+          })
+      }
+    );
+});
 
 app.listen(process.env.PORT || 8081);

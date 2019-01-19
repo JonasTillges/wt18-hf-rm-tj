@@ -1,6 +1,6 @@
 <template>
     <div>
-        <list :options="defaultOptions"  />
+        <list />
     </div>
 </template>
 
@@ -22,6 +22,6 @@ import List from './ListUser.vue'
 
         }
     }
-
+//TODO ????? was das
 
 </script>

@@ -38,6 +38,7 @@
 
     // Listen for list-updated event and its payload.
     EventBus.$on('list-updated', function(value) {
+      console.log('list update');
       _this.$data.documents = _this.$applicationStorage.posts;
     });
 

@@ -25,7 +25,6 @@
                 this.anim.play();
 
             },
-
             stop: function () {
                 this.anim.stop();
             },
@@ -41,6 +40,7 @@
             onSpeedChange: function () {
                 this.anim.setSpeed(this.animationSpeed);
             }
+            //TODO check for performance -> animation functions should not run in background when not in page DESTRUCTOR?
         }
     }
 </script>

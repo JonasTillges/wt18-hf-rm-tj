@@ -10,8 +10,9 @@ import User from '@/components/User'
 import Compose from '@/components/Compose'
 import Verification from '@/components/Verify'
 import Activation from '@/components/Activation'
+import AuthService from '@/services/Auth';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -64,8 +65,6 @@ export default new Router({
       path: '/user',
       name: 'listPosts',
       component: User
-    },
-
-
+    }
   ]
 })

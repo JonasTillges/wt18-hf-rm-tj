@@ -13,7 +13,7 @@ import "../node_modules/bootstrap/dist/js/bootstrap.bundle.js";
 //TODO good for what?
 Vue.config.productionTip = false;
 
-// Initialize Firebase TODO security (do on server ?!)
+// Initialize Firebase TODO auslagern in config file
 var config = {
   apiKey: "AIzaSyBVRMdtss2rCWB3UpyfX_2eXjLcoIhP-gQ",
   authDomain: "forum-7ed19.firebaseapp.com",

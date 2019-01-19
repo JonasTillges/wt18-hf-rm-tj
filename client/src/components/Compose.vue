@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="loggedIn">
     <h1>Thema verfassen</h1>
     <div class="form-group">
       <input v-model="title" type="text" class="form-control" id="title" aria-describedby="titleHelp" placeholder="Was ist dein Thema?">
@@ -21,21 +21,37 @@
 </template>
 
 <script>
-  import ActionService from '@/services/ActionService'
+  import ActionService from '@/services/Action';
+  import AuthService from '@/services/Auth';
+  import { EventBus } from '../global/event-bus.js';
+
   export default {
     name: 'list',
     data () {
       return {
         title: '',
         content: '',
-        tags: ''
+        tags: '',
+        loggedIn: AuthService.isReal()
       }
+    },
+    mounted() {
+      let _this = this;
+      // Listen for login-status event
+      EventBus.$on('login-status', function() {
+        if (AuthService.isReal()) {
+          _this.$data.loggedIn = true;
+        } else {
+          _this.$router.replace('login');
+        }
+
+      });
     },
     methods: {
       compose: function () {
         let _this = this;
         ActionService.compose({
-          _id: _this.$applicationStorage.user._id,
+          token: _this.$applicationStorage.token,
           title: _this.title,
           content: _this.content,
           tags: _this.tags
@@ -48,5 +64,6 @@
         });
       }
     }
+
   }
 </script>
