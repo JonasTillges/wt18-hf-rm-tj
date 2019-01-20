@@ -157,7 +157,7 @@
         this.errors = [];
 
         if (this.newComment == "") {
-          this.errors.push('Bitte schreibe erst deinen Kommentar.');
+          this.errors.push('Schreibe einen Kommentar.');
         }
         e.preventDefault();
       },
@@ -213,13 +213,13 @@
           title: this.$data.edit.post.title,
           content: this.$data.edit.post.content
         }).then(
-          function (result) {
+          result => {
             _this.$data.document.title = result.data.document.title;
             _this.$data.document.content = result.data.document.content
             _this.postEditClose();
           },
-          function (error) {
-            console.log(error);
+          error => {
+            EventBus.$emit('notification', error.data.error);
           }
         );
 
@@ -242,12 +242,12 @@
           _id: this.$data.edit.comment._id,
           content: this.$data.edit.comment.content
         }).then(
-          function (result) {
+          result => {
             _this.$data.document = result.data.document;
             _this.commentEditClose();
           },
-          function (error) {
-            console.log(error);
+          error => {
+            EventBus.$emit('notification', error.data.error);
           }
         );
       },

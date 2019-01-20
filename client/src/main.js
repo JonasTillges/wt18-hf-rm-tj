@@ -12,10 +12,9 @@ import "../node_modules/bootstrap/dist/js/bootstrap.bundle.js";
 // Load the full build.
 var _ = require('lodash');
 
-//TODO good for what?
+
 Vue.config.productionTip = false;
 
-// TODO options for safe text for plain text copy paste OR search for other, auslagern?
 Vue.use(wysiwyg, {
   hideModules: {
     "code": true,
@@ -26,7 +25,6 @@ Vue.use(wysiwyg, {
   forcePlainTextOnPaste: true
 });
 
-// TODO auslagern?
 Vue.filter('formatDate', function(value) {
   if (value) {
     return moment(String(value)).format('DD.MM.YYYY HH:mm')
@@ -42,4 +40,3 @@ new Vue({
 });
 
 
-//TODO SPINNER use fa-spin !!!
