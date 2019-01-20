@@ -9,20 +9,11 @@ import "./global/storage";
 import moment from 'moment'
 import "../node_modules/jquery/dist/jquery.js";
 import "../node_modules/bootstrap/dist/js/bootstrap.bundle.js";
+// Load the full build.
+var _ = require('lodash');
 
 //TODO good for what?
 Vue.config.productionTip = false;
-
-// Initialize Firebase TODO auslagern in config file
-var config = {
-  apiKey: "AIzaSyBVRMdtss2rCWB3UpyfX_2eXjLcoIhP-gQ",
-  authDomain: "forum-7ed19.firebaseapp.com",
-  databaseURL: "https://forum-7ed19.firebaseio.com",
-  projectId: "forum-7ed19",
-  storageBucket: "forum-7ed19.appspot.com",
-  messagingSenderId: "593613711325"
-};
-firebase.initializeApp(config);
 
 // TODO options for safe text for plain text copy paste OR search for other, auslagern?
 Vue.use(wysiwyg, {
@@ -44,8 +35,6 @@ new Vue({
   components: { App },
   template: '<App/>'
 });
-
-
 
 
 //TODO SPINNER use fa-spin !!!

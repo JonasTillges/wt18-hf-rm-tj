@@ -1,60 +1,73 @@
 <template>
   <div class="container">
 
-    <div class="post_content" v-if="!edit.post.show">
-      <h1>{{document.title}}</h1>
-      <hr>
-      <div>{{document._user.name}} schrieb am: {{document.created_at | formatDate}}</div>
-      <div v-html="document.content" class="post_content"></div>
-      <div class="post_tags">
-        <span v-for="(doc, index) in document._tags" class="post_tag">
-          {{doc._tag.name}}
-        </span>
+    <div class="card border-light mb-3">
+      <div class="card-header text-muted">
+        <div class="text-muted">{{document._user.name}} schrieb am {{document.created_at | formatDate}}</div>
       </div>
-      <div class="post_edit" v-if="owner && isLoggedIn">
-        <button type="button" class="btn btn-sm btn-danger" @click="postEditShow(document.title, document.content)">
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-          Editieren
-        </button>
-      </div>
-    </div>
-    <div class="post_content-edit" v-if="edit.post.show">
-      <input v-model="edit.post.title" type="text" class="form-control" id="title" placeholder="Was ist dein Thema?">
-      <wysiwyg v-model="edit.post.content"/>
-      <button type="button" class="btn btn-sm btn-success" @click="postEditPost()">
-        <i class="fa  fa-floppy-o" aria-hidden="true"></i>
-        Speichern
-      </button>
-      <button type="button" class="btn btn-sm btn-danger" @click="postEditClose()">
-        <i class="fa  fa-times-circle-o" aria-hidden="true"></i>
-        Abbrechen
-      </button>
-    </div>
-
-    <div class="post_comments">
-      <div v-for="(doc, index) in document._comments" class="post_comment">
-        <hr>
-        <div class="post_comment-content" v-if="edit.comment._id != doc._id || !edit.comment.show">
-          <div>Antwort von: {{doc._user.name}}, am {{doc.created_at | formatDate}}</div>
-          <div v-html="doc.content" class="post_comment-content"></div>
-          <div class="comment_edit" v-if="isOwner(doc._user._id)">
-            <button v-if="!edit.show" type="button" class="btn btn-sm btn-danger" @click="commentEditShow(doc._id, doc.content)">
+      <div class="card-body">
+        <div class="post_content" v-if="!edit.post.show">
+          <h1>{{document.title}}</h1>
+          <div v-html="document.content" class="post_content"></div>
+          <div class="post_tags">
+          <span v-for="(doc) in document._tags" :key="doc._tag._id" class="post_tag">
+            {{doc._tag.name}}
+          </span>
+          </div>
+          <div class="post_edit" v-if="owner && isLoggedIn">
+            <button type="button" class="btn btn-sm btn-danger" @click="postEditShow(document.title, document.content)">
               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
               Editieren
             </button>
           </div>
         </div>
-        <div v-if="edit.comment._id == doc._id && edit.comment.show">
-          <wysiwyg v-model="edit.comment.content"/>
-          <button type="button" class="btn btn-sm btn-success" @click="commentEditComment()">
+        <div class="post_content-edit" v-if="edit.post.show">
+          <input v-model="edit.post.title" type="text" class="form-control" id="title" placeholder="Was ist dein Thema?">
+          <wysiwyg v-model="edit.post.content"/>
+          <button type="button" class="btn btn-sm btn-success" @click="postEditPost()">
             <i class="fa  fa-floppy-o" aria-hidden="true"></i>
             Speichern
           </button>
-          <button type="button" class="btn btn-sm btn-danger" @click="commentEditClose()">
+          <button type="button" class="btn btn-sm btn-danger" @click="postEditClose()">
             <i class="fa  fa-times-circle-o" aria-hidden="true"></i>
             Abbrechen
           </button>
         </div>
+      </div>
+    </div>
+
+    <div class="post_comments">
+      <div v-for="(doc) in document._comments" :key="doc._id" class="post_comment">
+
+        <div class="card border-light mb-3">
+          <div class="card-header text-muted">
+            {{doc._user.name}} antwortete am {{doc.created_at | formatDate}}
+          </div>
+          <div class="card-body">
+            <div  v-if="edit.comment._id != doc._id || !edit.comment.show">
+              <div v-html="doc.content" class="post_comment-content"></div>
+              <div class="comment_edit" v-if="isOwner(doc._user._id)">
+                <button v-if="!edit.show" type="button" class="btn btn-sm btn-danger" @click="commentEditShow(doc._id, doc.content)">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  Editieren
+                </button>
+              </div>
+            </div>
+            <div v-if="edit.comment._id == doc._id && edit.comment.show">
+              <wysiwyg v-model="edit.comment.content"/>
+              <button type="button" class="btn btn-sm btn-success" @click="commentEditComment()">
+                <i class="fa  fa-floppy-o" aria-hidden="true"></i>
+                Speichern
+              </button>
+              <button type="button" class="btn btn-sm btn-danger" @click="commentEditClose()">
+                <i class="fa  fa-times-circle-o" aria-hidden="true"></i>
+                Abbrechen
+              </button>
+            </div>
+          </div>
+          </div>
+        </div>
+
       </div>
       <div class="post_new-comment" v-if="isLoggedIn">
         <h6>Jetzt antworten</h6>

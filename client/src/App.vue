@@ -32,7 +32,9 @@
         </ul>
         <span class="navbar-text user_nav">
            <div v-if="loggedIn">
-             <router-link to="/user" class="nav-item nav-user">{{userName}}</router-link>
+             <router-link to="/user" class="nav-item nav-user">
+               <i class="fa fa-user-circle-o" aria-hidden="true"></i> {{userName}}
+             </router-link>
              <button type="button" class="logout_button btn btn-sm btn-danger" @click="logout">
               <router-link to="/">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -52,8 +54,17 @@
       </div>
     </nav>
 
+    <div class="notification_wrapper container">
+      <notification/>
+    </div>
+
+
     <div class="component-wrapper">
       <router-view/>
+    </div>
+
+    <div class="toasts_wrapper">
+      <toasts/>
     </div>
 
     <!-- Footer -->
@@ -61,11 +72,10 @@
       <div class="copyright py-4 text-center text-white">
         <div class="container">
           <div>
-            <p class="lead mb-0">Technische Hochschule Rosenheim
-              <br>Hochschulstraße 1, 83024 Rosenheim</p>
+            <p class="lead mb-2">Technische Hochschule Rosenheim
+              <br>Hochschulstraße 1, 83024 Rosenheim
+            </p>
           </div>
-        </div>
-        <div class="container">
           <small>Copyright &copy; StudyUp 2018</small>
         </div>
       </div>
@@ -75,12 +85,18 @@
 </template>
 
 <script>
-  import AuthService from '@/services/Auth'
+  import Notification from './components/Notification.vue';
+  import Toasts from './components/Toasts.vue';
+  import AuthService from '@/services/Auth';
   import ActionService from '@/services/Action';
   import { EventBus } from './global/event-bus.js';
 
   export default {
     name: 'App',
+    components: {
+      'notification': Notification,
+      'toasts': Toasts
+    },
     data () {
         return {
           loggedIn: false,
@@ -139,7 +155,8 @@
       }
     },
     updated() {
-      console.log('App.vue updated();')
+      //clear notification
+      EventBus.$emit('notification', "");
     }
   }
 </script>

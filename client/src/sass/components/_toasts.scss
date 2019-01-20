@@ -1,0 +1,19 @@
+.toasts_wrapper {
+
+    .toasts {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+    }
+
+    .toast {
+        opacity: 1;
+        margin: 0 1rem 1rem 0;
+        background-color: white;
+    }
+
+    .toast-header {
+        background-color: $secondary;
+        color: white;
+    }
+}

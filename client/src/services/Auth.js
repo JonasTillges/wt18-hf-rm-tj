@@ -3,6 +3,17 @@ import ActionService from '@/services/Action'
 import Router from '@/router/index.js'
 import { EventBus } from '@/global/event-bus.js';
 
+// Initialize Firebase 
+var config = {
+    apiKey: "AIzaSyBVRMdtss2rCWB3UpyfX_2eXjLcoIhP-gQ",
+    authDomain: "forum-7ed19.firebaseapp.com",
+    databaseURL: "https://forum-7ed19.firebaseio.com",
+    projectId: "forum-7ed19",
+    storageBucket: "forum-7ed19.appspot.com",
+    messagingSenderId: "593613711325"
+  };
+firebase.initializeApp(config);
+
 export default {
 
     $applicationStorage: Object,
@@ -34,8 +45,7 @@ export default {
               });
           },
           (err) => {
-              //TODO Notification no user with this login credentials
-              console.log(err.message);
+              EventBus.$emit('notification', err.message);
           }
         );
     },

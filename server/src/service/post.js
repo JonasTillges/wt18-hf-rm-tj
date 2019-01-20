@@ -34,7 +34,8 @@ module.exports = {
           timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}
       }
       )
-    ).on('error', function (err) {
+    )
+    .on('error', function (err) {
         console.log('Post error: ' + err);
     }),
 
@@ -231,5 +232,6 @@ module.exports = {
         });
 
     }
+
 
 };
