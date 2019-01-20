@@ -17,7 +17,12 @@ Vue.config.productionTip = false;
 
 // TODO options for safe text for plain text copy paste OR search for other, auslagern?
 Vue.use(wysiwyg, {
-  hideModules: { "code": true },
+  hideModules: {
+    "code": true,
+    "headings": true,
+    "orderedList": true,
+    "table": true,
+  },
   forcePlainTextOnPaste: true
 });
 

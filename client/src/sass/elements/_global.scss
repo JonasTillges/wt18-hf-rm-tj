@@ -1,6 +1,7 @@
 // Typography
 body {
   @include body-font;
+  overflow-x: hidden;
 }
 
 h1,

@@ -1,27 +1,62 @@
 <template>
     <div>
-        <list />
+        <list :documents="documents"  />
     </div>
 </template>
 
 
 <script>
-import List from './ListUser.vue'
+import List from '../components/List.vue';
+import { EventBus } from '../global/event-bus.js';
+import AuthService from '@/services/Auth'
 
     export default {
-        name: 'listPosts',
+        name: 'User',
         components: {
             'list': List
         },
         data() {
             return {
-
+                name: '',
+                documents: Array,
+                loggedIn: AuthService.isReal(),
             }
         },
         methods: {
+            filterForUser: function () {
+                let _this = this;
+                return _.filter(
+                  _this.$applicationStorage.posts,
+                  function(o) {
+                      return (o._user._id == _this.$applicationStorage.user._id);
+                  }
+                )
+            }
+        },
+        mounted() {
+            let _this = this;
+
+            this.$data.name = _this.$applicationStorage.user.name;
+            // redirect to login if not logged in
+            EventBus.$on('login-status', function() {
+                if (AuthService.isReal()) {
+                    _this.$data.loggedIn = true;
+                    _this.$data.name = _this.$applicationStorage.user.name;
+                } else {
+                    _this.$router.replace('login');
+                }
+            });
+
+            if (this.$applicationStorage.posts.length){
+                this.$data.documents = this.filterForUser();
+            }
+            // Listen for list-updated event and its payload.
+            EventBus.$on('list-updated', function (value) {
+                _this.$data.documents = _this.filterForUser();
+            });
+
 
         }
     }
-//TODO ????? was das
 
 </script>
