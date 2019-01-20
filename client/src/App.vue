@@ -161,7 +161,7 @@
   }
 </script>
 
-<style lang="scss">
-  @import './sass/app.scss';
-</style>
 
+ <style lang="scss"> 
+   @import './sass/app.scss';
+ </style>
