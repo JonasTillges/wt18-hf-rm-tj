@@ -169,7 +169,7 @@
             _this.$data.document = answer.data.document.pop();
             _this.$data.newComment =  "";
           }, function (error) {
-            console.log(err.message)
+            EventBus.$emit('notification', error.message);
           })
       },
 
@@ -192,7 +192,6 @@
           content: this.$data.edit.post.content
         }).then(
           function (result) {
-            console.log(result);
             _this.$data.document.title = result.data.document.title;
             _this.$data.document.content = result.data.document.content
             _this.postEditClose();
@@ -222,7 +221,6 @@
           content: this.$data.edit.comment.content
         }).then(
           function (result) {
-            console.log(result);
             _this.$data.document = result.data.document;
             _this.commentEditClose();
           },

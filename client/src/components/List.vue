@@ -1,7 +1,6 @@
 <template>
   <div class="container">
 
-
     <div class="list">
       <div v-for="(item) in documents" :key="item._id" class="list_post">
 
@@ -34,29 +33,8 @@
 </template>
 
 <script>
-
-  import {EventBus} from '../global/event-bus.js';
-
   export default {
     name: 'list',
-    data () {
-      return {
-        documents: Array
-      }
-    },
-    mounted() {
-
-      let _this = this;
-
-      // Listen for list-updated event and its payload.
-      EventBus.$on('list-updated', function (value) {
-        console.log('list update');
-        _this.$data.documents = _this.$applicationStorage.posts;
-      });
-
-      this.$data.documents = this.$applicationStorage.posts;
-    }
-
-
+    props: ['documents']
   }
 </script>

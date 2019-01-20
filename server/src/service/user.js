@@ -45,7 +45,12 @@ module.exports = {
                     if (err) {
                         reject(err);
                     } else {
-                        resolve(users);
+                        if(users.length) {
+                            resolve(users);
+                        } else {
+                            reject('No User found');
+                        }
+
                     }
                 });
             } else {
@@ -61,25 +66,14 @@ module.exports = {
             // test for permission and creates the user
             if (PermissionService.test(this.permission.create)) {
                 let _this = this;
-                this.get({email: data.email}).then(
-                  users => {
-                      if (result.length) {
-                          reject('DUPLICATE USER: User->create()');
-                      } else {
-                          new _this.User({
-                              email: data.email,
-                              name: data.name,
-                              uid: data.uid
-                          }).save().then(
-                            user => {
-                                console.log('USER CREATED:' + user);
-                                resolve(user)
-                            },
-                            error => {
-                                reject(error);
-                            }
-                          );
-                      }
+                new _this.User({
+                    email: data.email,
+                    name: data.name,
+                    uid: data.uid
+                }).save().then(
+                  user => {
+                      console.log('USER CREATED:' + user);
+                      resolve(user)
                   },
                   error => {
                       reject(error);

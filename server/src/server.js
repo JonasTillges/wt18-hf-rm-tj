@@ -24,17 +24,21 @@ console.log('try to connect to firebase');
 AuthService.init();
 
 app.post('/register', (request, response)=> {
+
+    console.log('___________register');
+
     let data = request.body;
-    AuthService.userAuth(data.token)
+    console.log(data);
+    // with registration flag
+    AuthService.userAuth(data.token, false, true)
     .then(
-      error => {
-          response.send({
-              error: error
-          });
-      },
       proofed => {
+          console.log("create user");
+          console.log(data);
           UserService.create(data).then(
             user => {
+                console.log('created');
+                console.log(user);
                 response.send({
                     user: user
                 });
@@ -46,7 +50,12 @@ app.post('/register', (request, response)=> {
             }
           );
 
-      });
+      }),
+      error => {
+          response.send({
+              error: error
+          });
+      };
 
 });
 
@@ -98,9 +107,7 @@ app.post('/compose', (request, response)=> {
     AuthService.userAuth(data.token)
     .then(
       user => {
-          console.log('_______ userauth return ___________');
-          console.log(user);
-          console.log('___________________');
+
           PostService.create(data, user).then(
             result => {
                 console.log(result._id);
