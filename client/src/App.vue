@@ -109,32 +109,34 @@
       },
       emitListUpdate() {
         EventBus.$emit('list-updated', true);
-      }
-    },
-    mounted() {
-
-      let _this = this;
-
-      // Firebase Auth init
-      AuthService.init(_this.$applicationStorage);
-
-      // Listen for login-status event
-      EventBus.$on('login-status', function() {
+      },
+      loginState() {
+        let _this = this;
         if (_this.$applicationStorage.isLoggedIn) {
           _this.$data.loggedIn = true;
-          console.log(_this.$applicationStorage.user);
           _this.$data.userName = _this.$applicationStorage.user.name;
         } else {
           _this.$data.loggedIn = false;
           _this.$data.userName = "";
         }
+      }
+    },
+    mounted() {
+      let _this = this;
+
+      // Firebase Auth init
+      AuthService.init(_this.$applicationStorage);
+
+
+      // Listen for login-status event
+      EventBus.$on('login-status', function() {
+        _this.loginState();
       });
 
 
       // get initial list of post
       if(this.$applicationStorage.posts.length) {
       } else {
-        //TODO prüfen mit server auth
         ActionService.getList({}).then(
           function (answer) {
             _this.$applicationStorage.addPosts(answer.data.documents, _this.$applicationStorage);
@@ -146,12 +148,12 @@
 
         );
       }
-
-      console.log(this.$applicationStorage);
     },
     updated() {
       //clear notification
       EventBus.$emit('notification', "");
+      _this.loginState();
+      
     }
   }
 </script>

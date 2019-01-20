@@ -59,8 +59,6 @@ export default {
      * @param password
      */
     register(email, name, password){
-        //HOTFIX
-        this.$applicationStorage.user.name = name;
 
         firebase.auth().createUserWithEmailAndPassword(email, password).then(
           (user) => {
@@ -125,7 +123,7 @@ export default {
             if (user) {
 
                 this.getTokenPromise().then((idToken) => {
-                    //TODO register will fail
+
                     ActionService.getUserData({
                         token: this.$applicationStorage.token
                     }).then((response) => {
@@ -137,9 +135,6 @@ export default {
                         }
                     });
 
-                }).catch((error) => {
-                    // Handle error
-                    console.log(error);
                 });
 
                 this.$applicationStorage.firebase = user;

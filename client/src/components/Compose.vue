@@ -17,7 +17,7 @@
       </small>
     </div>
       <p v-if="errors.length">
-        <b>Bitte behebe die folgenden fehler:</b>
+        <b>Du hast etwas vergessen:</b>
         <ul>
           <li v-for="error in errors">{{ error }}</li>
         </ul>
@@ -63,7 +63,7 @@
           this.errors = [];
 
           if (this.title == "") {
-            this.errors.push('Du hast den Titel vergessen.');
+            this.errors.push('Dein Post braucht einen Titel.');
           }
           if (this.content == "") {
             this.errors.push('Dein Post braucht Content.');
