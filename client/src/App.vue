@@ -61,11 +61,10 @@
       <div class="copyright py-4 text-center text-white">
         <div class="container">
           <div>
-            <p class="lead mb-0">Technische Hochschule Rosenheim
-              <br>Hochschulstraße 1, 83024 Rosenheim</p>
+            <p class="lead mb-2">Technische Hochschule Rosenheim
+              <br>Hochschulstraße 1, 83024 Rosenheim
+            </p>
           </div>
-        </div>
-        <div class="container">
           <small>Copyright &copy; StudyUp 2018</small>
         </div>
       </div>

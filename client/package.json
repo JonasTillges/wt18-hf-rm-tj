@@ -20,7 +20,8 @@
     "vue-lottie": "^0.2.1",
     "vue-router": "^3.0.1",
     "vue-wysiwyg": "^1.7.2",
-    "moment": "^2.23"
+    "moment": "^2.23",
+    "lowdash": "^4.17"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
