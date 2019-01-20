@@ -25,7 +25,7 @@ module.exports = {
     User: mongoose.model('User', new Schema(
       {
           uid: {type: String, index: true},
-          email: {type: String, unique: true},
+          email: {type: String, unique: true, select: false},
           name: String,
           privilege: {type: Number, default: SecurityConfiguration.BASIC_USER}
       },
@@ -39,7 +39,9 @@ module.exports = {
 
         return new Promise((resolve, reject) => {
             if (PermissionService.test(this.permission.read)) {
-                this.User.find(data).exec(function (err, users) {
+                this.User.find(data)
+                .select("+email")
+                .exec(function (err, users) {
                     if (err) {
                         reject(err);
                     } else {

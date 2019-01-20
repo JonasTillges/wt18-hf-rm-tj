@@ -68,7 +68,7 @@ module.exports = {
                 // make this accessible
                 let _this = this;
                 this.Post.find(data)
-                .populate({path: '_user', model: 'User'})
+                .populate('_user')
                 .exec((err, posts) => {
                     if (err) {
                         reject(err);
@@ -185,18 +185,18 @@ module.exports = {
         });
 
     },
-    
+
     update: function (data, user) {
         return new Promise((resolve, reject) => {
             if (PermissionService.test(this.permission.update, user.privilege)) {
                 this.Post.updateOne({_id: data._id}, {title: data.title, content: data.content}).exec((err, result) => {
-                   if(err) {
-                       reject(err);
-                   } else {
-                       console.log('post updated');
-                       console.log(result);
-                       resolve(result);
-                   }
+                    if (err) {
+                        reject(err);
+                    } else {
+                        console.log('post updated');
+                        console.log(result);
+                        resolve(result);
+                    }
                 });
 
             } else {
@@ -204,13 +204,13 @@ module.exports = {
             }
         });
     },
-    
+
     delete: function (data, user) {
         if (PermissionService.test(this.permission.delete)) {
 
         }
     },
-    
+
     postRelation: function (data) {
 
         return new Promise((resolve, reject) => {
