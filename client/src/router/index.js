@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import AuthService from '@/services/Auth'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Register from '@/components/Register'
@@ -41,7 +42,21 @@ export default new Router({
     {
       path: '/post',
       name: 'Beitrag verfassen',
-      component: Compose
+      component: Compose,
+      beforeEnter: (to, from, next) => {
+        AuthService.getTokenPromise().then(
+          result => {
+            if (result) {
+              next();
+            } else {
+              next('login');
+            }
+          },
+          error => {
+            next('login');
+          }
+        );
+      }
     },
     {
       path: '/post/:id',
@@ -51,7 +66,21 @@ export default new Router({
     {
       path: '/user',
       name: 'listPosts',
-      component: User
+      component: User,
+      beforeEnter: (to, from, next) => {
+        AuthService.getTokenPromise().then(
+          result => {
+            if (result) {
+              next();
+            } else {
+              next('login');
+            }
+          },
+          error => {
+            next('login');
+          }
+        );
+      }
     }
   ]
 })
