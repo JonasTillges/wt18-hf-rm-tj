@@ -3,10 +3,10 @@ const assert = require('assert');
 const mongoose = require('mongoose');
 
 const dbCredentials = {
-    dest: process.env.MONGO_URL || "mongodb://mongo/",
+    dest: process.env.MONGO_URL || "mongodb://server-database:27017/posts",
     user: process.env.MONGO_ROOT_USERNAME || "",
     password: process.env.MONGO_ROOT_PASSWORD || "",
-    db: process.env.MONGO_DATABASE || "dev"
+    db: process.env.MONGO_DATABASE || ""
 };
 
 const dbStatus = {
@@ -26,8 +26,6 @@ module.exports = {
      */
     connect: function () {
 
-        console.log(dbCredentials);
-
         var options = {
             useNewUrlParser: true
         };
@@ -35,6 +33,9 @@ module.exports = {
         //  check for prod mode
         if (dbCredentials.user) {
             options.auth = {user: dbCredentials.user, password: dbCredentials.password}
+        }
+
+        if (dbCredentials.db) {
             options.dbName = dbCredentials.db
         }
 

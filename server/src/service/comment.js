@@ -16,7 +16,9 @@ module.exports = {
         delete: SecurityConfiguration.MODERATOR
     },
 
-
+    /**
+     * Object with db model
+     */
     Comment: mongoose.model('Comment', new Schema(
       {
           content: String,
@@ -29,9 +31,15 @@ module.exports = {
           timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}
       })
     ).on('error', function (err) {
-        console.log('Comment error: ' + err);
+        console.log('Comment Error: ' + err);
     }),
 
+    /**
+     * get comments by data 
+     * @param data for select
+     * @param user for permission
+     * @returns {Promise}
+     */
     get: function (data, user) {
         return new Promise((resolve, reject) => {
             // make this accessable
@@ -50,6 +58,13 @@ module.exports = {
             }
         })
     },
+
+    /**
+     * create a comment
+     * @param data for new document
+     * @param user for permission
+     * @returns {Promise}
+     */
     create: function (data, user) {
         return new Promise((resolve, reject) => {
             if (PermissionService.test(this.permission.create, user.privilege)) {
@@ -64,39 +79,46 @@ module.exports = {
                     _post: data._post
                 }).save().then(
                   (result) => {
-                      console.log('Comment CREATED:' + result);
                       resolve(result);
                   }
                 );
 
-
             } else {
-                reject("PERMISSION DENIED: ")
+                reject("PERMISSION DENIED: Create Comment ") ;
             }
         });
 
     },
+
+    /**
+     * update a comment
+     * @param data to find and update
+     * @param user for permission
+     * @returns {Promise}
+     */
     update: function (data, user) {
         return new Promise((resolve, reject) => {
             if (PermissionService.test(this.permission.update, user.privilege)) {
                 this.Comment.updateOne({_id: data._id}, {content: data.content}).exec((err, result) => {
                     if(err) {
-                        console.log('error');
-                        console.log(err);
                         reject(err);
                     } else {
-                        console.log('content updated');
-                        console.log(result);
                         resolve(result);
                     }
                 });
 
             } else {
-                reject("ERROR: no Permission");
+                reject("PERMISSION DENIED");
             }
         });
     },
-    delete: function (userId) {
+
+    /**
+     * Delete a user TODO - next version
+     * @param data for query to delete
+     * @param user for permission
+     */
+    delete: function (data, user) {
         if (PermissionService.test(this.permission.delete)) {
 
         }
