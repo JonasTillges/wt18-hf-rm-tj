@@ -34,30 +34,35 @@ module.exports = {
      * @param documentOwnerId if set then it will perform a ownership privilege check (User.uid of Document)
      * @returns {Promise}
      */
-    userAuth: (accessToken, documentOwnerId) => {
+    userAuth: (accessToken, documentOwnerId, registration) => {
 
         return new Promise((resolve, reject) => {
             admin.auth()
             .verifyIdToken(accessToken)
             .then(firebaseUser => {
                   console.log(firebaseUser.user_id);
-                  UserService.get({uid: firebaseUser.user_id}).then(
-                    users => {
-                        let user = users.pop();
-                        // when User is Basic check for owner privilege
-                        if (documentOwnerId && user.privilege == SecurtiyConfiguration.BASIC_USER) {
-                            if (firebaseUser.user_id == documentOwnerId) {
-                                user.privilege = 3;
-                            }
-                        }
-                        console.log("Access granted");
-                        resolve(user);
-                    },
-                    error => {
-                        console.log("User failed: " + error);
-                        reject("User failed: " + error)
-                    }
-                  );
+                if(registration) {
+                    resolve("registration");
+                } else {
+                    UserService.get({uid: firebaseUser.user_id}).then(
+                      users => {
+                          let user = users.pop();
+                          // when User is Basic check for owner privilege
+                          if (documentOwnerId && user.privilege == SecurtiyConfiguration.BASIC_USER) {
+                              if (firebaseUser.user_id == documentOwnerId) {
+                                  user.privilege = 3;
+                              }
+                          }
+                          console.log("Access granted");
+                          resolve(user);
+                      },
+                      error => {
+                          console.log("User failed: " + error);
+                          reject("User failed: " + error)
+                      }
+                    );
+                }
+
               },
               error => {
                   console.log("Auth failed: " + error);

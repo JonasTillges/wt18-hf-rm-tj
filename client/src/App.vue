@@ -108,7 +108,6 @@
         AuthService.signOut();
       },
       emitListUpdate() {
-        console.log('list-updated');
         EventBus.$emit('list-updated', true);
       }
     },
@@ -120,37 +119,35 @@
       AuthService.init(_this.$applicationStorage);
 
       // Listen for login-status event
-      EventBus.$on('login-status', function(a, b) {
-
+      EventBus.$on('login-status', function() {
         if (_this.$applicationStorage.isLoggedIn) {
           _this.$data.loggedIn = true;
+          console.log(_this.$applicationStorage.user);
           _this.$data.userName = _this.$applicationStorage.user.name;
-          console.log('logged in');
         } else {
           _this.$data.loggedIn = false;
           _this.$data.userName = "";
-          console.log('logged out');
         }
       });
 
-      console.log(this.$applicationStorage);
 
       // get initial list of post
       if(this.$applicationStorage.posts.length) {
-        console.log('documents from chache');
       } else {
         //TODO prüfen mit server auth
         ActionService.getList({}).then(
           function (answer) {
             _this.$applicationStorage.addPosts(answer.data.documents, _this.$applicationStorage);
-            console.log('documents from server');
             _this.emitListUpdate();
           },
           function (error) {
-            console.log(error.message);
+            EventBus.$emit('notification', error);
           }
+
         );
       }
+
+      console.log(this.$applicationStorage);
     },
     updated() {
       //clear notification

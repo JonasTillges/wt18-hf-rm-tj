@@ -79,10 +79,10 @@
           tags: _this.tags
         }).then(function (answer) {
           let newPost = answer.data.document.pop();
-          _this.$applicationStorage.posts.push(newPost);
+          _this.$applicationStorage.addPosts(newPost, _this.$applicationStorage);
           _this.$router.replace('post/' + newPost._id);
         }, function (error) {
-          console.log(error.message)
+          EventBus.$emit('notification', error.message);
         });
       }
     }
