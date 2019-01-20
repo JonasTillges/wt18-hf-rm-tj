@@ -16,7 +16,7 @@
           <small id="passwordHelp" class="form-text text-muted">Benutze bitte ein Passwort aus mind. 6 Zeichen, sowie mit Groß- und Kleinschreibung.</small>
         </div>
         <div class="form-group">
-          <button  @click="signUp" class="btn btn-primary btn-xl">Registrieren</button>
+          <button  @click="checkForm" class="btn btn-primary btn-xl">Registrieren</button>
         </div>
         <br/>
         <i class="fa fa-user-circle-o" aria-hidden="true"></i>
@@ -27,11 +27,13 @@
 
 <script>
 import Auth from '@/services/Auth'
+import { EventBus } from '@/global/event-bus.js';
 
 export default {
   name: 'register',
   data () {
     return {
+      errors: [],
       email: '',
       name: '',
       password: '',
@@ -39,6 +41,31 @@ export default {
     }
   },
   methods: {
+    checkForm: function (e) {
+      this.errors = [];
+
+      if (this.name == "" && this.name.length < 2) {
+        EventBus.$emit('notification', "Name required.");
+        this.errors.push('Name required.');
+      }
+      if (this.email == "") {
+        EventBus.$emit('notification', "Email required!");
+        this.errors.push('Email required.');
+      } else if (!this.validEmail(this.email)) {
+        EventBus.$emit('notification', "Valid email required.");
+        this.errors.push('Valid email required.');
+      }
+
+      if (!this.errors.length) {
+        this.signUp();
+      }
+
+      e.preventDefault();
+    },
+    validEmail: function (email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
     signUp: function() {
       Auth.register(this.email, this.name, this.password);
     }

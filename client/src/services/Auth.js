@@ -159,6 +159,8 @@ export default {
     init(applicationStorage) {
         this.$applicationStorage = applicationStorage;
         this.onAuthChanged();
+        this.$applicationStorage = applicationStorage;
+  
     }
 }
 
