@@ -151,6 +151,7 @@
     },
     updated() {
       //clear notification
+      let _this = this;
       EventBus.$emit('notification', "");
       _this.loginState();
       

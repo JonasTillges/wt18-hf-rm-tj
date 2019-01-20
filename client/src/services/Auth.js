@@ -79,6 +79,8 @@ export default {
                             this.$applicationStorage.loggedIn = true;
                             EventBus.$emit('login-status', true);
                             Router.push('list');
+                            Router.go();
+                            
                         } else {
                             EventBus.$emit('notification', response.data.error);
                         }
