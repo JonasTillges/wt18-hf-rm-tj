@@ -121,9 +121,7 @@
 
       // Listen for login-status event
       EventBus.$on('login-status', function(a, b) {
-        console.log("on login status");
-        console.log(a);
-        console.log(b);
+
         if (_this.$applicationStorage.isLoggedIn) {
           _this.$data.loggedIn = true;
           _this.$data.userName = _this.$applicationStorage.user.name;

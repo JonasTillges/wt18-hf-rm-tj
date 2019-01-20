@@ -53,19 +53,15 @@ export default {
         console.log('call Auth.register');
         firebase.auth().createUserWithEmailAndPassword(email, password).then(
           (user) => {
-
               this.$applicationStorage.firebase = firebase.auth().currentUser;
-
-              user.sendEmailVerification().then((verification) => {
-
-                  console.log('success');
-                  console.log(verification);
-
+              this.$applicationStorage.user = {name: name, email: email}
                   ActionService.register({
                       email: email,
                       name: name,
-                      token: this.$applicationStorage.token
-                  }).then((response) => {
+                      token: user.getIdToken()
+                  }).then((response) => { 
+                    this.$applicationStorage.user = response.data.user;
+                    this.onAuthChanged();
                       console.log(response);
                       console.log("register");
                       EventBus.$emit('login-status', true);
@@ -73,13 +69,10 @@ export default {
                   });
 
 
-              }).catch(function (error) {
-                  // An error happened.
-              });
-
           },
           (err) => {
               console.log(err.message);
+              EventBus.$emit('notification', err.message);
           }
         );
     },
@@ -173,8 +166,9 @@ export default {
     },
     init(applicationStorage) {
         console.log("call Auth init");
-        this.$applicationStorage = applicationStorage;
         this.onAuthChanged();
+        this.$applicationStorage = applicationStorage;
+  
     }
 }
 

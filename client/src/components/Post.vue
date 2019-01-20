@@ -68,13 +68,22 @@
           </div>
         </div>
 
+      
       </div>
       <div class="post_new-comment" v-if="isLoggedIn">
         <h6>Jetzt antworten</h6>
         <div class="form-group">
           <wysiwyg v-model="newComment"/>
         </div>
-        <button type="submit" @click="composeComment" class="btn btn-primary">Antworten</button>
+
+            <p v-if="errors.length">
+            <b>Bitte behebe die folgenden fehler:</b>
+            <ul>
+              <li v-for="error in errors">{{ error }}</li>
+            </ul>
+          </p>
+        <button type="submit" @click="checkComment" class="btn btn-primary">Antworten</button>
+        
       </div>
     </div>
 
@@ -111,7 +120,8 @@
             content: "",
             _id: ""
           }
-        }
+        },
+        errors: []
       }
     },
     mounted() {
@@ -139,6 +149,18 @@
 
     },
     methods: {
+      checkComment: function (e) {
+        if (this.newComment != "") {
+          this.composeComment();
+        }
+
+        this.errors = [];
+
+        if (this.newComment == "") {
+          this.errors.push('Bitte schreibe erst deinen Kommentar.');
+        }
+        e.preventDefault();
+      },
       getDocumentData: function () {
         let _this = this;
         if (_this.$applicationStorage.posts.length != 0) {

@@ -25,6 +25,7 @@ AuthService.init();
 
 app.post('/register', (request, response)=> {
     let data = request.body;
+    console.log(request.body);
     AuthService.userAuth(data.token)
     .then(
       error => {

@@ -16,7 +16,13 @@
       <small id="tagsHelp" class="form-text text-muted">Kommaseparierte Tags z.B. "Webtechnologien, Vue, Javascript"
       </small>
     </div>
-    <button type="submit" @click="compose" class="btn btn-primary">Thema online stellen</button>
+      <p v-if="errors.length">
+        <b>Bitte behebe die folgenden fehler:</b>
+        <ul>
+          <li v-for="error in errors">{{ error }}</li>
+        </ul>
+      </p>
+    <button type="submit" @click="checkForm" class="btn btn-primary">Thema online stellen</button>
   </div>
 </template>
 
@@ -29,6 +35,7 @@
     name: 'list',
     data () {
       return {
+        errors: [],
         title: '',
         content: '',
         tags: '',
@@ -48,6 +55,21 @@
       });
     },
     methods: {
+        checkForm: function (e) {
+          if (this.title != "" && this.content != "") {
+            this.compose();
+          }
+
+          this.errors = [];
+
+          if (this.title == "") {
+            this.errors.push('Du hast den Titel vergessen.');
+          }
+          if (this.content == "") {
+            this.errors.push('Dein Post braucht Content.');
+          }
+          e.preventDefault();
+      },
       compose: function () {
         let _this = this;
         ActionService.compose({

@@ -39,7 +39,6 @@
   mounted() {
 
     //TODO initiales laden der route gibt keine info
-
     let _this = this;
 
     EventBus.$on('login-status', function() {
