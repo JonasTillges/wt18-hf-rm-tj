@@ -33,6 +33,11 @@ module.exports = {
         console.log('Tag error: ' + err);
     }),
 
+    /**
+     * get tag data
+     * @param data
+     * @param user
+     */
     get: function (data, user) {
         if (PermissionService.test(this.permission.read, user.privilege)) {
             var query = this.Tag.find(data);
@@ -42,23 +47,27 @@ module.exports = {
             });
         }
     },
-    
+
+    /**
+     * create tag
+     * @param data
+     * @param user
+     * @returns {Promise}
+     */
     create: function (data, user) {
 
         return new Promise((resolve, reject) => {
 
             if (PermissionService.test(this.permission.create, user.privilege)) {
 
-                // TODO maybe unique index?
                 this.Tag.findOne({name: data.name}).exec(function (err, result) {
 
                     if (err) {
                         reject(err);
 
                     } else {
-
+                        // Tag already exists
                         if (result) {
-                            console.log('Tag ALREADY EXISTS:' + result);
                             resolve(result);
                         } else {
 
@@ -66,7 +75,6 @@ module.exports = {
                                 name: data.name
                             }).save().then(
                               result => {
-                                  console.log('Tag CREATED:' + result);
                                   resolve(result);
                               },
                               error => {
@@ -86,11 +94,19 @@ module.exports = {
 
     },
 
+    /**
+     * TODO TBD
+     */
     update: function () {
         if (PermissionService.test(this.permission.update)) {
 
         }
     },
+
+    /**
+     * TODO TBD
+     * @param userId
+     */
     delete: function (userId) {
         if (PermissionService.test(this.permission.delete)) {
 

@@ -123,7 +123,6 @@ module.exports = {
 
         return new Promise((resolve, reject) => {
             // check for permission
-            console.log(this.permission.create, user.privilege);
             if (!PermissionService.test(this.permission.create, user.privilege)) {
                 reject("Error: Keine Rechte zum Erzeugen von Post");
             } else {
@@ -158,7 +157,6 @@ module.exports = {
                                       }
                                     ).save().then(
                                       (ptt) => {
-                                          console.log('PostToTag CREATED: ' + ptt);
                                           // if last tag
                                           if (index == tags.length - 1) {
                                               resolve(result);
@@ -176,8 +174,6 @@ module.exports = {
 
                       });
 
-                      console.log('POST CREATED: ' + result);
-
                   }
                 );
             }
@@ -186,6 +182,12 @@ module.exports = {
 
     },
 
+    /**
+     * update post
+     * @param data
+     * @param user
+     * @returns {Promise}
+     */
     update: function (data, user) {
         return new Promise((resolve, reject) => {
             if (PermissionService.test(this.permission.update, user.privilege)) {
@@ -193,8 +195,6 @@ module.exports = {
                     if (err) {
                         reject(err);
                     } else {
-                        console.log('post updated');
-                        console.log(result);
                         resolve(result);
                     }
                 });
@@ -205,12 +205,22 @@ module.exports = {
         });
     },
 
+    /**
+     * TODO WIP
+     * @param data
+     * @param user
+     */
     delete: function (data, user) {
         if (PermissionService.test(this.permission.delete)) {
 
         }
     },
 
+    /**
+     * create relation between post and tag
+     * @param data
+     * @returns {Promise}
+     */
     postRelation: function (data) {
 
         return new Promise((resolve, reject) => {
@@ -224,7 +234,6 @@ module.exports = {
                   }
                 ).save().then(
                   function (ptt) {
-                      console.log('PostToTag CREATED: ' + ptt);
                       resolve(ptt);
                   }
                 );

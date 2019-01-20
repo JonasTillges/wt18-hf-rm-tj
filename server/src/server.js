@@ -16,29 +16,26 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
 
-
-console.log('try to connect to database');
+console.log('Try to connect to database');
 DatabaseService.connect();
 
-console.log('try to connect to firebase');
+console.log('Try to connect to firebase');
 AuthService.init();
 
+/* Endpoints */
+
+/**
+ * Register an user
+ */
 app.post('/register', (request, response)=> {
 
-    console.log('___________register');
-
     let data = request.body;
-    console.log(data);
     // with registration flag
     AuthService.userAuth(data.token, false, true)
     .then(
       proofed => {
-          console.log("create user");
-          console.log(data);
           UserService.create(data).then(
             user => {
-                console.log('created');
-                console.log(user);
                 response.send({
                     user: user
                 });
@@ -50,28 +47,25 @@ app.post('/register', (request, response)=> {
             }
           );
 
-      }),
+      },
       error => {
           response.send({
               error: error
           });
-      };
+      });
 
 });
 
+/**
+ * get User Data
+ */
 app.post('/getUserData', (request, response) => {
     
-    console.log('_______________ getUserData ________');
     let data = request.body;
 
     AuthService.userAuth(data.token)
     .then(
       user => {
-
-          console.log('_______ userauth return ___________');
-          console.log(user);
-          console.log('___________________');
-
           response.send({
               user: user
           });
@@ -82,26 +76,11 @@ app.post('/getUserData', (request, response) => {
           });
       });
 
-
 });
 
-//TODO - implement activated flag for user
-app.get('/activate', (request, response) => {
-    let data = request.body;
-    AuthService.userAuth(data.token).then(
-      user => {
-          response.send({
-              documents: user
-          });
-      },
-      error => {
-          response.send({
-              error: error
-          })
-      }
-    );
-});
-
+/**
+ * compose a post
+ */
 app.post('/compose', (request, response)=> {
     let data = request.body;
     AuthService.userAuth(data.token)
@@ -110,10 +89,8 @@ app.post('/compose', (request, response)=> {
 
           PostService.create(data, user).then(
             result => {
-                console.log(result._id);
                 PostService.get({_id: result._id}).then(
                   (postData) => {
-                      console.log(postData);
                       response.send({
                           document: postData
                       });
@@ -136,6 +113,9 @@ app.post('/compose', (request, response)=> {
 
 });
 
+/**
+ * edit a post
+ */
 app.post('/editPost', (request, response) => {
     let data = request.body;
 
@@ -143,16 +123,10 @@ app.post('/editPost', (request, response) => {
     PostService.get({_id: data._id}, true).then(
       posts => {
           let post = posts.pop();
-          console.log(post);
           // authenticate the user and check ownership
           AuthService.userAuth(data.token, post._user.uid)
           .then(
             user => {
-
-                console.log('_______ userauth return ___________');
-                console.log(user);
-                console.log('___________________');
-
                 PostService.update(data, user).then(
                   (result) => {
                       PostService.get({_id: data._id}).then(
@@ -190,10 +164,11 @@ app.post('/editPost', (request, response) => {
     )
 });
 
+/**
+ * comment a post
+ */
 app.post('/comment', (request, response)=> {
     let data = request.body;
-    console.log(data);
-
     AuthService.userAuth(data.token).then(
       user => {
           CommentService.create(data, user).then(
@@ -226,6 +201,9 @@ app.post('/comment', (request, response)=> {
 
 });
 
+/**
+ * Edit a comment of a post
+ */
 app.post('/editComment', (request, response) => {
     let data = request.body;
 
@@ -233,19 +211,12 @@ app.post('/editComment', (request, response) => {
     CommentService.get({_id: data._id}).then(
       comments => {
           let comment = comments.pop();
-          console.log(comment);
           // authenticate the user and check ownership
           AuthService.userAuth(data.token, comment._user.uid)
           .then(
             user => {
-
-                console.log('_______ userauth return ___________');
-                console.log(user);
-                console.log('___________________');
-
                 CommentService.update(data, user).then(
                   (result) => {
-                      console.log("comment updated"); 
                       PostService.get({_id: comment._post}).then(
                         (postData) => {
                             response.send({
@@ -281,7 +252,9 @@ app.post('/editComment', (request, response) => {
     )
 });
 
-
+/**
+ * get data of a post
+ */
 app.post('/post', (request, response) => {
 
     let data = request.body;
@@ -310,6 +283,9 @@ app.post('/post', (request, response) => {
 
 });
 
+/**
+ * get a list of posts
+ */
 app.post('/list', (request, response) => {
 
     let data = request.body;
@@ -327,22 +303,6 @@ app.post('/list', (request, response) => {
       }
     );
 
-});
-
-app.post('/dummy', (request, response)=> {
-    let data = request.body;
-    AuthService.userAuth(data.token).then(
-      user => {
-          response.send({
-              documents: user
-          });
-      },
-      error => {
-          response.send({
-              error: error
-          })
-      }
-    );
 });
 
 app.listen(process.env.PORT || 8081);

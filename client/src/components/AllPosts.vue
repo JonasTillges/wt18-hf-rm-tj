@@ -1,5 +1,10 @@
 <template>
-  <list :documents="documents" />
+  <div>
+    <div class="container list_header">
+      <h4>Fragen der Community</h4>
+    </div>
+    <list :documents="documents" />
+  </div>
 </template>
 
 <script>

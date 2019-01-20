@@ -35,6 +35,11 @@ module.exports = {
       }
     )),
 
+    /**
+     * get User data
+     * @param data
+     * @returns {Promise}
+     */
     get: function (data) {
 
         return new Promise((resolve, reject) => {
@@ -60,6 +65,11 @@ module.exports = {
 
     },
 
+    /**
+     * create an user
+     * @param data
+     * @returns {Promise}
+     */
     create: function (data) {
 
         return new Promise((resolve, reject) => {
@@ -72,7 +82,6 @@ module.exports = {
                     uid: data.uid
                 }).save().then(
                   user => {
-                      console.log('USER CREATED:' + user);
                       resolve(user)
                   },
                   error => {
@@ -84,6 +93,9 @@ module.exports = {
 
     },
 
+    /*
+    TODO - TBD
+     */
     update: function () {
         if (PermissionService.test(this.permission.update)) {
 
@@ -91,11 +103,10 @@ module.exports = {
     },
 
     /**
-     * delete an user
-     * @param {string} userId
-     * @returns {*|Object}
+     * delete an user TODO - TBD
+     * @param {string} data
      */
-    delete: function (userId) {
+    delete: function (data) {
         if (PermissionService.test(this.permission.delete)) {
 
         }

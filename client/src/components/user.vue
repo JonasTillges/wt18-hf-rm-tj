@@ -1,6 +1,25 @@
 <template>
     <div>
-        <list :documents="documents"  />
+        <div v-if="documents.length">
+            <div class="container list_header">
+                <h3>Deine Fragen</h3>
+            </div>
+            <list :documents="documents"  />
+        </div>
+        <div v-if="!documents.length" class="container user_start">
+            <h3> Noch keine Fragen gestellt? </h3>
+            <div>Dann stell jetzt deine erste Frage oder beantworte welche.</div>
+            <div>
+                <router-link to="/post">
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>
+                    Frage stellen
+                </router-link>
+                <router-link to="/list">
+                    <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                    Fragen beantworten
+                </router-link>
+            </div>
+        </div>
     </div>
 </template>
 

@@ -24,7 +24,7 @@ module.exports = {
                 console.log("Firebase can not connect.");
             }
         } catch (error) {
-            console.log("Firebase Error");
+            console.log("Firebase Error" + error);
         }
     },
 
@@ -32,6 +32,7 @@ module.exports = {
      * Authenticate User Token: resolve when verified && user in db - reject when auth failed && user not in db
      * @param accessToken
      * @param documentOwnerId if set then it will perform a ownership privilege check (User.uid of Document)
+     * @param registration Used for registration to skip the get user because there is no user before register
      * @returns {Promise}
      */
     userAuth: (accessToken, documentOwnerId, registration) => {
@@ -40,7 +41,6 @@ module.exports = {
             admin.auth()
             .verifyIdToken(accessToken)
             .then(firebaseUser => {
-                  console.log(firebaseUser.user_id);
                 if(registration) {
                     resolve("registration");
                 } else {
@@ -53,11 +53,9 @@ module.exports = {
                                   user.privilege = 3;
                               }
                           }
-                          console.log("Access granted");
                           resolve(user);
                       },
                       error => {
-                          console.log("User failed: " + error);
                           reject("User failed: " + error)
                       }
                     );
@@ -65,7 +63,6 @@ module.exports = {
 
               },
               error => {
-                  console.log("Auth failed: " + error);
                   reject("Auth failed: " + error);
               }
             )
