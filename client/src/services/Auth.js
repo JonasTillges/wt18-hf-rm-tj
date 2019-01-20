@@ -12,7 +12,7 @@ var config = {
     storageBucket: "forum-7ed19.appspot.com",
     messagingSenderId: "593613711325"
   };
-  firebase.initializeApp(config);
+firebase.initializeApp(config);
 
 export default {
 
@@ -45,8 +45,7 @@ export default {
               });
           },
           (err) => {
-              //TODO Notification no user with this login credentials
-              console.log(err.message);
+              EventBus.$emit('notification', err.message);
           }
         );
     },

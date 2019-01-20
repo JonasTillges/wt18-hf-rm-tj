@@ -10,7 +10,6 @@ import User from '@/components/User'
 import Compose from '@/components/Compose'
 import Verification from '@/components/Verify'
 import Activation from '@/components/Activation'
-import AuthService from '@/services/Auth';
 
 Vue.use(Router);
 
